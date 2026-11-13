@@ -1,0 +1,85 @@
+id: definition-of-done-proof
+type: loadout
+title: Definition of done for agents, with proof
+summary: Make "done" mean the feature works, a test shows it, and no test was weakened, with a git-diff check for changed assertions, skips and deleted tests.
+description: |
+  A definition of done written for people says "tests pass", and everyone knows that also means someone clicked through the feature. Agents read it literally. When a test fails, changing the expected value, deleting the assertion or adding a skip marker is the cheapest way to green, and the agent reports done. Developers keep finding this out after merging.
+
+  This loadout rewrites done for agents: the behaviour was run and seen, new behaviour has a new test (a bug fix has one that failed first), the full suite passes, nothing was checked by "should work", and no existing test was loosened. A standard-library Python script reads the git diff of test files and reports changed expectations, removed assertions, added skip/xfail/only/ignore markers, deleted tests and changed snapshots. It works across pytest, Jest/Vitest, Go, Rust, JUnit and Swift Testing, and counts new tests without blocking them. Human-approved test changes go in an allow list that only the human edits. An optional Claude Code Stop hook turns the check into a wall, and a report template puts evidence next to every claim.
+highlights:
+  - "Done = seen working + a test that shows it + no weakened tests + what wasn't checked"
+  - Diff check for changed expectations, removed asserts, skips, deleted tests, snapshots
+  - Works on pytest, Jest/Vitest, Go, Rust, JUnit and Swift Testing files
+  - Human-only allow list for test changes that were genuinely wrong
+  - Optional Claude Code Stop hook (exit 2, loop-safe) and a done-report template
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: hooks reference (Stop hook, exit code 2, stop_hook_active)"
+    url: https://code.claude.com/docs/en/hooks
+  - title: "@AliceInfoAi: agents read 'tests pass' literally"
+    url: https://x.com/AliceInfoAi/status/2110219293904257246
+  - title: "@Dev_Great_dev: editing the assertion is cheaper than fixing the bug"
+    url: https://x.com/Dev_Great_dev/status/2110903441031643577
+  - title: "@FastfixAI: tests green, feature still broken, a definition-of-done problem"
+    url: https://x.com/FastfixAI/status/2110511793475027233
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - git
+  - python
+  - bash
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: The five-part definition of done and what to do when a test seems wrong.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/done-proof/SKILL.md
+    role: skill
+    skill: done-proof
+    description: Prove done with a failing-then-passing test, a run of the feature and the tamper check.
+  - path: skills/done-proof/scripts/test_tamper.py
+    role: reference
+    skill: done-proof
+    description: Git-diff check for weakened, skipped or deleted tests.
+  - path: skills/done-proof/scripts/done-gate.sh
+    role: reference
+    skill: done-proof
+    description: Optional Claude Code Stop hook that runs the tamper check.
+  - path: skills/done-proof/references/stop-hook.example.json
+    role: reference
+    skill: done-proof
+    description: Settings snippet for the Stop hook.
+  - path: skills/done-proof/references/done-report.md
+    role: reference
+    skill: done-proof
+    description: The done report template.
+requires:
+  tools:
+    - git
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - test_tamper.py
+    - done-gate.sh
+  notes: The check only runs read-only git commands (rev-parse, diff, ls-files) and reads test files. The optional Stop hook runs that check and nothing else, and is installed only if you merge the settings snippet.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

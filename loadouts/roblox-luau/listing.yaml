@@ -1,0 +1,53 @@
+id: roblox-luau
+type: loadout
+title: Roblox Luau (Rojo)
+summary: Luau conventions for Rojo projects with a server-authoritative mindset, plus a skill that reviews every RemoteEvent for exploits before you publish.
+description: |
+  On Roblox, the client is the exploiter's playground: anything a LocalScript sends can be faked. Agents
+  routinely write remotes like "GiveCoins(amount)" that hand the game to the first script kiddie. This
+  loadout teaches your agent typed Luau, the Rojo file layout, server authority and safe DataStore use,
+  and adds a skill that audits every remote in the place.
+highlights:
+  - "Server-authoritative rules: clients request, the server decides"
+  - --!strict typed Luau, task library, no deprecated wait/spawn
+  - DataStore patterns with pcall, UpdateAsync and session-safe saving
+  - Remote security review skill with a per-remote verdict
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [gamedev, security]
+stacks: [roblox, luau, rojo]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Roblox Luau project rules for Rojo layouts.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/luau-remotes.mdc
+    role: rules
+    description: Rule applied to server scripts that handle remotes.
+  - path: skills/remote-security-review/SKILL.md
+    role: skill
+    skill: remote-security-review
+    description: Audits every RemoteEvent and RemoteFunction for exploitable trust.
+requires:
+  tools: [rojo, roblox-studio]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+  notes: Instructions only.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

@@ -1,0 +1,55 @@
+id: nextjs-supabase-saas
+type: loadout
+title: Next.js + Supabase SaaS
+summary: Rules, an RLS audit skill and a read-only Supabase MCP config for vibe-coding a Next.js App Router SaaS without leaking your database.
+description: |
+  The stack most vibe-coded SaaS apps end up on, with the guard rails agents usually forget.
+  Your agent learns where server code ends and client code begins, how to use Supabase auth
+  with cookies, and that every table needs row level security before it holds real data.
+highlights:
+  - Clear server/client boundary rules for the App Router
+  - Migrations-only schema changes, with RLS enabled on every new table
+  - A skill that audits every table's RLS policies and reports gaps in plain English
+  - Read-only Supabase MCP config so the agent can inspect, not drop, your database
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [web-app]
+stacks: [nextjs, react, typescript, supabase, postgres]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Project rules for any agent that reads AGENTS.md.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/supabase-migrations.mdc
+    role: rules
+    description: Scoped Cursor rule that applies when editing SQL migrations.
+  - path: skills/supabase-rls-audit/SKILL.md
+    role: skill
+    skill: supabase-rls-audit
+    description: Audits row level security across every table and reports gaps.
+  - path: mcp.json
+    role: mcp
+    description: Supabase hosted MCP server in read-only mode, scoped to one project.
+requires:
+  tools: [node, supabase-cli]
+  env: [NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY]
+  mcp: [supabase]
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The MCP config connects to Supabase's hosted MCP server. It is set to read-only and needs your project ref.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

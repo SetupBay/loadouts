@@ -1,0 +1,97 @@
+id: claude-code-hooks-guardrails
+type: loadout
+title: Claude Code hooks guard rails
+summary: Fail-closed PreToolUse, post-edit and Stop hooks that block force-pushes, .env reads and wild deletes, check each edit and run tests before done.
+description: |
+  Rules in CLAUDE.md are advice; hooks are enforcement. This loadout installs three small bash + jq hooks
+  that practitioners converged on in autumn 2026: a PreToolUse guard that denies the handful of commands
+  that cause real damage (with a reason the agent can act on), a fast per-file check after every edit, and
+  a Stop gate that runs the tests once and refuses to let the agent finish on red. It uses the hook
+  semantics that matter: only exit 2 or a deny decision blocks, `onFailure: "block"` so a broken hook fails
+  closed, and `stop_hook_active` so the Stop gate can never loop. A self-test proves every block works.
+highlights:
+  - Bash guard denies force-push, reset --hard, --no-verify, .env access, deletes outside the project and DROP/TRUNCATE
+  - Post-edit check on just the changed file (bash -n, jq, ruff, eslint) so errors surface immediately
+  - Stop gate runs the test command once, skips clean trees and respects stop_hook_active
+  - settings.json snippet with onFailure block, exec-form args and Read deny rules for .env*
+  - 34-case self-test, plus a reference on what permissions and hooks really enforce
+  - Notes for Codex (project or user hooks.json) and Cursor (which can load the Claude Code hooks), with what carries over
+version: 1.1.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@AlexRusin: two-tier hooks and stop_hook_active"
+    url: https://x.com/AlexRusin/status/2103535255357391289
+  - title: "@paulhq: only exit 2 blocks; test a hook by trying the forbidden thing"
+    url: https://x.com/paulhq/status/2100933039945912672
+  - title: "@coldboothq: Read deny rules are not a sandbox"
+    url: https://x.com/coldboothq/status/2106519666885619942
+  - title: Claude Code hooks reference
+    url: https://code.claude.com/docs/en/hooks
+    note: exit codes, onFailure, Stop input
+  - title: Cursor hooks and Third Party Hooks docs
+    url: https://cursor.com/docs/reference/third-party-hooks
+    note: Cursor loads Claude Code hooks from .claude/settings.json, with partial event support
+  - title: Codex hooks docs
+    url: https://developers.openai.com/codex/hooks
+    note: project .codex/hooks.json in trusted projects, user ~/.codex/hooks.json, hook trust review
+categories: [workflow, security]
+stacks: [bash, jq]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: How to behave when a hook blocks you, and the hard limits behind the hooks.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/guard-rails.mdc
+    role: rules
+    description: Always-on Cursor rule with the same hard limits, for when the hooks don't fire in Cursor.
+  - path: skills/install-guard-hooks/SKILL.md
+    role: skill
+    skill: install-guard-hooks
+    description: Installs, tests and extends the three guard hooks and the permission rules.
+  - path: skills/install-guard-hooks/scripts/guard-bash.sh
+    role: reference
+    skill: install-guard-hooks
+    description: PreToolUse Bash guard that prints a deny decision with a reason.
+  - path: skills/install-guard-hooks/scripts/post-edit-check.sh
+    role: reference
+    skill: install-guard-hooks
+    description: PostToolUse fast check of the edited file.
+  - path: skills/install-guard-hooks/scripts/stop-gate.sh
+    role: reference
+    skill: install-guard-hooks
+    description: Stop hook that runs the tests once and respects stop_hook_active.
+  - path: skills/install-guard-hooks/scripts/selftest.sh
+    role: reference
+    skill: install-guard-hooks
+    description: Feeds sample hook input to each script and checks every decision.
+  - path: skills/install-guard-hooks/references/settings.example.json
+    role: reference
+    skill: install-guard-hooks
+    description: Hooks and permission rules to merge into .claude/settings.json.
+  - path: skills/install-guard-hooks/references/permissions.md
+    role: reference
+    skill: install-guard-hooks
+    description: What permissions and hooks really enforce, with version notes.
+requires:
+  tools: [bash, jq, git]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: [guard-bash.sh, post-edit-check.sh, stop-gate.sh, selftest.sh]
+  notes: Marked as network because guard-bash.sh matches the words curl and wget in commands it blocks. The scripts make no network calls; they read hook input and run local checks.
+last_checked: 2026-10-26
+published: 2026-10-17
+updated: 2026-10-26

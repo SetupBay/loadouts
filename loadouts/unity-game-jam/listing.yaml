@@ -1,0 +1,53 @@
+id: unity-game-jam
+type: loadout
+title: Unity C# game jam
+summary: Unity C# conventions that respect the editor, .meta files and serialisation, plus a skill for scripted web builds ready for itch.io.
+description: |
+  Agents are good at C# and bad at Unity. They rename files without their .meta, break serialised
+  fields, allocate every frame and forget that half the game lives in scenes and prefabs they cannot see.
+  This loadout fixes that, adds jam-scope discipline, and gives the agent a batch-mode build script for
+  web builds so you are not fighting the build window at the deadline.
+highlights:
+  - Rules for .meta files, serialised fields and prefab-first design
+  - Performance habits that matter for web builds (no per-frame allocations or Find calls)
+  - Batch-mode build skill with a ready-to-paste BuildScript.cs and itch.io compression settings
+  - Cursor rule scoped to C# files under Assets/
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [gamedev]
+stacks: [unity, csharp]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Unity project and game jam rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/unity-csharp.mdc
+    role: rules
+    description: Unity C# rule, applied to scripts under Assets/.
+  - path: skills/unity-web-build/SKILL.md
+    role: skill
+    skill: unity-web-build
+    description: Builds a web (WebGL) player from the command line, ready for itch.io.
+requires:
+  tools: [unity-editor]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+  notes: The skill asks the agent to add an editor build script to your project; it does not download anything.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

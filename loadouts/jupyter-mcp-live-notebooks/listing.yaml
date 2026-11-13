@@ -1,0 +1,88 @@
+id: jupyter-mcp-live-notebooks
+type: loadout
+title: Live Jupyter notebooks through Jupyter MCP
+summary: "Agents in a running JupyterLab via jupyter-mcp-server 2.2.4: loopback and a random token, saved cells over hidden kernel state, and a fresh-kernel rerun before done."
+description: |
+  Jupyter MCP Server lets Claude Code, Codex, Cursor and other MCP clients read, edit and run cells in a JupyterLab you have open, with outputs and plots coming back to the agent. It's powerful and easy to misuse. The quick start binds JupyterLab to 0.0.0.0 with a fixed token. The live kernel remembers everything the agent ran, including code sent with execute_code that never lands in a cell. So a notebook can look done and then fail on Restart and Run All.
+
+  This loadout pins jupyter-mcp-server 2.2.4 and has the human start JupyterLab on 127.0.0.1 with a random token passed through the environment. It sets the working rules: read the notebook first, use execute_code only for read-only peeks, keep every step in a saved cell with an assertion, install packages in the project rather than from %pip cells, and keep secrets out of outputs. Done means a restart and a top-to-bottom run. Two small scripts check that: nb_check.py (standard library) fails notebooks whose execution counts aren't 1 to n in order, that were saved with errors or that leak secrets. run_fresh.py does restart-and-run-all with nbclient when there's no server, for example in CI. It pairs with the Jupytext-based jupyter-notebooks loadout.
+highlights:
+  - jupyter-mcp-server 2.2.4 pinned, JupyterLab on 127.0.0.1 with a random JUPYTER_TOKEN
+  - Saved cells for every step; execute_code only for read-only peeks
+  - Restart and run all before done, then nb_check.py on the saved file
+  - nb_check.py fails out-of-order counts, saved errors and secrets in outputs
+  - run_fresh.py reruns a notebook in a fresh kernel without a server (nbclient 0.11.0)
+  - Notes on passing the token in Claude Code (${VAR}) and Codex (env_vars)
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: datalayer/jupyter-mcp-server (README, MCP SDK 2 note, uvx setup)
+    url: https://github.com/datalayer/jupyter-mcp-server
+  - title: "Jupyter MCP Server docs: tool reference (22 tools, 1 prompt)"
+    url: https://jupyter-mcp-server.datalayer.tech/mcp
+  - title: "Claude Code docs: environment variable expansion in .mcp.json"
+    url: https://code.claude.com/docs/en/mcp
+  - title: "OpenAI Codex docs: MCP servers (env_vars)"
+    url: https://developers.openai.com/codex/mcp
+  - title: "nbclient docs: executing notebooks"
+    url: https://nbclient.readthedocs.io/en/latest/client.html
+categories:
+  - data
+  - workflow
+stacks:
+  - python
+  - jupyter
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for working in a live notebook through Jupyter MCP.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/live-notebook/SKILL.md
+    role: skill
+    skill: live-notebook
+    description: Read, change and prove a notebook through the Jupyter MCP tools.
+  - path: skills/live-notebook/scripts/nb_check.py
+    role: reference
+    skill: live-notebook
+    description: Standard-library check of saved notebooks (order, errors, secrets).
+  - path: skills/live-notebook/scripts/run_fresh.py
+    role: reference
+    skill: live-notebook
+    description: Restart-and-run-all with nbclient (uv inline dependencies pinned).
+  - path: skills/live-notebook/references/setup.md
+    role: reference
+    skill: live-notebook
+    description: How the human starts JupyterLab safely and passes the token.
+  - path: mcp.json
+    role: mcp
+    description: Jupyter MCP Server 2.2.4 over stdio, token from the environment.
+requires:
+  tools:
+    - uv
+    - python3
+  env:
+    - JUPYTER_TOKEN
+  mcp:
+    - jupyter
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - nb_check.py
+    - run_fresh.py
+  notes: uvx fetches jupyter-mcp-server and uv fetches nbclient and ipykernel on first run. The MCP server runs code in the JupyterLab kernel the human started on 127.0.0.1. nb_check.py only reads notebooks.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

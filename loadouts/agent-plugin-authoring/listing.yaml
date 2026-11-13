@@ -1,0 +1,91 @@
+id: agent-plugin-authoring
+type: loadout
+title: Author plugins for Claude Code and Antigravity
+summary: Build one plugin for Claude Code and Antigravity from a single source tree, pin its MCP servers, and pass claude plugin validate --strict before anyone installs.
+description: |
+  Claude Code and Antigravity both install plugins made of skills, subagents and MCP servers, but the manifests differ. Claude Code reads .claude-plugin/plugin.json and .mcp.json with url. Antigravity reads a root plugin.json whose schema allows only a name and description, and mcp_config.json with serverUrl. It has no validate command. This loadout keeps one portable source tree and builds both layouts plus a local marketplace. A checker catches extra manifest fields, reserved names, unpinned npx servers, http remotes, literal credentials and drift between the builds. The verifier builds the example plugin and runs Claude Code 2.1.302's own validate --strict on the plugin and marketplace, with no account needed. It then confirms a broken source fails both checkers. It pairs with the agent-extension-vetting loadout for the reviewer's side.
+highlights:
+  - One plugin-src tree builds both Claude Code and Antigravity layouts
+  - Antigravity manifest checked against its documented schema (it has no validate command)
+  - claude plugin validate --strict on the plugin and marketplace, no sign-in
+  - Exact MCP pins, https remotes, no literal credentials in env or headers
+  - "Release notes: version bumps and sha pins for GitHub marketplace sources"
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: plugin manifest reference"
+    url: https://code.claude.com/docs/en/plugins/manifest-reference
+  - title: "Claude Code docs: add components to a plugin"
+    url: https://code.claude.com/docs/en/plugins/components
+  - title: "Claude Code docs: plugin commands (plugin validate)"
+    url: https://code.claude.com/docs/en/plugins/cli-reference
+  - title: "Claude Code docs: marketplace reference (ref and sha)"
+    url: https://code.claude.com/docs/en/plugins/marketplace-reference
+  - title: "Google Antigravity docs: plugins"
+    url: https://antigravity.google/docs/plugins
+  - title: "Google Antigravity docs: custom subagents"
+    url: https://antigravity.google/docs/subagents
+  - title: "Google Antigravity docs: MCP configuration"
+    url: https://antigravity.google/docs/mcp
+categories:
+  - ai-agents
+  - workflow
+stacks:
+  - mcp
+  - nodejs
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for building and releasing a plugin for Claude Code and Antigravity from one source tree.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/build-agent-plugin/SKILL.md
+    role: skill
+    skill: build-agent-plugin
+    description: Layout differences, build, check, local test and release.
+  - path: skills/build-agent-plugin/scripts/build_plugins.mjs
+    role: reference
+    skill: build-agent-plugin
+    description: Builds both plugin layouts and a local marketplace.
+  - path: skills/build-agent-plugin/scripts/check_plugins.mjs
+    role: reference
+    skill: build-agent-plugin
+    description: Schema, parity, pin and credential checks for both builds.
+  - path: skills/build-agent-plugin/references/plugin-src/plugin.json
+    role: reference
+    skill: build-agent-plugin
+    description: Example source manifest with a pinned MCP server.
+  - path: skills/build-agent-plugin/references/plugin-src/skills/tidy-pr/SKILL.md
+    role: reference
+    skill: build-agent-plugin
+    description: Example portable skill.
+  - path: skills/build-agent-plugin/references/plugin-src/agents/pr-reviewer.md
+    role: reference
+    skill: build-agent-plugin
+    description: Example portable subagent.
+requires:
+  tools:
+    - nodejs
+    - npm
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - build_plugins.mjs
+    - check_plugins.mjs
+  notes: The scripts read and write files under the folders you name and make no network calls. npx downloads Claude Code only to run plugin validate. The example plugin declares one MCP server (Context7, pinned to 4.4.2) that runs only when someone installs the plugin.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

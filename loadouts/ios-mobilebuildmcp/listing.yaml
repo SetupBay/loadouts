@@ -1,0 +1,65 @@
+id: ios-mobilebuildmcp
+type: loadout
+title: iOS builds with MobileBuildMCP (XcodeBuildMCP)
+summary: Let the agent build, test, run and screenshot iOS and macOS apps through MobileBuildMCP, pinned with telemetry off, with Swift concurrency and pbxproj rules.
+description: |
+  XcodeBuildMCP, now MobileBuildMCP from Sentry, is the MCP server iOS developers keep naming as a daily driver: it lets the agent discover schemes, build for a simulator, run tests, launch the app and look at the screen, instead of guessing xcodebuild flags. This loadout pins it with telemetry disabled and adds the rules for Swift work: build, test and look before reporting, main-actor UI, no force unwraps on outside data, Swift Testing for new tests, and hands off signing, entitlements, pbxproj and uploads.
+highlights:
+  - MobileBuildMCP pinned, telemetry off via MOBILEBUILDMCP_SENTRY_DISABLED
+  - "Session defaults set once: project, scheme, simulator"
+  - Done means built, tests run, launched and seen on screen
+  - Swift concurrency rules; no unsafe escapes without a reason
+  - No pbxproj reformatting, signing changes or uploads
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: getsentry/MobileBuildMCP (formerly XcodeBuildMCP)
+    url: https://github.com/getsentry/XcodeBuildMCP
+  - title: "MobileBuildMCP docs: privacy and telemetry opt-out"
+    url: https://github.com/getsentry/xcodebuildmcp.com/blob/main/app/docs/_content/privacy.mdx
+  - title: "@KhalidDevLog: daily mobile MCPs (XcodeBuildMCP, Expo MCP, Figma MCP)"
+    url: https://x.com/KhalidDevLog/status/2096183096697586039
+categories:
+  - web-app
+stacks:
+  - swift
+  - ios
+  - xcode
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Swift and Xcode rules with MobileBuildMCP as the build tool.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/ios-build-loop/SKILL.md
+    role: skill
+    skill: ios-build-loop
+    description: Build, test, run and look, through MobileBuildMCP.
+  - path: mcp.json
+    role: mcp
+    description: MobileBuildMCP pinned with telemetry off.
+requires:
+  tools:
+    - node
+    - xcode
+  env: []
+  mcp:
+    - mobilebuildmcp
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: npx downloads mobilebuildmcp from npm at the pinned version. The server runs xcodebuild and simulator tools locally on macOS. Sentry error telemetry is disabled in the config.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

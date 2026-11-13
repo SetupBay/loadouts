@@ -1,0 +1,25 @@
+{
+  "budget_usd_total": 6.00,
+  "agent": ["claude", "-p", "--output-format", "json", "--max-turns", "40", "--permission-mode", "acceptEdits", "--allowedTools", "Bash(pytest *)", "Bash(git add *)", "Bash(git commit *)"],
+  "tasks": [
+    {
+      "id": "fix-flaky-date-test",
+      "goal": "tests/test_dates.py::test_week_start fails on Sundays. Find the cause in src/dates.py and fix it.",
+      "check": "pytest -q tests/test_dates.py",
+      "budget_usd": 2.00,
+      "timeout_min": 60
+    },
+    {
+      "id": "csv-export-header",
+      "goal": "The CSV export in src/export.py has no header row. Add one, matching the column names in docs/export.md.",
+      "check": "pytest -q tests/test_export.py",
+      "budget_usd": 1.50
+    },
+    {
+      "id": "type-errors-billing",
+      "goal": "Make mypy pass for src/billing/ without adding type: ignore comments.",
+      "check": "mypy src/billing",
+      "budget_usd": 2.50
+    }
+  ]
+}

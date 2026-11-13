@@ -1,0 +1,24 @@
+---
+description: Godot 4 GDScript only; never Godot 3 syntax or APIs
+globs: "**/*.gd"
+alwaysApply: false
+---
+
+This project is Godot 4 (`config_version=5`). Never write Godot 3 GDScript.
+
+| Never (Godot 3) | Always (Godot 4) |
+|---|---|
+| `tool`, `export var`, `onready var` | `@tool`, `@export var`, `@onready var` |
+| `yield(timer, "timeout")` | `await get_tree().create_timer(t).timeout` |
+| `setget` | `var x: int: set = _set_x` |
+| `connect("sig", self, "_m")` | `sig.connect(_m)` |
+| `KinematicBody2D`, `Spatial` | `CharacterBody2D`, `Node3D` |
+| `move_and_slide(velocity, Vector2.UP)` | set `velocity`, then `move_and_slide()` |
+| `.instance()`, `.empty()` | `.instantiate()`, `.is_empty()` |
+| `deg2rad`, `rand_range`, `stepify` | `deg_to_rad`, `randf_range`, `snapped` |
+| `change_scene(path)` | `change_scene_to_file(path)` |
+| `OS.get_ticks_msec()`, `File.new()` | `Time.get_ticks_msec()`, `FileAccess.open()` |
+| `Tween.new()` + `interpolate_property` | `create_tween().tween_property()` |
+
+- Type every variable, parameter and return value.
+- After editing a `.gd` file, run the `godot-4-guard` skill's scanner and `godot --headless --check-only --script res://<file>`.

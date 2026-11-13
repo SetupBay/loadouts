@@ -1,0 +1,43 @@
+# A FastAPI module written for Pydantic v1, used to check the guard.
+from typing import Optional
+
+from fastapi import FastAPI
+from pydantic import BaseModel, BaseSettings, Field, root_validator, validator    # basesettings-import, validator, root-validator
+
+app = FastAPI()
+
+
+class Settings(BaseSettings):
+    database_url: str
+
+    class Config:                                                                 # class-config
+        env_file = ".env"
+
+
+class ItemIn(BaseModel):
+    name: str = Field(..., regex="^[a-z-]+$")                                     # field-regex
+    tags: list[str] = Field(default_factory=list, min_items=1)                    # field-items
+    note: Optional[str]                                                           # optional-no-default
+
+    @validator("name")                                                            # validator
+    def lower(cls, v):
+        return v.lower()
+
+
+class ItemOut(BaseModel):
+    id: int
+    name: str
+
+    class Config:                                                                 # class-config
+        orm_mode = True                                                           # orm-mode
+
+
+@app.on_event("startup")                                                          # on-event
+def connect():
+    pass
+
+
+@app.post("/items")
+def create(item: ItemIn):
+    row = save(item.dict())                                                       # dict-method
+    return ItemOut.from_orm(row)                                                  # from-orm

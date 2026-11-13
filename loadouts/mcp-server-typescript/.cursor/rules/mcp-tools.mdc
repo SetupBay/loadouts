@@ -1,0 +1,14 @@
+---
+description: MCP tool definition conventions
+globs: src/tools/**/*.ts
+alwaysApply: false
+---
+
+- Tool names are `snake_case`, verb first, unique across the server.
+- Descriptions are written for the model: what, when to use, what it returns, limits. 1–3 sentences.
+- Every input field has a zod type and `.describe(...)`. Bound numbers, use enums for fixed options, give defaults.
+- Return concise `content: [{ type: "text", text }]`; summarise large API responses and paginate.
+- Expected failures return `{ isError: true, content: [...] }` with an actionable message. Do not throw.
+- Never write to stdout (`console.log`) — use `console.error`.
+- Annotate read-only tools with `readOnlyHint: true`; destructive ones with `destructiveHint: true`.
+- Secrets come from `process.env`, never from tool arguments or source code.

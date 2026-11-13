@@ -1,0 +1,22 @@
+# A SQLAlchemy 1.3/1.4 module, used to check the guard. Each line is removed, legacy or silently different in 2.x.
+from sqlalchemy import Column, Integer, MetaData, String, create_engine, select
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, sessionmaker
+engine = create_engine("sqlite:///app.db", future=True)
+meta = MetaData(bind=engine)
+Base = declarative_base()
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    posts = relationship("Post", backref="author", lazy="dynamic")
+Session = sessionmaker(bind=engine, autocommit=True)
+session = Session()
+admins = session.query(User).filter_by(name="admin").all()
+one = session.query(User).get(1)
+rows = engine.execute("select id, name from users")
+for row in rows:
+    print(row["name"])
+ids = select([User.id])
+with engine.connect() as conn:
+    conn.execute(text("update users set name = 'x'"))

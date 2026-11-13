@@ -1,0 +1,87 @@
+id: electron-app
+type: loadout
+title: Electron desktop app rules
+summary: "Electron rules for agents: sandboxed renderers, narrow contextBridge APIs, sender-checked IPC, deny-by-default windows, CSP and fuses, with a static security check."
+description: |
+  Agents build Electron apps that work and then turn off the protections to make a feature easier: nodeIntegration on, contextIsolation off, ipcRenderer handed straight to the page, shell.openExternal on whatever URL arrives. This loadout writes the Electron security checklist into rules your agent follows, and ships a skill for adding IPC channels the safe way: a named preload function, a fixed channel, an ipcMain.handle that checks event.senderFrame and validates every argument. A small static check catches the common regressions. The verifier type-checks the examples against Electron 44's types and runs the check on a good and an insecure app.
+highlights:
+  - contextIsolation, sandbox and nodeIntegration written out, never weakened
+  - IPC through named preload functions; handlers check senderFrame and validate input
+  - Custom app:// protocol instead of file://; deny-by-default window and navigation handlers
+  - Fuses flipped at package time with @electron/fuses
+  - Static check mapped to the numbered Electron security checklist
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Electron docs: security checklist"
+    url: https://www.electronjs.org/docs/latest/tutorial/security
+  - title: "Electron docs: context isolation"
+    url: https://www.electronjs.org/docs/latest/tutorial/context-isolation
+  - title: "Electron docs: inter-process communication"
+    url: https://www.electronjs.org/docs/latest/tutorial/ipc
+  - title: "Electron docs: fuses"
+    url: https://www.electronjs.org/docs/latest/tutorial/fuses
+  - title: "@electron/fuses on GitHub"
+    url: https://github.com/electron/fuses
+categories:
+  - web-app
+stacks:
+  - electron
+  - desktop
+  - typescript
+  - nodejs
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Electron rules for windows, preload, IPC, packaging and dependencies.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/electron-ipc-channel/SKILL.md
+    role: skill
+    skill: electron-ipc-channel
+    description: Add a typed, sender-checked IPC channel.
+  - path: skills/electron-ipc-channel/references/main.ts
+    role: reference
+    skill: electron-ipc-channel
+    description: "Main process: window, protocol, IPC handlers."
+  - path: skills/electron-ipc-channel/references/preload.ts
+    role: reference
+    skill: electron-ipc-channel
+    description: Narrow contextBridge API.
+  - path: skills/electron-ipc-channel/references/renderer-api.d.ts
+    role: reference
+    skill: electron-ipc-channel
+    description: Window API types for the renderer.
+  - path: skills/electron-ipc-channel/references/flip-fuses.ts
+    role: reference
+    skill: electron-ipc-channel
+    description: Fuses hardening for packaged builds.
+  - path: skills/electron-ipc-channel/scripts/check_electron_security.mjs
+    role: reference
+    skill: electron-ipc-channel
+    description: Static check against the Electron security checklist.
+requires:
+  tools:
+    - node
+    - npm
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - check_electron_security.mjs
+  notes: npm installs Electron and @electron/fuses. The security check only reads source files. The example opens external links in the browser only for https URLs and blocks navigation away from the app.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

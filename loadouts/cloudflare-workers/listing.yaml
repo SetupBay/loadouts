@@ -1,0 +1,71 @@
+id: cloudflare-workers
+type: loadout
+title: Cloudflare Workers rules
+summary: "Workers rules for agents: bindings from env, wrangler types, prepared D1 queries, waitUntil, secrets via wrangler secret, no deploys or --remote writes unasked."
+description: |
+  Agents can scaffold a Worker in a minute; the trouble is what they do next: deploy to production to test a change, apply D1 migrations with --remote, keep request data in module scope, call the REST API instead of a binding, or put a token in vars. This loadout sets the rules we use on our own Workers and D1 project, connects Cloudflare's public documentation MCP server so the agent checks current APIs and limits, and includes an endpoint skill whose example Worker the verifier type-checks against the Workers runtime types.
+highlights:
+  - No wrangler deploy or --remote writes unless asked in the session
+  - wrangler types after binding changes; strict type-check
+  - Prepared D1 statements and migrations applied --local first
+  - No request state in module scope; ctx.waitUntil for background work
+  - Cloudflare docs MCP server (public, no auth)
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Cloudflare docs: Cloudflare's own MCP servers (documentation server)"
+    url: https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/
+  - title: "Cloudflare docs: Wrangler configuration"
+    url: https://developers.cloudflare.com/workers/wrangler/configuration/
+  - title: "Cloudflare docs: D1 migrations"
+    url: https://developers.cloudflare.com/d1/reference/migrations/
+  - title: "Cloudflare docs: secrets"
+    url: https://developers.cloudflare.com/workers/configuration/secrets/
+categories:
+  - web-app
+stacks:
+  - cloudflare
+  - cloudflare-workers
+  - typescript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Workers runtime, Wrangler, D1 and secrets rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/worker-endpoint/SKILL.md
+    role: skill
+    skill: worker-endpoint
+    description: Add a Worker route with bindings and checks.
+  - path: skills/worker-endpoint/references/index.ts
+    role: reference
+    skill: worker-endpoint
+    description: Example Worker with D1, KV and waitUntil.
+  - path: mcp.json
+    role: mcp
+    description: Cloudflare documentation MCP server (remote, public).
+requires:
+  tools:
+    - node
+    - wrangler
+  env: []
+  mcp:
+    - cloudflare-docs
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The Cloudflare docs MCP server is public, read-only and needs no account. Wrangler talks to your Cloudflare account; the rules forbid deploys and remote writes unless asked.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

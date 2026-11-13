@@ -1,0 +1,82 @@
+id: claude-code-hook-audit
+type: loadout
+title: Audit agent hooks before you trust them
+summary: "Hook security for Claude Code, Codex and Cursor: list every hook and settings command, flag guards that fail open, missing scripts, wrong exit codes and API redirects."
+description: |
+  A hook is code the agent runs on every tool call, and a project you clone can bring its own. Most of the ways a guard hook goes wrong are quiet. A script path with a typo exits 127 and the command runs anyway. A guard that denies with exit 1 never blocks. A PermissionRequest hook that relies on exit 2 is ignored. On Windows without Git Bash, a quoted path is printed instead of run, and before Claude Code 2.1.310 that let the tool call through. Settings can also run commands of their own (apiKeyHelper, statusLine) or set ANTHROPIC_BASE_URL. In October 2026 a planted CLAUDE.md used exactly that to send Claude Code's traffic and OAuth token to an attacker.
+
+  This loadout gives your agent a read-only, standard-library audit for all of that. It lists every hook and settings command across Claude Code project, local, user and plugin settings, Codex's .codex/hooks.json and Cursor's .cursor/hooks.json. It then flags what fails open, what points at nothing, what calls the network and what redirects the agent. The rules keep hook changes with the human and say a guard only counts once you've seen it block something. The verifier runs the audit on a clean project and on one with a dozen planted faults.
+highlights:
+  - One inventory of hooks and settings commands for Claude Code, Codex and Cursor
+  - Flags guards without onFailure block or failClosed, and scripts that don't exist
+  - Catches exit 1 denies, exit 2 on PermissionRequest and quoted-path commands on Windows
+  - Fails on project env that sets ANTHROPIC_BASE_URL, API keys, proxies or CA certificates
+  - Warns on network calls, untracked or out-of-project scripts, apiKeyHelper and enableAllProjectMcpServers
+  - Reference on how each agent loads, trusts and fails hooks, checked 29 October 2026
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: Hooks reference (exit codes, onFailure, Windows without Git Bash)"
+    url: https://code.claude.com/docs/en/hooks
+  - title: "Claude Code changelog: 2.1.310 Windows PreToolUse fail-open fix"
+    url: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+  - title: "OpenAI Codex docs: Hooks (sources, trust review)"
+    url: https://developers.openai.com/codex/hooks
+  - title: "Cursor docs: Hooks (failClosed, working directory)"
+    url: https://cursor.com/docs/agent/hooks
+  - title: "Forever Security: planted AGENTS.md and CLAUDE.md in the Downloads folder (22 Oct 2026)"
+    url: https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+  - title: "@DotsonZion: a missing hook script exits 127 and the tool call runs"
+    url: https://x.com/DotsonZion/status/2113521676864618893
+  - title: "@theomlondhe: update to 2.1.310 if you use PreToolUse guards on Windows"
+    url: https://x.com/theomlondhe/status/2114339389325406316
+categories:
+  - security
+  - workflow
+stacks:
+  - bash
+  - python
+  - git
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for auditing, changing and proving hooks.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/audit-agent-hooks/SKILL.md
+    role: skill
+    skill: audit-agent-hooks
+    description: Run the audit, read the scripts, propose fixes and prove each guard.
+  - path: skills/audit-agent-hooks/scripts/audit_hooks.py
+    role: reference
+    skill: audit-agent-hooks
+    description: Read-only hook and settings audit (Python standard library).
+  - path: skills/audit-agent-hooks/references/what-runs.md
+    role: reference
+    skill: audit-agent-hooks
+    description: How Claude Code, Codex and Cursor load, trust and fail hooks.
+requires:
+  tools:
+    - python3
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - audit_hooks.py
+  notes: Marked as network because audit_hooks.py matches words like curl and https:// in the hooks it reports. It makes no network calls; it reads settings files and scripts and runs git ls-files.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

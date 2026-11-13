@@ -1,0 +1,14 @@
+---
+description: Unity C# script rules
+globs: "Assets/**/*.cs"
+alwaysApply: false
+---
+
+- `[SerializeField] private` for inspector fields, never public fields for tuning.
+- Cache `GetComponent` results in `Awake`. No `Find*` or `GetComponent` calls in `Update`, `FixedUpdate` or `LateUpdate`.
+- Rigidbody movement in `FixedUpdate`; read input in `Update`.
+- No allocations in per-frame methods: no LINQ, no `new List<>`, no string building.
+- File name must match the class name, or Unity cannot attach the script.
+- When renaming a serialised field, add `[UnityEngine.Serialization.FormerlySerializedAs("oldName")]`.
+- Editor-only code goes in an `Editor/` folder or inside `#if UNITY_EDITOR` so player builds do not break.
+- Do not move or rename files without their `.meta` file.

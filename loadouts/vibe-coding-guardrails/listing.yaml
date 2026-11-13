@@ -1,0 +1,61 @@
+id: vibe-coding-guardrails
+type: loadout
+title: Vibe-coding guard rails
+summary: A stack-agnostic working style for coding agents — plan first, small diffs, never delete tests to go green — plus handoff notes and up-to-date docs via MCP.
+description: |
+  The general-purpose loadout to drop into any project you vibe-code. It fixes the habits that make
+  agent sessions go wrong: diving in without a plan, 40-file diffs, "fixing" a failing test by deleting
+  it, inventing APIs from stale training data, and losing all context when the session ends. Pairs well
+  with any stack-specific loadout.
+highlights:
+  - Plan-then-build skill that writes a short plan and waits for a thumbs up
+  - Small, reviewable changes with a commit after each working step
+  - Hard rules against weakening tests, silencing errors or adding surprise dependencies
+  - Session-handoff skill that leaves a NOTES.md the next session (or agent) can pick up
+  - Context7 MCP config for current library docs instead of guesses
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [workflow]
+stacks: [any]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Working-style rules for any coding agent.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/guardrails.mdc
+    role: rules
+    description: Always-on Cursor rule with the hard guard rails.
+  - path: skills/plan-then-build/SKILL.md
+    role: skill
+    skill: plan-then-build
+    description: Writes a short plan for non-trivial work and waits for approval.
+  - path: skills/session-handoff/SKILL.md
+    role: skill
+    skill: session-handoff
+    description: Leaves a handoff note at the end of a session.
+  - path: mcp.json
+    role: mcp
+    description: Context7 hosted MCP server for current library documentation.
+requires:
+  tools: [git]
+  env: []
+  mcp: [context7]
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The MCP config connects to Context7's hosted documentation server. Library names you look up are sent to it.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

@@ -1,0 +1,83 @@
+id: cloudflare-agents-sdk
+type: loadout
+title: Cloudflare Agents SDK, wired right before deploy
+summary: "Stateful agents on Workers with the agents package (SQL, state, schedules, @callable) and a check that every Agent class is bound, on SQLite, with nodejs_compat."
+description: |
+  Cloudflare's Agents SDK turns a Durable Object into a long-lived agent: each named instance has its own SQLite database, state synced to clients over WebSockets, and alarms it can schedule for itself. It is quick to start and easy to wire wrongly. The class name in the binding has to match the export exactly, every Agent needs SQLite storage, the agents package needs nodejs_compat, and @callable() decorators need an ES2021 TypeScript target. A coding agent that gets one of these wrong finds out at deploy time, or later when state goes missing.
+
+  This loadout gives agents a reference Agent (validated callable methods, bound SQL, an idempotent scheduled method, routeAgentRequest with a 404 fallback) and a wrangler.jsonc using the current exports form, written against agents 0.30.1. A read-only Node script checks the wiring before every deploy and says exactly what to fix, including bindings that point at renamed classes. Cloudflare's docs MCP server keeps the API current, and AGENTS.md keeps renames, storage changes and deploys behind the human's go-ahead.
+highlights:
+  - Reference Agent with SQL, synced state, a schedule and validated @callable methods
+  - wrangler.jsonc with nodejs_compat and SQLite storage in the exports form
+  - Wiring check for bindings, storage, flags and the ES2021 decorator target
+  - Cloudflare docs MCP server for current APIs
+  - Renames, storage changes and deploys need the human's go-ahead
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Cloudflare Agents docs: configuration (exports, nodejs_compat, agents/tsconfig)"
+    url: https://developers.cloudflare.com/agents/api-reference/configuration/
+  - title: "Cloudflare Agents docs: add to an existing project"
+    url: https://developers.cloudflare.com/agents/getting-started/add-to-existing-project/
+  - title: cloudflare/agents (the agents npm package)
+    url: https://github.com/cloudflare/agents
+  - title: cloudflare/skills
+    url: https://github.com/cloudflare/skills
+categories:
+  - web-app
+  - ai-agents
+stacks:
+  - cloudflare
+  - cloudflare-workers
+  - typescript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Project rules for Agents SDK work.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/cloudflare-agent/SKILL.md
+    role: skill
+    skill: cloudflare-agent
+    description: Agent shape, wiring rules and the pre-deploy check.
+  - path: skills/cloudflare-agent/scripts/check_agents_config.mjs
+    role: reference
+    skill: cloudflare-agent
+    description: Read-only wiring check for wrangler.jsonc, source and tsconfig.
+  - path: skills/cloudflare-agent/references/agent.ts
+    role: reference
+    skill: cloudflare-agent
+    description: Reference Agent class and Worker entry.
+  - path: skills/cloudflare-agent/references/wrangler.jsonc
+    role: reference
+    skill: cloudflare-agent
+    description: Reference Wrangler config.
+  - path: mcp.json
+    role: mcp
+    description: Cloudflare docs MCP server.
+requires:
+  tools:
+    - node
+    - npm
+  env: []
+  mcp:
+    - cloudflare-docs
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - check_agents_config.mjs
+  notes: The wiring check only reads files. The Cloudflare docs MCP server is a remote, read-only documentation service. Deploys stay manual.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

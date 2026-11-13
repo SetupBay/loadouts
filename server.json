@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.setupbay/loadouts",
+  "title": "SetupBay",
+  "description": "Search and install ready-made setups (rules, skills, MCP configs) for AI coding agents.",
+  "version": "1.0.0",
+  "websiteUrl": "https://setupbay.com",
+  "repository": {
+    "url": "https://github.com/SetupBay/loadouts",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://setupbay.com/mcp"
+    }
+  ]
+}

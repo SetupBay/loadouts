@@ -1,0 +1,68 @@
+id: tauri-desktop-app
+type: loadout
+title: Tauri 2 desktop app, least privilege
+summary: "Tauri 2 rules and a permissions skill: capabilities for named windows, scoped fs and http, no shell execute, a CSP kept, plus a checker that flags wide grants."
+description: |
+  Tauri 2 replaced the old allowlist with capabilities and permissions, and agents adding a feature tend to reach for the widest grant that makes it work: fs:default for every window, shell execute, http without a URL scope, CSP set to null. This loadout follows Tauri's security docs: the frontend is untrusted, capabilities name their windows, file and HTTP permissions carry scopes, commands validate their arguments. A small Node script checks capability files and tauri.conf.json, and the verifier runs it on a clean and a permissive project.
+highlights:
+  - Capabilities for named windows, never "*" with fs, shell or http
+  - Every fs and http permission carries an allow scope
+  - No shell execute or spawn; shell:allow-open or the opener plugin instead
+  - CSP kept in app.security.csp
+  - Checker script with clear findings, checked by the verifier
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Tauri docs: capabilities"
+    url: https://v2.tauri.app/security/capabilities/
+  - title: "Tauri docs: permissions"
+    url: https://v2.tauri.app/security/permissions/
+  - title: "Tauri docs: content security policy"
+    url: https://v2.tauri.app/security/csp/
+categories:
+  - security
+  - web-app
+stacks:
+  - tauri
+  - rust
+  - typescript
+  - desktop
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Tauri 2 security model, Rust command rules and checks.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/tauri-permissions/SKILL.md
+    role: skill
+    skill: tauri-permissions
+    description: Grant the narrowest permission, then check.
+  - path: skills/tauri-permissions/scripts/check-capabilities.mjs
+    role: reference
+    skill: tauri-permissions
+    description: Flags wide or unscoped grants and a missing CSP.
+requires:
+  tools:
+    - node
+    - cargo
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - check-capabilities.mjs
+  notes: tauri add and builds download packages from npm and crates.io. check-capabilities.mjs only reads local JSON files.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

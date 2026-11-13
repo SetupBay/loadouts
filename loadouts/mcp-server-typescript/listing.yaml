@@ -1,0 +1,53 @@
+id: mcp-server-typescript
+type: loadout
+title: MCP server (TypeScript)
+summary: Rules and an add-a-tool skill for building a Model Context Protocol server in TypeScript that agents can actually use well — clear tools, safe inputs, no stdout noise.
+description: |
+  Building your own MCP server is the fastest way to give agents a new superpower, and the easiest way to
+  give them a confusing one. This loadout teaches your agent the official TypeScript SDK patterns, how to
+  design tools that models pick correctly, how to keep a stdio server's output clean, and how to test with
+  the MCP Inspector before plugging it into Claude Code, Cursor or Codex.
+highlights:
+  - "Tool design rules: verb-first names, descriptions written for the model, small typed inputs"
+  - stdio hygiene — logs to stderr only, or the protocol breaks
+  - Input validation with zod and errors returned as tool results, not crashes
+  - Add-a-tool skill with an Inspector test loop
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [ai-agents]
+stacks: [mcp, typescript, nodejs]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: MCP server project rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/mcp-tools.mdc
+    role: rules
+    description: Rule applied to tool definition files.
+  - path: skills/add-mcp-tool/SKILL.md
+    role: skill
+    skill: add-mcp-tool
+    description: Designs, implements and tests a new MCP tool.
+requires:
+  tools: [node]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+  notes: Instructions only.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

@@ -1,0 +1,96 @@
+id: cursor-hooks-fail-closed
+type: loadout
+title: Cursor hooks that fail closed for shell, reads and MCP
+summary: A Python guard for Cursor's permission hooks that blocks risky commands, secret reads and unlisted MCP servers, set to fail closed, with a config checker and self-test.
+description: |
+  Cursor hooks fail open by default. If a guard script crashes, times out or exits with anything other than 2, Cursor logs it and lets the action through, unless the hook sets failClosed. beforeMCPExecution doesn't run in cloud agents either, and preToolUse doesn't enforce "ask". A hook that looks right can still guard nothing.
+
+  This loadout ships one standard-library Python script that answers beforeShellExecution, beforeReadFile, beforeMCPExecution and preToolUse (matcher ^MCP:, so cloud agents are covered too), with every hook set to failClosed. It denies recursive deletes outside the project, force pushes, --no-verify, downloads piped into a shell, reads of .env files and keys (by path or by content) and MCP servers missing from an allowlist. It asks before sudo, reset --hard and publishing. A checker flags hooks.json mistakes: hooks that fail open, ./hooks paths in project hooks, missing scripts, bad regex matchers, misspelt events and cloud-agent gaps. A self-test pipes 30 hook payloads through the guard. The verifier runs both, and shows that a malformed payload or a missing policy blocks rather than allows.
+highlights:
+  - One stdlib Python guard for shell, file-read and MCP permission hooks
+  - Every hook sets failClosed, so a crash or timeout blocks the action
+  - preToolUse with matcher ^MCP covers cloud agents, where beforeMCPExecution doesn't run
+  - Checker flags fail-open hooks, ./hooks paths, bad matchers and missing scripts
+  - Self-test pipes 30 payloads and proves failures block, not allow
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Cursor docs: hooks"
+    url: https://cursor.com/docs/agent/hooks
+  - title: "Cursor docs: third-party hooks"
+    url: https://cursor.com/docs/agent/third-party-hooks
+  - title: "@johnnynelai: Cursor hooks fail open unless you set failClosed"
+    url: https://x.com/johnnynelai/status/2114066393289392586
+categories:
+  - security
+  - ai-agents
+stacks:
+  - cursor
+  - python
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: How to respond to a blocked action, and what never to touch.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/cursor-hooks.mdc
+    role: rules
+    description: Rules for editing .cursor/hooks.json and the guard.
+  - path: skills/cursor-guard-hooks/SKILL.md
+    role: skill
+    skill: cursor-guard-hooks
+    description: Install, change or check the fail-closed Cursor hooks, then prove each decision.
+  - path: skills/cursor-guard-hooks/scripts/cursor_guard.py
+    role: reference
+    skill: cursor-guard-hooks
+    description: The guard for beforeShellExecution, beforeReadFile, beforeMCPExecution and preToolUse.
+  - path: skills/cursor-guard-hooks/scripts/hooks_check.py
+    role: reference
+    skill: cursor-guard-hooks
+    description: Read-only checker for hooks.json mistakes and fail-open hooks.
+  - path: skills/cursor-guard-hooks/scripts/selftest.py
+    role: reference
+    skill: cursor-guard-hooks
+    description: Pipes 30 hook payloads into the guard and checks each decision and the failure modes.
+  - path: skills/cursor-guard-hooks/references/hooks.json
+    role: reference
+    skill: cursor-guard-hooks
+    description: The project hooks.json with all four permission hooks set to fail closed.
+  - path: skills/cursor-guard-hooks/references/mcp-policy.json
+    role: reference
+    skill: cursor-guard-hooks
+    description: Example MCP server allowlist and tool deny and ask lists.
+  - path: skills/cursor-guard-hooks/references/cursor-hooks-facts.md
+    role: reference
+    skill: cursor-guard-hooks
+    description: The facts from Cursor's hooks docs behind each design choice.
+  - path: skills/cursor-guard-hooks/references/bad-hooks.json.txt
+    role: reference
+    skill: cursor-guard-hooks
+    description: A broken hooks.json for checking the checker.
+requires:
+  tools:
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - cursor_guard.py
+    - hooks_check.py
+    - selftest.py
+  notes: The guard reads one hook payload from stdin and its policy file, and prints a decision. The checker only reads hooks.json. The self-test runs the guard on sample payloads. None of them edit files or make network calls. Marked as network because the guard and its tests match the words curl and wget in commands they block.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

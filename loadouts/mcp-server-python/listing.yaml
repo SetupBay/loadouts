@@ -1,0 +1,72 @@
+id: mcp-server-python
+type: loadout
+title: MCP server in Python (official SDK v2)
+summary: "Build MCP servers on the official Python SDK v2: MCPServer, Annotated schemas, structured output, ToolError for fixable failures and in-memory Client tests."
+description: |
+  Version 2 of the official MCP Python SDK renamed FastMCP to MCPServer, moved its modules and added a first-class Client that tests a server in memory. Agents trained on v1 still write from mcp.server.fastmcp import FastMCP, which no longer imports. This loadout pins the v2 API in your agent's rules: typed tools with Annotated descriptions and limits, Pydantic return types for structured output, ToolError for failures the model can fix, and nothing on stdout. A skill adds tools with in-memory Client tests. The verifier runs the tests on mcp 2.3.0, runs ruff and talks raw JSON-RPC to the server over stdio.
+highlights:
+  - "Official mcp 2.3.0: MCPServer, not the removed FastMCP import"
+  - Annotated Field descriptions and limits become the input schema
+  - ToolError for recoverable failures; other exceptions never leak internals
+  - In-memory Client tests, no subprocess or port
+  - Verifier checks stdout is pure JSON-RPC and logs go to stderr
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "MCP Python SDK docs: what's new in v2"
+    url: https://py.sdk.modelcontextprotocol.io/whats-new/
+  - title: "MCP Python SDK docs: testing with the in-memory Client"
+    url: https://py.sdk.modelcontextprotocol.io/get-started/testing/
+  - title: "MCP Python SDK docs: handling errors (ToolError and MCPError)"
+    url: https://py.sdk.modelcontextprotocol.io/servers/handling-errors/
+  - title: modelcontextprotocol/python-sdk
+    url: https://github.com/modelcontextprotocol/python-sdk
+categories:
+  - ai-agents
+stacks:
+  - python
+  - mcp
+  - uv
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: "Rules for a Python MCP server on SDK v2: protocol hygiene, tools, safety and dependencies."
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/python-mcp-tool/SKILL.md
+    role: skill
+    skill: python-mcp-tool
+    description: Add a typed tool with tests to a Python MCP server.
+  - path: skills/python-mcp-tool/references/server.py
+    role: reference
+    skill: python-mcp-tool
+    description: Glossary server with one validated tool.
+  - path: skills/python-mcp-tool/references/test_server.py
+    role: reference
+    skill: python-mcp-tool
+    description: In-memory Client tests.
+requires:
+  tools:
+    - uv
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uv downloads the mcp package and its dependencies from PyPI. The example tool is read-only and makes no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

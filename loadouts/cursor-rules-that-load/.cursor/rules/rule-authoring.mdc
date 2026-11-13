@@ -1,0 +1,11 @@
+---
+description: Use when creating or editing Cursor rules, AGENTS.md files or skills in this repository.
+globs: .cursor/rules/**/*.mdc
+alwaysApply: false
+---
+
+- Front matter keys: `description`, `globs`, `alwaysApply`. Nothing else is read.
+- Write `globs` as a comma-separated string of patterns (the documented form). If a rule never attaches, check for a YAML list first.
+- Auto-attached rules need `alwaysApply: false`; with `true` the globs are ignored.
+- Keep each rule to one topic and under ~60 lines. Move procedures into `.agents/skills/<name>/SKILL.md`.
+- After editing, check it loads: open a matching file, start a new chat and ask which rules are active.

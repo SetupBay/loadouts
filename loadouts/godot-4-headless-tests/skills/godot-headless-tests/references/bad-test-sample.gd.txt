@@ -1,0 +1,42 @@
+extends RefCounted
+## A suite with the usual headless-test mistakes. Copy it to test_bad.gd to try the linter.
+
+var t: SceneTree
+var player: Node
+
+
+func before_each() -> void:
+	player = load("res://scenes/player.tscn").instantiate()
+	get_tree().root.add_child(player)
+
+
+func test_spawns() -> void:
+	print(player.position)
+
+
+func test_dash_cooldown() -> void:
+	player.dash()
+	OS.delay_msec(500)
+	t.equal(player.can_dash, true)
+
+
+func test_respawn() -> void:
+	player.die()
+	await t.create_timer(2.0).timeout
+	t.frames(1)
+	t.check(player.is_alive())
+
+
+func test_loot_roll() -> void:
+	var roll := randi_range(1, 6)
+	assert(roll >= 1)
+
+
+func test_editor_gizmo() -> void:
+	var ei = EditorInterface.get_selection()
+	t.check(ei != null)
+
+
+func test_last() -> void:
+	t.equal(player.lives, 3)
+	t.quit()

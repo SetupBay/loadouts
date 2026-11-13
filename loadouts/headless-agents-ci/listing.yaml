@@ -1,0 +1,68 @@
+id: headless-agents-ci
+type: loadout
+title: Headless agents in CI
+summary: "Rules and a GitHub Actions template for unattended claude -p or codex exec: bare mode, read-only, a spend cap, pinned versions, PR text as untrusted data."
+description: |
+  Running agents from CI is now common (review on every PR, triage, docs updates), and so are the mistakes: a -p run that
+  executes the repository's own hooks, PR text interpolated into a shell, unpinned CLIs, no budget. This loadout sets the
+  rules for unattended runs and ships a read-only review workflow that installs a pinned Claude Code, runs it with --bare,
+  dontAsk and --max-budget-usd, fails on errors and comments with gh. A Codex variant uses codex exec's read-only default.
+highlights:
+  - --bare so checked-out hooks and MCP config never run in CI
+  - "Read-only by default: dontAsk with an allow-list, or codex exec without --sandbox"
+  - --max-budget-usd, job timeout and loud failure
+  - PR and issue text passed as files, never interpolated into shell
+  - Pinned @anthropic-ai/claude-code and @openai/codex versions
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@aacle_: claude -p with --max-budget-usd and JSON output in CI"
+    url: https://x.com/aacle_/status/2100223590876746162
+  - title: "Claude Code docs: headless mode and --bare"
+    url: https://code.claude.com/docs/en/headless
+  - title: "Codex docs: non-interactive mode"
+    url: https://developers.openai.com/codex/noninteractive
+categories:
+  - workflow
+  - security
+stacks:
+  - github
+  - github-actions
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for unattended agent runs.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/add-ci-agent-job/SKILL.md
+    role: skill
+    skill: add-ci-agent-job
+    description: Add a least-privilege agent job to GitHub Actions.
+  - path: skills/add-ci-agent-job/references/agent-review.yml
+    role: reference
+    skill: add-ci-agent-job
+    description: Read-only PR review workflow with Claude Code, plus a Codex variant.
+requires:
+  tools:
+    - gh
+    - jq
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The workflow template installs pinned CLIs from npm and calls the model provider's API from CI. It runs read-only with a spend cap.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

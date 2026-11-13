@@ -1,0 +1,9 @@
+appId: com.example.shop
+name: Sign in and see the home screen
+tags: [smoke, auth]
+---
+- launchApp:
+    clearState: true
+- runFlow: subflows/sign-in.yaml
+- assertVisible:
+    id: home_title

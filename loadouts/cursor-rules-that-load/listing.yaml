@@ -1,0 +1,76 @@
+id: cursor-rules-that-load
+type: loadout
+title: Cursor rules that load
+summary: How to decide between AGENTS.md, Cursor .mdc rules, skills and hooks, write front matter that loads, and check that a rule is really attached.
+description: |
+  Most ignored rules are not ignored: they never loaded. Common causes are globs written as a YAML list, alwaysApply set
+  alongside globs, descriptions that do not say when to use the rule, and legacy .cursorrules files. This loadout gives your agent a
+  decision table for where an instruction belongs, the four Cursor rule types with correct front matter, Copilot applyTo
+  equivalents, and a skill that writes a rule and checks it attaches.
+
+  Version 1.1 adds rules_lint.py (Python standard library). It prints how every rule in .cursor/rules will load (always, auto-attached, agent-requested or manual) and flags the ones that never will: plain .md files, which Cursor ignores, missing front matter, globs written as a YAML list and @file mentions of files that don't exist. It also warns about keys Cursor doesn't read, alwaysApply with globs, descriptions that don't say when to use the rule, legacy .cursorrules and lines copied from AGENTS.md. The rules now cover nested AGENTS.md and the fact that @file mentions aren't inlined.
+highlights:
+  - "Decision table: AGENTS.md vs scoped rule vs skill vs hook"
+  - The four .mdc rule types with front matter that works
+  - Fix list for rules that never attach
+  - Copilot .instructions.md applyTo equivalent
+  - Auto-attached meta-rule for editing rules
+  - rules_lint.py shows each rule's load type and catches .md files Cursor ignores
+  - Nested AGENTS.md and @file mentions explained from current Cursor docs
+version: 1.1.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@iPuneetSingh: .mdc rule types and globs in practice"
+    url: https://x.com/iPuneetSingh/status/2096461210594267540
+  - title: "Cursor docs: rules"
+    url: https://cursor.com/docs/rules
+  - title: "GitHub docs: path-specific custom instructions"
+    url: https://docs.github.com/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot
+categories:
+  - ai-agents
+  - workflow
+stacks:
+  - any
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Where instructions belong and how Cursor rule types load.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/rule-authoring.mdc
+    role: rules
+    description: Auto-attached rule for editing .mdc files.
+  - path: skills/write-cursor-rule/SKILL.md
+    role: skill
+    skill: write-cursor-rule
+    description: Write or fix a rule and check it attaches.
+  - path: skills/write-cursor-rule/references/examples.md
+    role: reference
+    skill: write-cursor-rule
+    description: Example rules for each type, plus a Copilot equivalent.
+  - path: skills/write-cursor-rule/scripts/rules_lint.py
+    role: reference
+    skill: write-cursor-rule
+    description: Standard-library lint that shows how each rule loads and why some never will.
+requires:
+  tools: [python3]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: [rules_lint.py]
+  notes: rules_lint.py only reads .cursor/rules, AGENTS.md and the files rules mention.
+last_checked: 2026-10-29
+published: 2026-10-17
+updated: 2026-10-29

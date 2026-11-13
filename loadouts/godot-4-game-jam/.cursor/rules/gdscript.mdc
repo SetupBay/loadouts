@@ -1,0 +1,14 @@
+---
+description: Godot 4 GDScript style and API rules
+globs: "**/*.gd"
+alwaysApply: false
+---
+
+- Godot 4 syntax only: `@export`, `@onready`, `await`, `signal.emit()`, `signal.connect(callable)`, `CharacterBody2D`/`3D`.
+- Type every variable, parameter and return value. `-> void` on functions that return nothing.
+- `CharacterBody2D`: set `velocity`, then call `move_and_slide()` with no arguments.
+- Use `Input.get_vector("move_left", "move_right", "move_up", "move_down")` for movement; action names come from the Input Map.
+- Expose tuning values with `@export` (and `@export_range` where sensible) instead of magic numbers.
+- Prefer signals and groups to absolute node paths. Avoid `get_parent().get_parent()`.
+- Free nodes with `queue_free()`, never `free()`, during gameplay.
+- Keep scripts under ~200 lines; split behaviour into child nodes/components when they grow.

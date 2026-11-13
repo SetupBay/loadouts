@@ -1,0 +1,86 @@
+id: chrome-extension-mv3
+type: loadout
+title: Chrome extension (Manifest V3)
+summary: Manifest V3 rules for service workers, messaging and minimal permissions, Playwright tests that load the extension in headless Chromium, and Chrome Web Store review prep.
+description: |
+  Agents trained on years of Manifest V2 tutorials will happily write background pages, remote code and
+  "<all_urls>" permissions — all of which either break in Manifest V3 or get you rejected from the Chrome
+  Web Store. This loadout keeps your agent on MV3, keeps permissions tight, and walks through store
+  submission so the review goes smoothly first time.
+
+  Version 1.1 adds proof. The extension-e2e skill loads the built package in Playwright's bundled Chromium, because Chrome and Edge dropped the side-loading flags. Tests run headless and check the manifest Chrome actually loaded, the popup, message validation and state kept in chrome.storage. manifest_check.mjs (Node standard library) checks the package before submission.
+highlights:
+  - Service worker lifecycle rules (no global state, use chrome.storage and alarms)
+  - Least-privilege permissions with activeTab and optional host permissions
+  - Clear message-passing pattern between content scripts, popup and service worker
+  - "Store-prep skill: permission justifications, privacy disclosures, zip packaging"
+  - Playwright 1.64.1 smoke tests in bundled Chromium (service worker, popup, messages, storage)
+  - manifest_check.mjs fails MV2 keys, unjustified permissions, eval and remote code
+version: 1.1.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Playwright docs: Chrome extensions"
+    url: https://playwright.dev/docs/chrome-extensions
+  - title: "Chrome docs: migrate to a service worker (MV3 lifecycle)"
+    url: https://developer.chrome.com/docs/extensions/develop/migrate/to-service-workers
+  - title: "Chrome docs: declare permissions"
+    url: https://developer.chrome.com/docs/extensions/develop/concepts/declare-permissions
+  - title: "Chrome Web Store: program policies (remote code, permissions)"
+    url: https://developer.chrome.com/docs/webstore/program-policies/
+categories: [browser-extension]
+stacks: [chrome, javascript, typescript, playwright]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Manifest V3 extension project rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/manifest.mdc
+    role: rules
+    description: Rule applied when editing manifest.json.
+  - path: skills/extension-store-prep/SKILL.md
+    role: skill
+    skill: extension-store-prep
+    description: Prepares a Chrome Web Store submission.
+  - path: skills/extension-e2e/SKILL.md
+    role: skill
+    skill: extension-e2e
+    description: Load the built extension in Playwright's Chromium and test it.
+  - path: skills/extension-e2e/scripts/manifest_check.mjs
+    role: reference
+    skill: extension-e2e
+    description: Node standard-library check of the built package against the MV3 rules.
+  - path: skills/extension-e2e/references/fixtures.mjs
+    role: reference
+    skill: extension-e2e
+    description: Playwright fixtures for a persistent context, the service worker and the extension ID.
+  - path: skills/extension-e2e/references/extension.spec.mjs
+    role: reference
+    skill: extension-e2e
+    description: Example smoke tests for manifest, popup, messages and storage.
+  - path: skills/extension-e2e/references/playwright.config.mjs
+    role: reference
+    skill: extension-e2e
+    description: Playwright config with one worker for the persistent context.
+requires:
+  tools: [node, npm]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: [manifest_check.mjs]
+  notes: npx playwright install chromium downloads Playwright's Chromium build when the human sets up tests. manifest_check.mjs only reads the built package.
+last_checked: 2026-10-29
+published: 2026-10-15
+updated: 2026-10-29

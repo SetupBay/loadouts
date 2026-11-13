@@ -1,0 +1,81 @@
+id: evals-from-real-failures
+type: loadout
+title: Evals from real failures
+summary: "Build LLM and agent evals the practitioner way: read real traces first, tally failure categories, then turn each into code-checked regression cases."
+description: |
+  Teams that ship LLM features keep giving the same advice: look at your data before writing an eval, and test for the failures you actually have rather than generic scores. This loadout makes that the default. The agent reads 30 to 50 real traces, notes the first failure in each, groups and counts the notes with a small script, and only then writes evals: code checks first, a binary model judge only where code cannot check, validated against human labels. Every case links to the trace it came from and must be shown to fail on the original bad output.
+highlights:
+  - "Error analysis before evals: one note per trace, categories after reading"
+  - tally.py ranks failure categories with shares and example trace ids
+  - pytest regression runner with code checks; every case links to a real trace
+  - Model judges binary only, checked against human labels
+  - Each eval proven to fail on the original bad output
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Hamel Husain: LLM evals FAQ (error analysis first)"
+    url: https://hamel.dev/blog/posts/evals-faq/
+  - title: "@HamelHusain: eval skills that start from real traces"
+    url: https://x.com/HamelHusain/status/2089438973714440196
+  - title: "@Benogju: look at the data, start with around 30 traces"
+    url: https://x.com/Benogju/status/2104930651573240043
+  - title: "@pauliusztin_: replay your agent's real failures after every change"
+    url: https://x.com/pauliusztin_/status/2109986591959626178
+categories:
+  - ai-agents
+  - data
+stacks:
+  - python
+  - pytest
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Order of work and rules for evals built from real traces.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/error-analysis/SKILL.md
+    role: skill
+    skill: error-analysis
+    description: Read traces, note failures, group and count them.
+  - path: skills/error-analysis/scripts/tally.py
+    role: reference
+    skill: error-analysis
+    description: Ranks failure categories from a notes CSV.
+  - path: skills/failure-to-eval/SKILL.md
+    role: skill
+    skill: failure-to-eval
+    description: Turn a failure category into regression cases.
+  - path: skills/failure-to-eval/references/test_regressions.py
+    role: reference
+    skill: failure-to-eval
+    description: pytest runner for JSONL cases with code checks.
+  - path: skills/failure-to-eval/references/judge-prompt.md
+    role: reference
+    skill: failure-to-eval
+    description: Binary judge template with a validation step.
+requires:
+  tools:
+    - python3
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - tally.py
+  notes: tally.py only reads a local CSV. The eval runner imports the function you name in EVAL_TARGET and runs it. The rules keep trace exports gitignored and off third-party services unless the human approves.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

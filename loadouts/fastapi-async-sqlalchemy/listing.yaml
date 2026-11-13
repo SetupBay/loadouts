@@ -1,0 +1,92 @@
+id: fastapi-async-sqlalchemy
+type: loadout
+title: FastAPI with async SQLAlchemy 2.1 and Alembic
+summary: 'FastAPI on async SQLAlchemy 2.1: per-request AsyncSession, lazy="raise" with eager loads, async Alembic with alembic check, and tests that count queries.'
+description: |
+  Agents writing async SQLAlchemy reach for habits from sync code. They lazy-load a relationship inside an async route and hit MissingGreenlet, or share one AsyncSession across asyncio.gather. SQLAlchemy 2.1 adds a new trap: it no longer installs greenlet, so a project that declares plain sqlalchemy cannot start an async engine. This loadout sets the rules: a per-request session dependency, expire_on_commit=False, lazy="raise" on every relationship with selectinload for what the response needs, explicit commits with IntegrityError mapped to 409, and database URLs from the environment. The skill adds a resource end to end, with model, reviewed Alembic migration, router and async tests that assert the query count. The verifier runs the tests on SQLAlchemy 2.1.5 and FastAPI 0.143.3. It upgrades and downgrades the migration, confirms alembic check catches model drift, and shows the greenlet failure.
+highlights:
+  - SQLAlchemy 2.1 needs sqlalchemy[asyncio]; the verifier shows the greenlet error
+  - 'lazy="raise" plus selectinload: the list test asserts exactly two SELECTs'
+  - One AsyncSession per request, never shared across tasks
+  - Async Alembic env from DATABASE_URL; alembic check catches model drift
+  - httpx AsyncClient over ASGITransport with a fresh database per test
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "SQLAlchemy 2.1 docs: asynchronous I/O (asyncio)"
+    url: https://docs.sqlalchemy.org/en/21/orm/extensions/asyncio.html
+  - title: "SQLAlchemy 2.1 docs: what's new (greenlet no longer installed by default)"
+    url: https://docs.sqlalchemy.org/en/21/changelog/migration_21.html
+  - title: "SQLAlchemy docs: relationship loading techniques (raise loading)"
+    url: https://docs.sqlalchemy.org/en/21/orm/queryguide/relationships.html
+  - title: "Alembic docs: autogenerate and alembic check"
+    url: https://alembic.sqlalchemy.org/en/latest/autogenerate.html
+  - title: "FastAPI docs: async tests"
+    url: https://fastapi.tiangolo.com/advanced/async-tests/
+categories:
+  - web-app
+  - data
+stacks:
+  - python
+  - fastapi
+  - sqlalchemy
+  - uv
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for a FastAPI service on async SQLAlchemy 2.1 with Alembic and uv.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/async-sqlalchemy-resource/SKILL.md
+    role: skill
+    skill: async-sqlalchemy-resource
+    description: Model, migration, router and tests for a new resource.
+  - path: skills/async-sqlalchemy-resource/references/db.py
+    role: reference
+    skill: async-sqlalchemy-resource
+    description: Async engine, session factory and SessionDep.
+  - path: skills/async-sqlalchemy-resource/references/models.py
+    role: reference
+    skill: async-sqlalchemy-resource
+    description: Typed models with lazy="raise" relationships.
+  - path: skills/async-sqlalchemy-resource/references/customers.py
+    role: reference
+    skill: async-sqlalchemy-resource
+    description: Router with eager loads, commits and 409/404 handling.
+  - path: skills/async-sqlalchemy-resource/references/0001_customers_orders.py
+    role: reference
+    skill: async-sqlalchemy-resource
+    description: Reviewed Alembic migration with a working downgrade.
+  - path: skills/async-sqlalchemy-resource/references/alembic_env.py
+    role: reference
+    skill: async-sqlalchemy-resource
+    description: Async Alembic env.py reading DATABASE_URL.
+  - path: skills/async-sqlalchemy-resource/references/test_customers.py
+    role: reference
+    skill: async-sqlalchemy-resource
+    description: Async tests with a query-count N+1 guard.
+requires:
+  tools:
+    - uv
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uv downloads FastAPI, SQLAlchemy, Alembic and test packages from PyPI. Database URLs come from DATABASE_URL; the examples use local SQLite files.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

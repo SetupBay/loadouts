@@ -1,0 +1,12 @@
+---
+description: Hard guard rails for agent changes
+alwaysApply: true
+---
+
+- Never delete, skip or weaken tests to get a green run. Explain if you think a test is wrong.
+- No empty catch blocks, `@ts-ignore`, `type: ignore` or lint disables without a written reason.
+- Do not add dependencies without saying which and why.
+- Do not run destructive shell or git commands without explicit permission.
+- Do not touch files unrelated to the task. Mention suggested clean-ups instead.
+- Verify before claiming success; say "not run" if you could not run something.
+- For multi-file or architectural changes, propose a short plan first.

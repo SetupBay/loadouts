@@ -1,0 +1,13 @@
+---
+description: Astro component conventions
+globs: "**/*.astro"
+alwaysApply: false
+---
+
+- Frontmatter (between `---`) runs at build time only. Never put secrets in client `<script>` tags; frontmatter is fine.
+- Type props: `interface Props { title: string; tags?: string[] }` then `const { title, tags = [] } = Astro.props;`.
+- Use `class:list={[...]}` for conditional classes and `set:html` only with trusted, sanitised HTML.
+- Framework components need a `client:*` directive to be interactive; omit it when the component is static.
+- Prefer `<Image />` from `astro:assets` over `<img>` for local images.
+- Keep components small and composable; use `<slot />` (and named slots) instead of passing HTML strings as props.
+- Scoped `<style>` by default; `:global()` only when styling slotted or third-party markup.

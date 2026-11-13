@@ -1,0 +1,42 @@
+---
+description: Rules for writing Supabase SQL migrations safely
+globs: supabase/migrations/**/*.sql
+alwaysApply: false
+---
+
+# Supabase migrations
+
+- One concern per migration file. Name it for what it does: `add_projects_table`, not `update`.
+- Never edit a migration that has been applied anywhere. Write a new one.
+- Every `create table` in `public` (or any exposed schema) is followed in the same file by:
+  - `alter table <name> enable row level security;`
+  - explicit `create policy` statements for each operation the app needs.
+- Write policies with a `to` role (`authenticated` or `anon`) and both `using` and, for writes, `with check`.
+- Use `(select auth.uid())` inside policies, not bare `auth.uid()`.
+- Index foreign keys and every column referenced by a policy.
+- `security definer` functions must set `search_path = ''` and fully qualify table names.
+- Destructive changes (`drop column`, `drop table`, type changes) need a comment explaining the data impact,
+  and should be split into expand → migrate data → contract steps when the table has real data.
+
+Example:
+
+```sql
+create table public.projects (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null references auth.users (id) on delete cascade,
+  name text not null check (char_length(name) between 1 and 120),
+  created_at timestamptz not null default now()
+);
+
+alter table public.projects enable row level security;
+
+create index projects_owner_id_idx on public.projects (owner_id);
+
+create policy "Owners can read their projects"
+  on public.projects for select to authenticated
+  using ((select auth.uid()) = owner_id);
+
+create policy "Owners can create projects"
+  on public.projects for insert to authenticated
+  with check ((select auth.uid()) = owner_id);
+```

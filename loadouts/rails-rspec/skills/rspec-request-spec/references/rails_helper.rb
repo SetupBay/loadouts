@@ -1,0 +1,18 @@
+require "spec_helper"
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
+abort("The Rails environment is running in production mode!") if Rails.env.production?
+require "rspec/rails"
+
+# Load the schema into the test database. Apps with a persistent test database use
+# ActiveRecord::Migration.maintain_test_schema! instead.
+ActiveRecord::Schema.verbose = false
+load Rails.root.join("db/schema.rb")
+
+RSpec.configure do |config|
+  config.fixture_paths = [ Rails.root.join("spec/fixtures") ]
+  config.use_transactional_fixtures = true
+  config.infer_spec_type_from_file_location!
+  config.filter_rails_from_backtrace!
+  config.include FactoryBot::Syntax::Methods
+end

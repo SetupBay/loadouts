@@ -1,0 +1,19 @@
+---
+description: Pure Luau modules in src/shared/pure must run outside Studio
+globs: "src/shared/pure/**/*.luau,tests/**/*.luau"
+alwaysApply: false
+---
+
+Files in `src/shared/pure/` are pure: the luau CLI must be able to run them with no Roblox engine.
+
+| Never in `pure/` | Instead |
+|---|---|
+| `game:GetService(...)`, `workspace`, `script.Parent` | pass the values in from the edge script |
+| `require(script.Parent.Money)` | `require("./Money")` |
+| `Instance.new`, `Vector3`, `CFrame`, `Enum`, `Random` | plain numbers and tables |
+| `task.wait`, `wait`, `spawn`, `delay`, `tick()` | return a value; the edge script schedules |
+| `math.random()`, `os.time()` | take `rng` / `now` as parameters |
+| `print`, `warn` | return `false, "reason"` |
+
+- `--!strict` on the first line, with exported types.
+- Every change gets a case in `tests/*.spec.luau`. Then run the `luau-pure-tests` skill's checks.

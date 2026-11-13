@@ -1,0 +1,100 @@
+id: opentofu-module-checkov
+type: loadout
+title: OpenTofu modules gated by tofu test and Checkov
+summary: "Agents write OpenTofu modules that pass a local gate: fmt, a read-only lock file, tofu test with a mocked AWS provider, and Checkov with reasoned skips only."
+description: |
+  Ask an agent for a bucket and you get a public ACL, no encryption and a Checkov skip with no reason, or a soft-fail flag that turns the scan into decoration. This loadout gives your agent a gate it runs before calling a module change done. It checks formatting, runs init against the committed lock file, validates, and runs tofu test against a mocked AWS provider, so no credentials are needed and nothing is created. Checkov runs last. It refuses soft-fail, repo-wide skip lists and inline skips without a reason. A complete S3 bucket module shows the target, with tests that check its secure defaults and every validation rule. A root example enforces OpenTofu's native state and plan encryption. The verifier runs it on OpenTofu 1.13.1, the AWS provider 6.69.1 and Checkov 3.3.29. It also checks that a reasonless skip, soft-fail, suspended versioning and an agent-written public bucket all fail.
+highlights:
+  - "One gate script: fmt, read-only lock file, validate, tofu test, Checkov"
+  - "tofu test with mock_provider: no AWS credentials, nothing created"
+  - Checkov exceptions only as inline skips with a reason; soft-fail refused
+  - Root example with OpenTofu state and plan encryption enforced
+  - Verified on OpenTofu 1.13.1, AWS provider 6.69.1 and Checkov 3.3.29
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "OpenTofu docs: tofu test (mock providers)"
+    url: https://opentofu.org/docs/cli/commands/test/
+  - title: "OpenTofu docs: state and plan encryption"
+    url: https://opentofu.org/docs/language/state/encryption/
+  - title: "OpenTofu docs: dependency lock file"
+    url: https://opentofu.org/docs/language/files/dependency-lock/
+  - title: "Checkov docs: suppressing and skipping policies"
+    url: https://www.checkov.io/2.Basics/Suppressing%20and%20Skipping%20Policies.html
+  - title: bridgecrewio/checkov
+    url: https://github.com/bridgecrewio/checkov
+categories:
+  - security
+  - workflow
+stacks:
+  - opentofu
+  - terraform
+  - aws
+  - bash
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for OpenTofu modules that pass fmt, validate, tofu test and Checkov before a person plans and applies.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/tofu-module-gate/SKILL.md
+    role: skill
+    skill: tofu-module-gate
+    description: Workflow, Checkov exception rules, lock file and state encryption.
+  - path: skills/tofu-module-gate/scripts/gate.sh
+    role: reference
+    skill: tofu-module-gate
+    description: fmt, init (read-only lock), validate, tofu test, exception audit, Checkov.
+  - path: skills/tofu-module-gate/references/main.tf
+    role: reference
+    skill: tofu-module-gate
+    description: Private, versioned, SSE-KMS S3 bucket with logging and a TLS-only policy.
+  - path: skills/tofu-module-gate/references/variables.tf
+    role: reference
+    skill: tofu-module-gate
+    description: Typed, described inputs with validation blocks.
+  - path: skills/tofu-module-gate/references/outputs.tf
+    role: reference
+    skill: tofu-module-gate
+    description: Module outputs.
+  - path: skills/tofu-module-gate/references/versions.tf
+    role: reference
+    skill: tofu-module-gate
+    description: OpenTofu and AWS provider version constraints.
+  - path: skills/tofu-module-gate/references/bucket.tftest.hcl
+    role: reference
+    skill: tofu-module-gate
+    description: Four tofu test runs against a mocked AWS provider.
+  - path: skills/tofu-module-gate/references/example-root.tf
+    role: reference
+    skill: tofu-module-gate
+    description: Root module with enforced state and plan encryption.
+  - path: skills/tofu-module-gate/references/checkov.yaml
+    role: reference
+    skill: tofu-module-gate
+    description: Repository Checkov config with no soft-fail or skip list.
+requires:
+  tools:
+    - tofu
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - gate.sh
+  notes: "tofu init downloads the hashicorp/aws provider from the OpenTofu registry, checked against the committed lock file. uvx downloads Checkov 3.3.29 from PyPI. Tests use a mocked provider: no credentials, no cloud API calls."
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

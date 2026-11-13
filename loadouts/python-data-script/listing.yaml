@@ -1,0 +1,53 @@
+id: python-data-script
+type: loadout
+title: Python data script
+summary: Rules for reproducible, single-file Python data scripts with uv and inline dependencies, plus a skill that sanity-checks a dataset before anyone trusts the numbers.
+description: |
+  For the scripts that turn a CSV export into a chart, a report or a cleaned file. Agents tend to write
+  one-off notebooks that only run on their machine and silently drop half the rows. This loadout makes
+  every script runnable with one command, keeps raw data untouched, and adds a sanity-check skill that
+  looks for the classic data mistakes before results get shared.
+highlights:
+  - Single-file scripts with PEP 723 inline dependencies, run with `uv run`
+  - Raw data is read-only; outputs go to their own folder
+  - Row counts and assumptions logged at each step, so silent data loss shows up
+  - "Sanity-check skill: types, nulls, duplicates, ranges, join explosions, date and currency traps"
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [data]
+stacks: [python, uv, polars, pandas]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Python data scripting rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/python-scripts.mdc
+    role: rules
+    description: Rule applied to Python files.
+  - path: skills/data-sanity-check/SKILL.md
+    role: skill
+    skill: data-sanity-check
+    description: Profiles a dataset and flags data quality problems.
+requires:
+  tools: [uv, python]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: Instructions only. `uv run` and `uvx ruff` download packages from PyPI the first time a script or tool runs.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

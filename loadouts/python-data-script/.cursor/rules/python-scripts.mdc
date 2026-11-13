@@ -1,0 +1,13 @@
+---
+description: Python data script conventions
+globs: "**/*.py"
+alwaysApply: false
+---
+
+- Scripts start with a PEP 723 `# /// script` block listing `requires-python` and `dependencies`; run them with `uv run`.
+- `pathlib.Path` for paths, `argparse` for inputs, `main()` guarded by `if __name__ == "__main__":`.
+- Never write into `data/raw/`.
+- Log row counts after loads, filters, joins and dedupes.
+- Read identifier-like columns (IDs, postcodes, phone numbers) as strings.
+- No bare `except:`; catch specific exceptions and re-raise with context.
+- Type hints on every function signature.

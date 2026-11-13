@@ -1,0 +1,67 @@
+id: django-app
+type: loadout
+title: Django app rules
+summary: "Django rules and a safe-migration skill: migrations checked in CI, two-step destructive changes, N+1 caught with query-count tests, settings from the environment."
+description: |
+  Agents are quick at Django and quick to leave behind the classic problems: model changes without migrations, edited migrations that already ran, N+1 queries in list views, csrf_exempt to make a form work, DEBUG and SECRET_KEY in code. This loadout sets the rules from Django's own docs, adds makemigrations --check and check --deploy as gates, and ships a safe-migration skill with a two-release path for removals and renames and a query-count test that the verifier runs against a real N+1.
+highlights:
+  - makemigrations --check --dry-run and manage.py check as done-gates
+  - Two-release path for removing or renaming columns
+  - assertNumQueries test that catches N+1 queries
+  - Data migrations with apps.get_model and a backwards function
+  - No csrf_exempt, no |safe on user input, secrets from the environment
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Django docs: migrations"
+    url: https://docs.djangoproject.com/en/6.1/topics/migrations/
+  - title: "Django docs: database access optimisation"
+    url: https://docs.djangoproject.com/en/6.1/topics/db/optimization/
+  - title: "Django docs: deployment checklist"
+    url: https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
+  - title: "@geronco: CLAUDE.md templates per framework with exact commands and a never-do list"
+    url: https://x.com/geronco/status/2108014691582681184
+categories:
+  - web-app
+stacks:
+  - python
+  - django
+  - uv
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Django rules for models, migrations, queries and security.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/safe-migration/SKILL.md
+    role: skill
+    skill: safe-migration
+    description: Model change with reviewed SQL and a zero-downtime path.
+  - path: skills/safe-migration/references/test_query_count.py
+    role: reference
+    skill: safe-migration
+    description: assertNumQueries test against N+1 queries.
+requires:
+  tools:
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uv downloads Django and other packages from PyPI. The example code makes no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

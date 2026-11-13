@@ -1,0 +1,17 @@
+---
+description: How to work with, and change, this project's fail-closed Cursor hooks
+globs: ".cursor/hooks.json,.cursor/hooks/**"
+alwaysApply: false
+---
+
+These files are the project's guard rails. Change them only when the human asks for that exact change.
+
+- Permission hooks (`beforeShellExecution`, `beforeReadFile`, `beforeMCPExecution`, `preToolUse`, `subagentStart`)
+  must keep `"failClosed": true`. Without it, a crash, timeout or exit code other than 2 lets the action through.
+- Project hooks run from the project root: commands are `python3 .cursor/hooks/<script>.py`, never `./hooks/...`.
+- `beforeMCPExecution` doesn't run in cloud agents. Keep the `preToolUse` hook with matcher `^MCP:` next to it.
+- `preToolUse` doesn't enforce `"ask"`, so tools that need approval are denied there.
+- Matchers are regexes. Test new ones.
+- A permission hook that prints invalid JSON blocks the action. Print exactly one JSON object.
+- Every new rule needs a deny case and an allow case in `selftest.py`. Run `hooks_check.py` and `selftest.py` after
+  any change.

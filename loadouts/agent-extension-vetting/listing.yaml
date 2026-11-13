@@ -1,0 +1,84 @@
+id: agent-extension-vetting
+type: loadout
+title: Vet skills, plugins and MCP servers before install
+summary: "Treat agent skills, plugins and MCP servers as dependencies: pin by SHA or exact version, prove HEAD matches the pin, scan every file, and get a human yes."
+description: |
+  A skill with shell access is a supply chain. In September 2026 Plugin4Shell showed that a marketplace entry pinned to a commit SHA could still run different code, because the agent checked out a branch named after the SHA. This loadout makes installing an extension a reviewed dependency change. The agent pins the source, proves the checkout matches the pin, runs a standard-library scanner over every file (hidden Unicode, pipe-to-shell, base64 execution, credential paths, agent-directed wording, hooks, unpinned MCP servers) and writes a report for a human to approve. The verifier runs the scanner against a clean skill and a booby-trapped one, and checks the pin script catches the branch trick.
+highlights:
+  - "Agent proposes, human approves: no installs on the agent's own initiative"
+  - Pin check that catches a branch or tag named like the pinned SHA
+  - "Standard-library scanner: hidden Unicode, pipe-to-shell, credential paths, hooks, unpinned npx and uvx"
+  - Agent versions past the Plugin4Shell fixes; auto-update off for third-party marketplaces
+  - Report template a reviewer can approve in minutes
+version: 1.0.1
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "AIR Security: Plugin4Shell disclosure (17 September 2026)"
+    url: https://www.air.security/blog-posts/plugin4shell
+  - title: "The Hacker News: Plugin4Shell lets repository owners swap pinned plugin code"
+    url: https://thehackernews.com/2026/09/plugin4shell-lets-repository-owners.html
+  - title: "Claude Code docs: plugin marketplace reference (ref and sha pins)"
+    url: https://code.claude.com/docs/en/plugins/marketplace-reference
+  - title: "Claude Code docs: host a marketplace (auto-update and strictKnownMarketplaces)"
+    url: https://code.claude.com/docs/en/plugins/host-marketplace
+  - title: "NVIDIA docs: scanning agent skills with SkillSpector"
+    url: https://docs.nvidia.com/skills/scanning-agent-skills
+  - title: "@SarahLakzit: a skill bundle with shell reach is a supply chain; pin versions and review access"
+    url: https://x.com/SarahLakzit/status/2109274745585742114
+  - title: "@TheDailyViber: skills look like documentation but behave like supply chain"
+    url: https://x.com/TheDailyViber/status/2102389962897248684
+categories:
+  - security
+  - ai-agents
+stacks:
+  - any
+  - mcp
+  - git
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for installing skills, plugins and MCP servers as reviewed, pinned dependencies.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/vet-agent-extension/SKILL.md
+    role: skill
+    skill: vet-agent-extension
+    description: Pin, fetch, scan, read and report on an extension.
+  - path: skills/vet-agent-extension/scripts/audit_extension.py
+    role: reference
+    skill: vet-agent-extension
+    description: Standard-library pattern scanner; exits 1 on high findings.
+  - path: skills/vet-agent-extension/scripts/check_pin.sh
+    role: reference
+    skill: vet-agent-extension
+    description: Detach at the pinned commit and prove HEAD matches.
+  - path: skills/vet-agent-extension/references/report-template.md
+    role: reference
+    skill: vet-agent-extension
+    description: Vetting report for a human to approve.
+requires:
+  tools:
+    - python3
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - audit_extension.py
+    - check_pin.sh
+  notes: The scripts only read files and run git locally; they make no network calls. Cloning the extension under review downloads it; the skill says not to run anything from it while reviewing. The scanner source assembles some patterns from pieces so it does not match its own rules.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

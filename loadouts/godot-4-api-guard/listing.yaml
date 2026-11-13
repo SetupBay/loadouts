@@ -1,0 +1,83 @@
+id: godot-4-api-guard
+type: loadout
+title: Godot 4 guard against Godot 3 code
+summary: Stop agents writing yield, export var, KinematicBody2D and other Godot 3 code into Godot 4 projects, with a scanner that finds every case and Godot's own check.
+description: |
+  The most common complaint from people making games in Godot with coding agents is the same every week: ask for Godot 4 code and get Godot 3. yield(), export var, onready, setget, KinematicBody2D, move_and_slide(velocity) and connect("signal", self, "method") all come from years of Godot 3 tutorials, and Godot 4 refuses to parse most of them. A rules file alone helps, but it is a request, not a check.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (a never/always table) with a skill that checks the work. A standard-library Python scanner reports every Godot 3 keyword and renamed API in one pass, using the official upgrade guide and the engine's own 3-to-4 rename map. Godot's parser stops at the first error, so the scanner is what saves the extra runs. Then `godot --headless --check-only --script` confirms each changed script really loads in Godot 4. The verifier runs both against a Godot 4 project and a Godot 3 sample with the pinned Godot 4.7.2 binary.
+highlights:
+  - Never/always table for GDScript 2.0 in a .gd-scoped Cursor rule
+  - Scanner finds 30+ Godot 3 keywords and renamed APIs in one pass, read-only
+  - Godot's --check-only confirms each changed script parses in Godot 4
+  - "CharacterBody2D traps: built-in velocity, move_and_slide() with no arguments"
+  - Rename table built from the official upgrade guide and engine rename map
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Godot docs: upgrading from Godot 3 to Godot 4"
+    url: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.html
+  - title: "Godot engine source: renames_map_3_to_4.cpp (the upgrade tool's rename list)"
+    url: https://github.com/godotengine/godot/blob/master/editor/project_upgrade/renames_map_3_to_4.cpp
+  - title: "Godot docs: command line tutorial (--headless, --check-only)"
+    url: https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html
+  - title: "@shipthejam: let the agent run godot --headless --check-only on its own code"
+    url: https://x.com/shipthejam/status/2112875220184789383
+  - title: "@VibeKitLab: a .gd-scoped Cursor rule to stop Godot 3 syntax"
+    url: https://x.com/VibeKitLab/status/2111850753765904736
+categories:
+  - gamedev
+stacks:
+  - godot
+  - gdscript
+  - python
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Godot 4 version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/godot-4-only.mdc
+    role: rules
+    description: Never/always table for .gd files.
+  - path: skills/godot-4-guard/SKILL.md
+    role: skill
+    skill: godot-4-guard
+    description: Scan for Godot 3 code, then let Godot check each script.
+  - path: skills/godot-4-guard/scripts/gd3_guard.py
+    role: reference
+    skill: godot-4-guard
+    description: Read-only scanner for Godot 3 GDScript and APIs.
+  - path: skills/godot-4-guard/references/rename-table.md
+    role: reference
+    skill: godot-4-guard
+    description: Godot 3 to 4 table of syntax, nodes and methods.
+  - path: skills/godot-4-guard/references/godot3-sample.gd.txt
+    role: reference
+    skill: godot-4-guard
+    description: A Godot 3 player script for checking the guard.
+requires:
+  tools:
+    - godot-4
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - gd3_guard.py
+  notes: The scanner only reads .gd files and prints findings; it never edits files and makes no network calls.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

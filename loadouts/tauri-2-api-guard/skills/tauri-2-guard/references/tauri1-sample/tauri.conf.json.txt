@@ -1,0 +1,25 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "notes",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "fs": { "readFile": true, "scope": ["$APPDATA/*"] },
+      "dialog": { "open": true },
+      "shell": { "open": true }
+    },
+    "bundle": { "active": true, "identifier": "com.example.notes", "targets": "all" },
+    "systemTray": { "iconPath": "icons/icon.png" },
+    "updater": { "active": false },
+    "windows": [{ "title": "Notes", "width": 800, "height": 600 }]
+  }
+}

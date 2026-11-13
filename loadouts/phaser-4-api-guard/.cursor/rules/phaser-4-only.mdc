@@ -1,0 +1,23 @@
+---
+description: Phaser 4 only; never Phaser 3 pipelines, FX or masks
+globs: "src/**/*.ts,src/**/*.js,package.json"
+alwaysApply: false
+---
+
+This game uses Phaser 4 (check `package.json`; if it says 3.x, ignore this rule and stay on Phaser 3).
+
+| Never (Phaser 3) | Always (Phaser 4) |
+|---|---|
+| `sprite.setPipeline("Light2D")` | `sprite.setLighting(true)` and `this.lights.enable()` |
+| `sprite.preFX.addGlow()`, `postFX` | `sprite.enableFilters()` then `sprite.filters.internal.addGlow()` |
+| `new Display.Masks.BitmapMask(...)`, `setMask` | `sprite.filters.internal.addMask(maskObject)` |
+| `setTintFill(0xff0000)` | `setTint(0xff0000).setTintMode(Phaser.TintModes.FILL)` |
+| `new Geom.Point(x, y)` | `new Phaser.Math.Vector2(x, y)` |
+| `Math.PI2`; `Math.TAU` meaning a quarter turn | `Math.TAU` (= PI * 2); `Math.PI_OVER_2` |
+| `new Structs.Set()` / `Structs.Map` | native `Set` / `Map` |
+| `cm.sepia()` | `cm.colorMatrix.sepia()` |
+| `rt.draw(obj)` and nothing else | `rt.draw(obj).render()` |
+| `this.add.mesh()`, `textures.generate()` | removed; ask |
+
+- Official guide: `node_modules/phaser/skills/v3-to-v4-migration/SKILL.md`.
+- After editing, run the `phaser-4-guard` skill's scanner and `npx tsc --noEmit`.

@@ -1,0 +1,10 @@
+# GEMINI.md
+
+@./AGENTS.md
+
+## Gemini CLI notes
+
+- Skills from this loadout live in `.agents/skills/`: `python-mcp-tool`. Use them when their description matches the task.
+- Follow AGENTS.md above; where this file and AGENTS.md disagree, AGENTS.md wins.
+
+<!-- From SetupBay "MCP server in Python (official SDK v2)" v1.0.0 — https://setupbay.com/loadouts/mcp-server-python/ -->

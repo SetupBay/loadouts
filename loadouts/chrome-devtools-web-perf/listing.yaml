@@ -1,0 +1,77 @@
+id: chrome-devtools-web-perf
+type: loadout
+title: Page speed with Chrome DevTools MCP, measured not guessed
+summary: "Chrome DevTools MCP pinned with a throwaway profile and telemetry off, plus a trace, fix, re-trace loop that compares medians with Core Web Vitals thresholds."
+description: |
+  Chrome DevTools MCP is one of the most-shared agent setups this month: the agent opens your site in a real Chrome, reads console errors and network requests, and records performance traces. Two details often get lost when it is passed on. lighthouse_audit leaves out performance (it covers accessibility, SEO, best practices and agentic browsing), so speed has to come from a trace. And a single trace is noise, so "fixed, the score went up" after one run proves little.
+
+  This loadout pins chrome-devtools-mcp 1.12.0 with --isolated (a temporary profile, not your signed-in one), --no-usage-statistics, and --no-performance-crux so local and staging URLs are not sent to Google's CrUX API. The skill sets mobile throttling once, records three cold-load traces, reads the biggest insight (LCP breakdown, render-blocking requests, document latency), changes one thing, and measures again. A small Node script logs each trace and compares medians with a noise margin against the good thresholds (LCP 2.5 s, INP 200 ms, CLS 0.1). It fails on any regression.
+highlights:
+  - chrome-devtools-mcp 1.12.0 pinned; temporary profile, no telemetry, no CrUX lookups
+  - "Speed from traces: lighthouse_audit excludes performance"
+  - Same throttling every run, three traces per state, medians compared
+  - perf_log.mjs fails on regressions past a noise margin or lost "good" thresholds
+  - One change per measurement; no improvement means revert
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: ChromeDevTools/chrome-devtools-mcp (README, tool reference, configuration)
+    url: https://github.com/ChromeDevTools/chrome-devtools-mcp
+  - title: "Chrome DevTools MCP tool reference: lighthouse_audit excludes performance"
+    url: https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md
+  - title: "web.dev: Web Vitals thresholds"
+    url: https://web.dev/articles/vitals
+  - title: "@RoundtableSpace: Claude Code runs a Lighthouse audit, fixes what's slow, re-scores"
+    url: https://x.com/RoundtableSpace/status/2111430777233674477
+  - title: "@arjunkshah21: Chrome DevTools MCP for Codex (console, network, traces)"
+    url: https://x.com/arjunkshah21/status/2113336332517048652
+categories:
+  - web-app
+  - browser-extension
+stacks:
+  - chrome
+  - javascript
+  - nodejs
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for browser and performance work with Chrome DevTools MCP.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/web-perf-loop/SKILL.md
+    role: skill
+    skill: web-perf-loop
+    description: Trace, fix one thing, re-trace, compare medians.
+  - path: skills/web-perf-loop/scripts/perf_log.mjs
+    role: reference
+    skill: web-perf-loop
+    description: Logs trace metrics and compares runs.
+  - path: mcp.json
+    role: mcp
+    description: Chrome DevTools MCP pinned with privacy flags.
+requires:
+  tools:
+    - node
+    - chrome
+  env: []
+  mcp:
+    - chrome-devtools
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - perf_log.mjs
+  notes: The MCP server is downloaded from npm and drives a local Chrome with a temporary profile; usage statistics, update checks and CrUX lookups are turned off. perf_log.mjs only reads and writes .perf/runs.jsonl.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

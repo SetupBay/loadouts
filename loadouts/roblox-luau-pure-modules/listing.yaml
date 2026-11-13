@@ -1,0 +1,83 @@
+id: roblox-luau-pure-modules
+type: loadout
+title: Roblox pure Luau modules checked outside Studio
+summary: Keep Roblox game rules in pure --!strict Luau modules that the luau CLI can type-check and test in milliseconds, with a scanner that keeps Roblox APIs out of them.
+description: |
+  Roblox logic is usually tried out by pressing Play in Studio, which an agent can't do after every change. Rules that never touch the DataModel can be checked by the standalone Luau tools instead: luau-analyze type-checks them in strict mode, and luau runs their tests from the command line.
+
+  This loadout sets out the split. Prices, inventory, damage and cooldown maths go in src/shared/pure as --!strict modules that require each other by string (require("./Money"), which Roblox and the luau CLI both resolve). Server and client scripts stay as thin edges that own services, Instances and remotes. A standard-library Python scanner flags Roblox-only calls in the pure folder (game, workspace, script.Parent requires, Instance.new, services, task and the deprecated wait/spawn/delay, Roblox datatypes) as errors, and math.random, os.time and print as warnings. A small test runner prints PASS or FAIL per case and exits non-zero on failure. The verifier runs it all with the official Luau 0.743 tools on a Rojo shop project, and shows a broken rule failing the run.
+highlights:
+  - Pure --!strict modules in src/shared/pure, thin edge scripts for Roblox APIs
+  - Scanner flags game, script.Parent requires, Instance.new and task.* in pure code
+  - luau-analyze --mode=strict checks the rules and their tests outside Studio
+  - A tiny test runner for the luau CLI that exits non-zero on failure
+  - String requires that work in both Roblox and the luau CLI
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Luau releases (luau and luau-analyze)"
+    url: https://github.com/luau-lang/luau/releases/tag/0.743
+  - title: "Luau RFC: require by string with relative paths"
+    url: https://github.com/luau-lang/rfcs/blob/master/docs/new-require-by-string-semantics.md
+  - title: "Roblox DevForum: introducing require-by-string"
+    url: https://devforum.roblox.com/t/introducing-require-by-string/3405078
+  - title: "Rojo docs: project format"
+    url: https://rojo.space/docs/v7/project-format/
+  - title: "@AICoderClass: Roblox Studio now has a built-in MCP server"
+    url: https://x.com/AICoderClass/status/2111850014351781899
+categories:
+  - gamedev
+stacks:
+  - roblox
+  - luau
+  - rojo
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: The pure/edge split, the rules for each, and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/luau-pure-modules.mdc
+    role: rules
+    description: Never/instead table for pure modules and tests.
+  - path: skills/luau-pure-tests/SKILL.md
+    role: skill
+    skill: luau-pure-tests
+    description: Check purity, type-check in strict mode, then run the tests with the luau CLI.
+  - path: skills/luau-pure-tests/scripts/pure_luau_guard.py
+    role: reference
+    skill: luau-pure-tests
+    description: Read-only scanner for Roblox-only calls in pure Luau modules.
+  - path: skills/luau-pure-tests/references/run.luau
+    role: reference
+    skill: luau-pure-tests
+    description: Minimal test runner for spec files under the luau CLI.
+  - path: skills/luau-pure-tests/references/studio-coupled-sample.luau.txt
+    role: reference
+    skill: luau-pure-tests
+    description: A Studio-coupled inventory module for checking the guard.
+requires:
+  tools:
+    - python3
+    - luau
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - pure_luau_guard.py
+  notes: The scanner only reads .luau and .lua files and prints findings; it never edits files and makes no network calls. The test runner only runs the project's own spec files.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

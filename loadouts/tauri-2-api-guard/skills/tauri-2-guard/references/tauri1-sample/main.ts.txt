@@ -1,0 +1,23 @@
+// Tauri 1 front end, used to check the guard. Every marked import is gone in Tauri 2.
+import { invoke } from "@tauri-apps/api/tauri";
+import { appWindow, WebviewWindow } from "@tauri-apps/api/window";
+import { readTextFile, BaseDirectory } from "@tauri-apps/api/fs";
+import { open } from "@tauri-apps/api/dialog";
+import { open as openLink } from "@tauri-apps/api/shell";
+
+export async function saveNote(title: string, body: string) {
+  await invoke("save_note", { note_title: title, body });
+  await appWindow.setTitle(`Notes: ${title}`);
+}
+
+export async function loadNote() {
+  const path = await open({ filters: [{ name: "Notes", extensions: ["md"] }] });
+  return readTextFile(path as string, { dir: BaseDirectory.AppData });
+}
+
+export function openHelp() {
+  new WebviewWindow("help", { url: "help.html" });
+  return openLink("https://tauri.app");
+}
+
+export const version = window.__TAURI__.app.getVersion();

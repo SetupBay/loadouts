@@ -1,0 +1,41 @@
+# A Django 3.x-era module, used to check the guard. Every marked API is gone in Django 6.1.
+from django.conf.urls import url
+from django.db import models
+from django.utils.encoding import force_text
+from django.utils.html import format_html
+from django.utils.translation import ugettext_lazy as _
+
+
+class Order(models.Model):
+    total = models.IntegerField()
+    paid = models.NullBooleanField()
+    code = models.CharField(max_length=8)
+
+    class Meta:
+        index_together = [["code", "total"]]
+        constraints = [models.CheckConstraint(check=models.Q(total__gte=0), name="total_gte_0")]
+
+    def __str__(self):
+        return force_text(self.code)
+
+    def badge(self):
+        return format_html("<span class='paid'>paid</span>")
+
+
+def mark_paid(order):
+    order.paid = True
+    order.save(False, False)
+
+
+def view(request):
+    if request.is_ajax():
+        return None
+
+
+urlpatterns = [url(r"^orders/$", view)]
+
+
+# --- settings.py from the same project ---
+USE_L10N = True
+EMAIL_HOST = "smtp.example.com"
+EMAIL_PORT = 587

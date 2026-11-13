@@ -1,0 +1,71 @@
+id: docs-markdown-checks
+type: loadout
+title: Markdown docs with markdownlint and offline link checks
+summary: "Agent-written READMEs and docs checked offline: markdownlint-cli2, relative links and #anchors resolve, and every npm run command in the docs exists."
+description: |
+  Agents write docs that read well and are quietly wrong. A link points to a page that was renamed. An anchor no longer matches its heading after an edit. A quick start says npm run deploy when there is no deploy script. This loadout gives your agent two checks that need no network. markdownlint-cli2 enforces style, with code block languages and in-file link fragments required. A small script checks that relative links and images resolve and that #fragments match GitHub-style heading slugs, across files too. It also checks that every npm, pnpm, yarn or bun run command in the docs names a real script. External URLs are left to a scheduled checker, so a flaky site never blocks a change. The verifier runs both on a clean docs tree and on a broken sample, with markdownlint-cli2 0.23.3.
+highlights:
+  - "Relative links, images and #anchors checked offline, across files"
+  - GitHub heading slug rules, including repeated headings
+  - Catches npm run commands in docs that have no script
+  - markdownlint-cli2 with code block languages and link fragments enforced
+  - Verified with markdownlint-cli2 0.23.3 on a clean tree and a broken sample
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: DavidAnson/markdownlint-cli2
+    url: https://github.com/DavidAnson/markdownlint-cli2
+  - title: markdownlint rules (MD040, MD051)
+    url: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+  - title: "GitHub docs: section links in Markdown"
+    url: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#section-links
+  - title: lycheeverse/lychee (scheduled external link checks)
+    url: https://github.com/lycheeverse/lychee
+categories:
+  - workflow
+stacks:
+  - markdown
+  - nodejs
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for Markdown docs whose links, anchors and commands are checked before a change is done.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/docs-check/SKILL.md
+    role: skill
+    skill: docs-check
+    description: Both checks, the config, and writing rules for docs.
+  - path: skills/docs-check/scripts/check_docs.mjs
+    role: reference
+    skill: docs-check
+    description: Offline link, anchor and script-command check.
+  - path: skills/docs-check/references/markdownlint-cli2.jsonc
+    role: reference
+    skill: docs-check
+    description: Repository markdownlint-cli2 config.
+requires:
+  tools:
+    - node
+    - npm
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - check_docs.mjs
+  notes: npx markdownlint-cli2 runs the version pinned in package.json (installed from npm). check_docs.mjs reads local files only and makes no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

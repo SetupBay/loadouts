@@ -1,0 +1,67 @@
+id: second-opinion-review
+type: loadout
+title: Second-opinion review from another model
+summary: Before calling work done, the agent gets a read-only review of its diff from a different model, checks each finding and stops after two rounds.
+description: |
+  A pattern that spread through practitioner feeds this autumn: Claude Code writes the change, then calls codex exec to
+  review the diff before saying it is finished, or the other way round. It works because the reviewer is a different
+  model and cannot edit what it judges. This loadout sets when a second opinion is worth it, keeps the reviewer
+  read-only, gives a prompt that asks for ranked, located findings, and caps the loop at two rounds so it cannot spin.
+highlights:
+  - When a second opinion is worth the time, and when to skip it
+  - Exact read-only commands for codex exec and claude -p
+  - Prompt template that returns ranked path:line findings
+  - Findings are verified against code, never applied blindly
+  - Hard cap of two rounds, then escalate to the human
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@Damir_Akaza: Claude Code calls codex exec to review its diff"
+    url: https://x.com/Damir_Akaza/status/2106333764548702392
+  - title: "@leavemagic: a reviewer that cannot edit what it judges (MIT)"
+    url: https://github.com/leavemagic-cyber/earned-confidence
+  - title: "Codex docs: non-interactive mode"
+    url: https://developers.openai.com/codex/noninteractive
+  - title: "Claude Code docs: headless mode"
+    url: https://code.claude.com/docs/en/headless
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - any
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: When and how to get an independent review.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/cross-model-review/SKILL.md
+    role: skill
+    skill: cross-model-review
+    description: Run a read-only review by another model and triage findings.
+  - path: skills/cross-model-review/references/review-prompt.md
+    role: reference
+    skill: cross-model-review
+    description: Reviewer prompt template.
+requires:
+  tools:
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

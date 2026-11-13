@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [{ "command": "python3 .cursor/hooks/cursor_guard.py", "failClosed": true, "timeout": 10 }],
+    "beforeReadFile": [{ "command": "python3 .cursor/hooks/cursor_guard.py", "failClosed": true, "timeout": 10 }],
+    "beforeMCPExecution": [{ "command": "python3 .cursor/hooks/cursor_guard.py", "failClosed": true, "timeout": 10 }],
+    "preToolUse": [{ "command": "python3 .cursor/hooks/cursor_guard.py", "matcher": "^MCP:", "failClosed": true, "timeout": 10 }]
+  }
+}

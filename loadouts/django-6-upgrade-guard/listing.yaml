@@ -1,0 +1,87 @@
+id: django-6-upgrade-guard
+type: loadout
+title: Django 6 guard for removed APIs and django-upgrade
+summary: Stop agents writing url(), ugettext, is_ajax(), index_together and CheckConstraint(check=) into Django 6.1 projects, then run django-upgrade and Django's own checks.
+description: |
+  Agents learnt Django from a decade of answers, so they still write url(), ugettext_lazy, force_text, request.is_ajax(), Meta.index_together and {% load staticfiles %}. All of those are gone, and Django 6.0 and 6.1 removed more: CheckConstraint(check=), positional Model.save() arguments, format_html() with no arguments, finders.find(all=) and the Postgres aggregates' ordering=. Django 6.1 also moves mail settings into MAILERS and adds fetch modes.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (a never/always table and the Django 6 version facts) with a skill that checks the work in three layers. A standard-library Python scanner reports removed APIs as errors and behaviour changes as warnings. django-upgrade rewrites what it safely can. Then manage.py check, makemigrations --check and the tests run with the next two deprecation warnings raised as errors. The verifier runs all of it on a small Django 6.1 shop project and a Django 3-era sample, with the pinned Django 6.1.2 and django-upgrade 1.33.0.
+highlights:
+  - Never/always table for Django 6.1 in a Cursor rule for .py and templates
+  - Scanner flags 17 removed Django APIs as errors, read-only
+  - Runs django-upgrade --check at target 6.1 alongside the scanner
+  - Tests run with RemovedInDjango70Warning and RemovedInDjango2028Warning as errors
+  - Covers 6.1's MAILERS setting and FETCH_RAISE for N+1 queries
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Django 6.0 release notes"
+    url: https://docs.djangoproject.com/en/6.1/releases/6.0/
+  - title: "Django 6.1 release notes"
+    url: https://docs.djangoproject.com/en/6.1/releases/6.1/
+  - title: "Django deprecation timeline"
+    url: https://docs.djangoproject.com/en/dev/internals/deprecation/
+  - title: "django-upgrade by Adam Johnson"
+    url: https://github.com/adamchainz/django-upgrade
+  - title: "Django 6.1.2 on PyPI (released 6 Oct 2026)"
+    url: https://pypi.org/project/Django/6.1.2/
+  - title: "@rg3915: Django 6.1 moves email settings into MAILERS"
+    url: https://x.com/rg3915/status/2111940396993421802
+  - title: "@rg3915: Django 6.1 fetch modes make N+1 queries an error"
+    url: https://x.com/rg3915/status/2112665164847653174
+categories:
+  - web-app
+stacks:
+  - django
+  - python
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Django 6 version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/django-6-only.mdc
+    role: rules
+    description: Never/always table for Python files and templates.
+  - path: skills/django-6-guard/SKILL.md
+    role: skill
+    skill: django-6-guard
+    description: Scan for removed Django APIs, run django-upgrade, then Django's checks and the tests with deprecations as errors.
+  - path: skills/django-6-guard/scripts/django6_guard.py
+    role: reference
+    skill: django-6-guard
+    description: Read-only scanner for removed Django APIs and Django 6 behaviour changes.
+  - path: skills/django-6-guard/references/removals.md
+    role: reference
+    skill: django-6-guard
+    description: Which release removed each API and what replaces it.
+  - path: skills/django-6-guard/references/django3-sample.py.txt
+    role: reference
+    skill: django-6-guard
+    description: A Django 3-era module and settings for checking the guard.
+requires:
+  tools:
+    - python3
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - django6_guard.py
+  notes: The scanner only reads .py, .html and .txt files and prints findings; it never edits files and makes no network calls. Running django-upgrade through uvx, or the project with uv, may download the pinned packages.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

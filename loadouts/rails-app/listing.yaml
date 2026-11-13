@@ -1,0 +1,78 @@
+id: rails-app
+type: loadout
+title: Rails app rules
+summary: "Rails 8 rules for agents: reversible migrations with real constraints, params.expect, N+1 checks with assert_queries_count, and rubocop and brakeman as the gate."
+description: |
+  Agents write Rails code that runs, then leave the database to the model layer: validations with no constraint behind them, migrations that only go up, an each loop that fires a query per row, permit! to make a form work. This loadout gives your agent the Rails 8 conventions from the official guides, with the commands that prove a change is done, and a model-change skill whose migration, models and tests the verifier runs on Active Record 8.1 and SQLite. The N+1 test is checked both ways: it passes with includes and fails without it.
+highlights:
+  - Every schema change is a reversible migration, checked by rolling back and migrating again
+  - "Database constraints behind validations: null false, foreign keys, unique indexes"
+  - params.expect, scoped record lookups and no html_safe on user content
+  - assert_queries_count guards against N+1 queries
+  - bin/rails test, bin/rubocop and bin/brakeman as the done-gate
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Rails Guides: Active Record migrations"
+    url: https://guides.rubyonrails.org/active_record_migrations.html
+  - title: "Rails Guides: testing Rails applications (assert_queries_count)"
+    url: https://guides.rubyonrails.org/testing.html
+  - title: "Rails Guides: Action Controller overview (params.expect)"
+    url: https://guides.rubyonrails.org/action_controller_overview.html
+  - title: "Rails Guides: securing Rails applications"
+    url: https://guides.rubyonrails.org/security.html
+  - title: rubocop-rails-omakase
+    url: https://github.com/rails/rubocop-rails-omakase
+  - title: strong_migrations by Andrew Kane
+    url: https://github.com/ankane/strong_migrations
+categories:
+  - web-app
+stacks:
+  - ruby
+  - rails
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rails rules for migrations, models, controllers, secrets and gems.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/rails-model-change/SKILL.md
+    role: skill
+    skill: rails-model-change
+    description: Add or change a model with a reversible migration and tests.
+  - path: skills/rails-model-change/references/20261017120000_create_orders.rb
+    role: reference
+    skill: rails-model-change
+    description: Migration with constraints, foreign key and unique indexes.
+  - path: skills/rails-model-change/references/order.rb
+    role: reference
+    skill: rails-model-change
+    description: Models with validations, normalizes and preloading scopes.
+  - path: skills/rails-model-change/references/order_test.rb
+    role: reference
+    skill: rails-model-change
+    description: Model tests including an N+1 guard.
+requires:
+  tools:
+    - ruby
+    - bundler
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: bundle add and bundle install download gems from rubygems.org. The rules forbid committing config/master.key and running commands against production unless asked.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

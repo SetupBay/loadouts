@@ -1,0 +1,22 @@
+---
+description: Manifest V3 service worker rules; no MV2 background-page code
+globs: "**/sw.js,**/sw.ts,**/service-worker.*,**/service_worker.*,**/background.*,**/*-worker.*,**/manifest.json"
+alwaysApply: false
+---
+
+The background script is an MV3 service worker. Chrome stops it after about 30 seconds idle.
+
+| Never | Always |
+|---|---|
+| `let count = 0` as state | `chrome.storage.session` / `chrome.storage.local` |
+| `setTimeout(fn, 60 * 60 * 1000)` | `chrome.alarms.create("name", { periodInMinutes: 60 })` |
+| `addListener` inside a callback or after `await` | every `addListener` at the top level, synchronously |
+| `document`, `window`, `localStorage`, `XMLHttpRequest` | `fetch`, `chrome.storage`, `chrome.offscreen` for DOM work |
+| `chrome.browserAction`, `chrome.pageAction` | `chrome.action` |
+| `chrome.tabs.executeScript` | `chrome.scripting.executeScript` |
+| `chrome.extension.getBackgroundPage()` | `chrome.runtime.sendMessage` |
+| `webRequest` with `["blocking"]` | `chrome.declarativeNetRequest` |
+| `eval`, `new Function`, remote `<script src>` | code shipped in the package |
+
+- An async `onMessage` reply needs `return true` from the listener.
+- After editing, run the `mv3-worker-guard` skill's scanner, then restart the worker and use the feature again.

@@ -1,0 +1,9 @@
+{
+  "hooks": {
+    "BeforeShellExecution": [{ "command": "python3 .cursor/hooks/cursor_guard.py" }],
+    "beforeShellExecution": [{ "command": "./hooks/block-git.sh", "matcher": "git(" }],
+    "beforeReadFile": [{ "command": "python3 .cursor/hooks/read_guard.py" }],
+    "beforeMCPExecution": [{ "command": "python3 .cursor/hooks/cursor_guard.py", "failClosed": true }],
+    "stop": [{ "command": "python3 .cursor/hooks/cursor_guard.py", "loop_limit": null }]
+  }
+}

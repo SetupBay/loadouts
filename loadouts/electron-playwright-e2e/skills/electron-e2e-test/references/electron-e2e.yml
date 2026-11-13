@@ -1,0 +1,36 @@
+# .github/workflows/e2e.yml
+# Electron needs a display on Linux: xvfb-run provides a virtual one. The Electron binary is
+# downloaded (and checksum-verified by @electron/get) on first use, then cached.
+name: Electron e2e
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/electron
+          key: electron-${{ hashFiles('package-lock.json') }}
+      - run: npm ci
+      - run: node -e "require('electron')"
+      - run: xvfb-run -a npx playwright test
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

@@ -1,0 +1,63 @@
+id: rust-crate
+type: loadout
+title: Rust crate rules
+summary: "Rust rules for agents: typed errors instead of unwrap, clippy -D warnings, fmt and tests as the done-gate, no unsafe without a SAFETY note, no surprise MSRV bumps."
+description: |
+  Agents write plausible Rust that compiles after a few rounds, often by cloning everything, unwrapping on input and sprinkling allow attributes over clippy. This loadout sets the habits Rust reviewers expect: typed error enums with source(), anyhow only in binaries, cargo fmt, clippy with -D warnings and tests before reporting, unsafe only with approval and a SAFETY comment, and no edition, MSRV or major dependency bumps on the side. The skill's error example is compiled and its tests run by the verifier.
+highlights:
+  - "Done-gate: cargo fmt --check, clippy -D warnings, cargo test"
+  - Typed error enums; no unwrap or panic on input-driven paths
+  - unsafe only with approval and a SAFETY comment
+  - No MSRV, edition or major version bumps as a side effect
+  - Stop and explain after two rounds against the borrow checker
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "The Rust Programming Language: recoverable errors with Result"
+    url: https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html
+  - title: Rust API Guidelines
+    url: https://rust-lang.github.io/api-guidelines/
+  - title: Clippy documentation
+    url: https://doc.rust-lang.org/clippy/
+categories:
+  - workflow
+stacks:
+  - rust
+  - cargo
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rust rules for errors, safety, dependencies and style.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/rust-change/SKILL.md
+    role: skill
+    skill: rust-change
+    description: Reviewable Rust change with the three gates.
+  - path: skills/rust-change/references/errors.rs
+    role: reference
+    skill: rust-change
+    description: Typed error enum with Display, source() and tests.
+requires:
+  tools:
+    - cargo
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: cargo add and cargo build download crates from crates.io. The example code makes no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

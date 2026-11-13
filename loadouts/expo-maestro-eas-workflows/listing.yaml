@@ -1,0 +1,81 @@
+id: expo-maestro-eas-workflows
+type: loadout
+title: Maestro end-to-end tests on EAS Workflows
+summary: "Run Maestro flows on EAS Workflows with fingerprint, get-build and repack, so pull requests skip native builds, plus a check of profiles, workers and flows."
+description: |
+  EAS Workflows has a `maestro` job type (alpha) that installs a build on an iOS Simulator or Android Emulator and runs your flows. Put it behind the `fingerprint`, `get-build` and `repack` jobs and a pull request that only changes JavaScript reuses an existing build instead of waiting for a native one. The details are easy to get wrong: Android emulator jobs need a nested-virtualization worker, the profile must build a simulator app and an APK, and the fingerprint's environment has to match the build profile or every run rebuilds.
+
+  This loadout ships a reference `.eas/workflows/e2e.yml` for both platforms, an `e2e` build profile, and rules for flows, credentials (EAS environment variables reaching Maestro as `MAESTRO_*`) and spending build minutes only when asked. workflow_check.py (uv inline script, PyYAML 6.0.3) reads the workflows, `eas.json`, `app.json` and the flows, and catches those mistakes before a push. It builds on the maestro-mobile-flows and expo-eas-update loadouts.
+highlights:
+  - fingerprint, get-build, then repack or build, then maestro, for iOS and Android
+  - e2e profile with ios.simulator true and android.buildType apk
+  - Android maestro jobs on linux-*-nested-virtualization workers
+  - Flow credentials from EAS environment variables as MAESTRO_* variables
+  - workflow_check.py catches wrong profiles, workers, appIds, literal secrets and big retries
+  - No eas workflow:run, build or submit unless the human asks
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Expo docs: pre-packaged jobs (maestro, fingerprint, get-build, repack)"
+    url: https://docs.expo.dev/eas/workflows/pre-packaged-jobs/
+  - title: "Expo docs: EAS Workflows syntax (needs, after, if, runs_on)"
+    url: https://docs.expo.dev/eas/workflows/syntax/
+  - title: "Expo docs: eas.json build profiles (ios.simulator, android.buildType)"
+    url: https://docs.expo.dev/eas/json/
+  - title: "Expo docs: EAS environment variables"
+    url: https://docs.expo.dev/eas/environment-variables/
+  - title: "Maestro docs: parameters and constants (shell variables)"
+    url: https://docs.maestro.dev/maestro-flows/flow-control-and-logic/parameters-and-constants
+categories:
+  - web-app
+  - workflow
+stacks:
+  - expo
+  - maestro
+  - react-native
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for EAS Maestro workflows, build profiles, flows and build minutes.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/eas-maestro-e2e/SKILL.md
+    role: skill
+    skill: eas-maestro-e2e
+    description: Set up the fingerprint-repack-maestro pipeline and check it before pushing.
+  - path: skills/eas-maestro-e2e/scripts/workflow_check.py
+    role: reference
+    skill: eas-maestro-e2e
+    description: Checks workflows, profiles and flows (uv inline script, PyYAML 6.0.3).
+  - path: skills/eas-maestro-e2e/references/e2e.yml
+    role: reference
+    skill: eas-maestro-e2e
+    description: Reference workflow for iOS and Android with fingerprint, get-build, repack and maestro.
+  - path: skills/eas-maestro-e2e/references/eas-e2e-profile.json
+    role: reference
+    skill: eas-maestro-e2e
+    description: The e2e build profile (simulator iOS build, APK Android build).
+requires:
+  tools:
+    - uv
+    - eas-cli
+    - maestro
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - workflow_check.py
+  notes: uv downloads PyYAML on the first run of workflow_check.py, which then only reads project files. The workflow runs on Expo's servers when the human triggers it.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

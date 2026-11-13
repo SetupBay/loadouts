@@ -1,0 +1,74 @@
+id: one-agents-md-every-agent
+type: loadout
+title: One AGENTS.md for every agent
+summary: Keep one AGENTS.md as the source of truth, with thin imports and a single MCP list, so Claude Code, Codex, Cursor, Copilot and Antigravity CLI all load the same rules.
+description: |
+  Teams on several agents end up with CLAUDE.md, .cursorrules, copilot-instructions and GEMINI.md drifting apart. This loadout
+  sets rules for keeping one AGENTS.md as the source of truth, with per-agent files that only import it. It adds an audit skill
+  that checks what each agent really loads (with an October 2026 table of loading rules and gotchas, including Claude Code's
+  native AGENTS.md reading and the move from Gemini CLI to Antigravity CLI) and a skill that converts one MCP server list
+  into every agent's config format.
+highlights:
+  - Rules for where instructions, skills and MCP servers live
+  - Loading table for Claude Code, Codex, Cursor, Copilot and Antigravity CLI, checked 16 October 2026
+  - Audit skill that finds shadowed, duplicated and oversized config
+  - One MCP source file converted to .mcp.json, .cursor/mcp.json, .vscode/mcp.json, Codex TOML and Gemini settings
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@mitsuhiko: one AGENTS.md, no per-agent files"
+    url: https://x.com/mitsuhiko/status/2088900774466105797
+  - title: AGENTS.md open format
+    url: https://agents.md
+  - title: Claude Code changelog
+    url: https://code.claude.com/docs/en/changelog
+  - title: "Antigravity CLI: migrating from Gemini CLI"
+    url: https://antigravity.google/docs/cli/gcli-migration/
+categories:
+  - ai-agents
+  - workflow
+stacks:
+  - any
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for keeping one source of agent instructions.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/audit-agent-config/SKILL.md
+    role: skill
+    skill: audit-agent-config
+    description: Check what each agent loads and find shadowed or duplicated rules.
+  - path: skills/audit-agent-config/references/loading.md
+    role: reference
+    skill: audit-agent-config
+    description: Per-agent loading rules, checked 16 October 2026.
+  - path: skills/sync-mcp-config/SKILL.md
+    role: skill
+    skill: sync-mcp-config
+    description: Generate each agent's MCP config from one list.
+  - path: skills/sync-mcp-config/references/formats.md
+    role: reference
+    skill: sync-mcp-config
+    description: MCP config shapes for six agents.
+requires:
+  tools: []
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

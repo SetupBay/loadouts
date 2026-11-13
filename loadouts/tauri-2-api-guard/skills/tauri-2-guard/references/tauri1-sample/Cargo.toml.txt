@@ -1,0 +1,12 @@
+# Tauri 1 src-tauri/Cargo.toml, used to check the guard.
+[package]
+name = "notes"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.8", features = ["shell-open", "dialog-open", "fs-read-file", "system-tray"] }
+serde = { version = "1", features = ["derive"] }

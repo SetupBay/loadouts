@@ -1,0 +1,76 @@
+id: subagent-model-routing
+type: loadout
+title: Subagent model routing
+summary: Rules for when to delegate, which model and effort each subagent gets, and a brief template, with ready subagents for Claude Code and Codex.
+description: |
+  Practitioners spent autumn 2026 writing down how their lead model should delegate: the lead plans and
+  decides, cheaper tiers do bounded work, and every spawn sets model and effort on purpose. This loadout
+  turns that into rules an agent can follow: a three-class routing table (mechanical, bounded, judgement),
+  a tripwire for when to stop doing work inline, and a brief template, because subagents only know what
+  the brief tells them. It ships three Claude Code subagents (read-only scout on Sonnet, command runner on
+  Haiku, reviewer on Opus) and equivalent Codex agent TOML.
+highlights:
+  - Routing table by task class, with tier and effort for Claude Code and Codex
+  - Brief template so subagents get the facts instead of rediscovering them
+  - scout (read-only), runner (mechanical) and reviewer (never edits) subagents for Claude Code
+  - Codex .codex/agents TOML examples with model and model_reasoning_effort
+  - Tripwire rule for when the lead must stop and delegate
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@chrisbanes: subagent model and reasoning selection for Codex (gist)"
+    url: https://gist.github.com/chrisbanes/dc1407ddd22d6e8d6c4d374b564eac9a
+  - title: "@Shpigford: CLAUDE.md delegation policy with a tripwire (gist)"
+    url: https://gist.github.com/Shpigford/7c283ea5b75c02e1e96b175e603fca2e
+  - title: "@badlogicgames: subagent handoff fails when the parent omits the facts"
+    url: https://x.com/badlogicgames/status/2085655394286735777
+  - title: Claude Code subagents reference
+    url: https://code.claude.com/docs/en/sub-agents
+  - title: Codex subagents
+    url: https://developers.openai.com/codex/subagents
+categories: [ai-agents, workflow]
+stacks: [any]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Routing table, brief rules and when to delegate.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .claude/agents/scout.md
+    role: subagent
+    description: Read-only exploration subagent on Sonnet.
+  - path: .claude/agents/runner.md
+    role: subagent
+    description: Mechanical command runner on Haiku.
+  - path: .claude/agents/reviewer.md
+    role: subagent
+    description: Adversarial reviewer on Opus that never edits.
+  - path: skills/delegate-task/SKILL.md
+    role: skill
+    skill: delegate-task
+    description: Classify, pick model and effort, and write the brief before spawning.
+  - path: skills/delegate-task/references/codex-agents.md
+    role: reference
+    skill: delegate-task
+    description: Codex custom agent TOML with model and reasoning effort.
+requires:
+  tools: []
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

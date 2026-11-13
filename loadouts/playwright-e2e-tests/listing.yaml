@@ -1,0 +1,72 @@
+id: playwright-e2e-tests
+type: loadout
+title: Playwright end-to-end tests agents don't make flaky
+summary: "Rules for agents writing and healing Playwright tests, including Playwright's test agents: role locators, web-first assertions, no sleeps, never weaken a test to pass."
+description: |
+  Playwright now ships its own planner, generator and healer agents, and every coding agent writes Playwright tests on request. Left alone they reach for the same shortcuts: waitForTimeout, CSS chains, force clicks, expect(await isVisible()) that never retries, and a healer that makes a red test green by deleting the assertion. This loadout gives your agent Playwright's own best practices as rules, a healing procedure that decides whether the app or the test is wrong before touching anything, and a linter for the anti-patterns. The verifier runs the example spec twice over in real Chrome against a page that renders late, and lints a flaky spec.
+highlights:
+  - Works alongside npx playwright init-agents (planner, generator, healer)
+  - getByRole first; web-first assertions only; no fixed waits
+  - "Healing rule: if the app regressed, report it, never edit the test to match"
+  - Linter for waitForTimeout, force clicks, test.only and non-retrying assertions
+  - Example passes repeat runs in Chrome against a deliberately slow page
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Playwright docs: best practices"
+    url: https://playwright.dev/docs/best-practices
+  - title: "Playwright docs: test agents (planner, generator, healer)"
+    url: https://playwright.dev/docs/test-agents
+  - title: "Playwright docs: locators"
+    url: https://playwright.dev/docs/locators
+  - title: "Playwright docs: auto-retrying assertions"
+    url: https://playwright.dev/docs/test-assertions
+categories:
+  - web-app
+  - workflow
+stacks:
+  - playwright
+  - typescript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for writing, running and healing Playwright end-to-end tests.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/write-e2e-test/SKILL.md
+    role: skill
+    skill: write-e2e-test
+    description: Write or repair a test, lint it and run it three times.
+  - path: skills/write-e2e-test/references/todo.spec.ts
+    role: reference
+    skill: write-e2e-test
+    description: Example spec with role locators and web-first assertions.
+  - path: skills/write-e2e-test/scripts/lint_specs.mjs
+    role: reference
+    skill: write-e2e-test
+    description: Linter for Playwright test anti-patterns.
+requires:
+  tools:
+    - node
+    - npm
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - lint_specs.mjs
+  notes: npm installs @playwright/test; npx playwright install downloads browsers if you do not use a system browser. The linter only reads spec files. The rules forbid production credentials in tests.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,53 @@
+id: astro-static-site
+type: loadout
+title: Astro static site
+summary: Astro conventions for fast, zero-JS-by-default sites with content collections, plus a skill for deploying to Cloudflare Pages with headers and redirects.
+description: |
+  Astro is a great fit for portfolios, docs, blogs and landing pages, but agents love to turn it into a
+  React app with a hydrated component on every line. This loadout keeps pages static and fast, uses
+  content collections for anything that looks like content, and finishes with a reliable Cloudflare
+  Pages deploy. (This very site is built on the same approach.)
+highlights:
+  - Zero JavaScript by default; islands only where there is real interactivity
+  - Typed content collections with schemas instead of ad-hoc markdown imports
+  - Images through astro:assets, semantic HTML and accessibility basics
+  - "Cloudflare Pages deploy skill: build settings, _headers, _redirects and custom domains"
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [web-app]
+stacks: [astro, typescript, cloudflare]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Astro static site rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/astro-components.mdc
+    role: rules
+    description: Rule applied to .astro files.
+  - path: skills/cloudflare-pages-deploy/SKILL.md
+    role: skill
+    skill: cloudflare-pages-deploy
+    description: Deploys a static build to Cloudflare Pages.
+requires:
+  tools: [node, wrangler]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The deploy skill uploads your built site to Cloudflare when you ask it to.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

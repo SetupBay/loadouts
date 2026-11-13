@@ -1,0 +1,97 @@
+id: tauri-2-api-guard
+type: loadout
+title: Tauri 2 guard for Tauri 1 imports, config and Rust APIs
+summary: Stop agents writing @tauri-apps/api/tauri, appWindow, the allowlist, get_window and emit_all into Tauri 2 apps, and catch the snake_case invoke arguments Tauri 2 rejects.
+description: |
+  Tauri 2 has been out since October 2024, but much of what agents learnt is Tauri 1. Tauri 2 moved invoke to @tauri-apps/api/core, replaced appWindow, split fs, dialog, shell and http into plugins, replaced the allowlist with capabilities, renamed tauri.conf.json keys (tauri to app, distDir to frontendDist, devPath to devUrl) and renamed core Rust APIs (get_window, emit_all, SystemTray, WindowBuilder). It also expects command arguments in camelCase from JavaScript, which catches out new Tauri 2 code too.
+
+  This loadout pairs a Cursor rule and AGENTS.md (a never/always table covering the front end, the config and Rust) with a skill that checks the work. A standard-library Python scanner reports Tauri 1 code as errors across .ts/.js, .rs, tauri.conf.json, Cargo.toml and package.json. Then tsc checks the front end, a Node test mocks the IPC to pin the argument names, and the config is validated against the schema shipped in the Tauri CLI. The verifier runs all of this on a Tauri 2 notes app and a Tauri 1 sample, and checks the Rust names against the published tauri 2.12.5 crate source. For least-privilege capabilities, pair it with the Tauri 2 desktop app loadout.
+highlights:
+  - Never/always table for the front end, tauri.conf.json and Rust
+  - Scanner flags Tauri 1 imports, config keys and Rust APIs as errors
+  - Warns on snake_case invoke arguments, which Tauri 2 doesn't map
+  - A Node test with @tauri-apps/api/mocks pins the camelCase argument names
+  - Validates tauri.conf.json against the schema shipped in the Tauri CLI
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Tauri docs: upgrade from Tauri 1.0"
+    url: https://v2.tauri.app/start/migrate/from-tauri-1/
+  - title: "Tauri docs: calling Rust from the front end"
+    url: https://v2.tauri.app/develop/calling-rust/
+  - title: "Tauri docs: mocking Tauri APIs"
+    url: https://v2.tauri.app/develop/tests/mocking/
+  - title: "@tauri-apps/api 2.12.4 on npm"
+    url: https://www.npmjs.com/package/@tauri-apps/api/v/2.12.4
+  - title: "tauri 2.12.5 on crates.io"
+    url: https://crates.io/crates/tauri/2.12.5
+  - title: "@iameythakur: Tauri v2 command arguments are camelCase by default"
+    url: https://x.com/iameythakur/status/2115093332095377815
+categories:
+  - web-app
+stacks:
+  - tauri
+  - typescript
+  - rust
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Tauri 2 version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/tauri-2-only.mdc
+    role: rules
+    description: Never/always table for the front end, Rust and tauri.conf.json.
+  - path: skills/tauri-2-guard/SKILL.md
+    role: skill
+    skill: tauri-2-guard
+    description: Scan for Tauri 1 code, then type-check, test with mocked IPC and validate the config schema.
+  - path: skills/tauri-2-guard/scripts/tauri2_guard.py
+    role: reference
+    skill: tauri-2-guard
+    description: Read-only scanner for Tauri 1 imports, config keys, Rust APIs and snake_case invoke arguments.
+  - path: skills/tauri-2-guard/references/v1-to-v2.md
+    role: reference
+    skill: tauri-2-guard
+    description: Tauri 1 to Tauri 2 tables for the front end, the config and Rust.
+  - path: skills/tauri-2-guard/references/tauri1-sample/main.ts.txt
+    role: reference
+    skill: tauri-2-guard
+    description: Tauri 1 front end for checking the guard.
+  - path: skills/tauri-2-guard/references/tauri1-sample/main.rs.txt
+    role: reference
+    skill: tauri-2-guard
+    description: Tauri 1 main.rs for checking the guard.
+  - path: skills/tauri-2-guard/references/tauri1-sample/tauri.conf.json.txt
+    role: reference
+    skill: tauri-2-guard
+    description: Tauri 1 tauri.conf.json for checking the guard.
+  - path: skills/tauri-2-guard/references/tauri1-sample/Cargo.toml.txt
+    role: reference
+    skill: tauri-2-guard
+    description: Tauri 1 Cargo.toml for checking the guard.
+requires:
+  tools:
+    - node
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - tauri2_guard.py
+  notes: The scanner only reads source, config and manifest files and prints findings; it never edits files and makes no network calls. Installing the project's pinned packages with npm, or running cargo, downloads them.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

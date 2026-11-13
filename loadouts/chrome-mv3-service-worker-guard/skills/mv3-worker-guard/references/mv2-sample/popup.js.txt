@@ -1,0 +1,3 @@
+// MV2 popup reaching into the background page.
+var bg = chrome.extension.getBackgroundPage();
+document.getElementById("n").textContent = bg.count;

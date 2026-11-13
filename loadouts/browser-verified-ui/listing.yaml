@@ -1,0 +1,65 @@
+id: browser-verified-ui
+type: loadout
+title: Browser-verified UI changes
+summary: Make the agent load every UI change in a real browser via Playwright MCP, exercise it, fail on console or network errors and attach screenshots at two widths.
+description: |
+  The most repeated failure in practitioner posts about agent-built front ends: the agent says done, the page is blank or
+  throws in the console. This loadout wires in the Playwright MCP server (pinned, isolated profile, headless, output in a
+  git-ignored folder) and a verification procedure: snapshot, exercise the change including an error path, check console
+  and network, screenshot at 390 and 1280 pixels. It also keeps the browser away from production and real credentials,
+  and notes the context cost of browser MCP servers.
+highlights:
+  - Playwright MCP pinned to 0.0.83, isolated in-memory profile, headless
+  - Done means loaded, exercised and error-free in a browser
+  - Accessibility snapshot first, screenshots for layout evidence
+  - Console errors and failed requests count as failures
+  - Screenshots at 390 and 1280 pixels in a git-ignored folder
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@vishalsg42: context cost of browser MCP servers, measured"
+    url: https://x.com/vishalsg42/status/2102314115897373161
+  - title: Playwright MCP
+    url: https://github.com/microsoft/playwright-mcp
+categories:
+  - web-app
+  - workflow
+stacks:
+  - playwright
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Browser verification rules for UI work.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: mcp.json
+    role: mcp
+    description: Playwright MCP server, pinned and isolated.
+  - path: skills/verify-in-browser/SKILL.md
+    role: skill
+    skill: verify-in-browser
+    description: Load, exercise, check errors and screenshot a UI change.
+requires:
+  tools:
+    - node
+  env: []
+  mcp:
+    - playwright
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: Runs the Playwright MCP server from npm with an isolated, in-memory browser profile. The agent is told to stay on localhost.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

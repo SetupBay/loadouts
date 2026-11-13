@@ -1,0 +1,71 @@
+id: ai-code-review-rules
+type: loadout
+title: AI code review rules
+summary: "Review-only rule files for Claude Code Review, Cursor Bugbot and Copilot, built from one list: severity, a nit cap, what to skip and what to always check."
+description: |
+  AI code review went mainstream this autumn, and teams found each reviewer reads its own file: Claude Code Review reads
+  REVIEW.md from the default branch (never from the PR), Bugbot reads .cursor/BUGBOT.md and ignores .cursor/rules, and Copilot
+  uses instruction files with applyTo and excludeAgent. This loadout gives your agent the map of who reads what, rules for
+  writing review instructions that cut noise, and a skill that writes all three files from one evidence-based list.
+highlights:
+  - "Who reads what: REVIEW.md, .cursor/BUGBOT.md, Copilot instruction files"
+  - Severity, nit cap, do-not-report and always-check sections
+  - "Rules come from evidence: past false positives and real misses"
+  - Reminder that REVIEW.md changes apply only after merging to a protected default branch
+  - Copilot review-only file with excludeAgent
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@Cisco_research: Code Review reads REVIEW.md from the default branch"
+    url: https://x.com/Cisco_research/status/2111019382038012147
+  - title: "@FastfixAI: .cursor/BUGBOT.md for Bugbot"
+    url: https://x.com/FastfixAI/status/2096752814303174784
+  - title: "Claude Code docs: customise Code Review"
+    url: https://code.claude.com/docs/en/code-review-customize
+  - title: "Cursor docs: Bugbot"
+    url: https://cursor.com/docs/bugbot
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - github
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Where AI reviewers read rules and how to write them.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/set-up-review-rules/SKILL.md
+    role: skill
+    skill: set-up-review-rules
+    description: Write review files for each reviewer from one rule list.
+  - path: skills/set-up-review-rules/references/review-rules-template.md
+    role: reference
+    skill: set-up-review-rules
+    description: Shared review rule template.
+  - path: skills/set-up-review-rules/references/copilot-review-instructions.md
+    role: reference
+    skill: set-up-review-rules
+    description: Copilot review-only instruction file.
+requires:
+  tools:
+    - gh
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

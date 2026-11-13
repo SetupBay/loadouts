@@ -1,0 +1,10 @@
+# CLAUDE.md
+
+@AGENTS.md
+
+## Claude Code notes
+
+- Skills from this loadout live in `.claude/skills/`: `set-up-review-rules`. Use them when their description matches the task.
+- Follow AGENTS.md above; where this file and AGENTS.md disagree, AGENTS.md wins.
+
+<!-- From SetupBay "AI code review rules" v1.0.0 — https://setupbay.com/loadouts/ai-code-review-rules/ -->

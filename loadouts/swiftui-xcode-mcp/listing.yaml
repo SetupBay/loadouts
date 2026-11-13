@@ -1,0 +1,79 @@
+id: swiftui-xcode-mcp
+type: loadout
+title: SwiftUI with Xcode's MCP tools (build, preview, test)
+summary: "Use Xcode 26.3+'s MCP server (xcrun mcpbridge) to build, read the log, render and look at SwiftUI previews, and run tests after every change."
+description: |
+  Since Xcode 26.3, Xcode has its own MCP server. Claude Code, Codex, Cursor and other agents can connect to it through `xcrun mcpbridge` to build the open project, read the build log and Issue Navigator, run tests, search Apple's documentation and render SwiftUI previews to PNGs. That last one matters most: the agent can finally see the UI it changed instead of guessing from the source.
+
+  This loadout sets the loop: XcodeListWindows for the tab identifier, BuildProject and GetBuildLog after every change, RenderPreview for every view touched (and actually looking at the image), RunSomeTests then RunAllTests, and DocumentationSearch before using an unfamiliar API. It keeps the agent away from the scheme, run destination, signing and file deletions unless asked. preview_check.py (standard library, runs on any OS) lists every preview as a RenderPreview target with its zero-based index, and flags previews that hit the network, `.shared` singletons, UserDefaults or environment secrets, plus views with no preview at all. It pairs with the swiftui-swift-test-ci loadout for Linux CI.
+highlights:
+  - Xcode MCP over xcrun mcpbridge, with setup lines for Claude Code, Codex and Cursor
+  - Build, read the error log, render previews, run tests, after every change
+  - RenderPreview targets (path and zero-based index) listed by preview_check.py
+  - Flags previews that use the network, singletons, UserDefaults or env secrets
+  - Views without a preview are flagged so the agent can see what it changed
+  - Scheme, destination, signing and file deletions left to the human
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Apple: Giving external agents access to Xcode"
+    url: https://developer.apple.com/documentation/xcode/giving-external-agents-access-to-xcode
+  - title: "Cursor docs: Xcode integration (Xcode 26.3+, 20 MCP tools)"
+    url: https://cursor.com/docs/integrations/xcode
+  - title: artemnovichkov/xcode-tools-docs (community reference for tool parameters)
+    url: https://github.com/artemnovichkov/xcode-tools-docs
+  - title: "Apple: Previews in Xcode (#Preview, @Previewable)"
+    url: https://developer.apple.com/documentation/swiftui/previews-in-xcode
+categories:
+  - web-app
+  - workflow
+stacks:
+  - swiftui
+  - swift
+  - xcode
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: The build, preview and test loop with Xcode's MCP tools.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/xcode-mcp-loop/SKILL.md
+    role: skill
+    skill: xcode-mcp-loop
+    description: Connect, edit, build, render previews, test and report.
+  - path: skills/xcode-mcp-loop/scripts/preview_check.py
+    role: reference
+    skill: xcode-mcp-loop
+    description: Lists RenderPreview targets and flags previews that touch live services.
+  - path: skills/xcode-mcp-loop/references/tools.md
+    role: reference
+    skill: xcode-mcp-loop
+    description: The Xcode MCP tools, what each is for, and one-time setup.
+  - path: mcp.json
+    role: mcp
+    description: Xcode's MCP server through xcrun mcpbridge (macOS, Xcode running).
+requires:
+  tools:
+    - xcode
+    - python3
+  mcp:
+    - xcode
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - preview_check.py
+  notes: The only MCP server is Apple's mcpbridge, which drives the local Xcode; its DocumentationSearch tool queries Apple's documentation, and Xcode asks the human to allow each agent connection. preview_check.py only reads Swift files.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

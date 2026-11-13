@@ -1,0 +1,42 @@
+# .github/workflows/eas-update-preview.yml
+# On every push to main: typecheck, export the JS bundle, and publish an EAS Update to the
+# preview channel ONLY if the native fingerprint matches the last recorded build.
+# Production is promoted by a person (see the skill), never from this workflow.
+name: EAS Update (preview)
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: eas-update-preview
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - name: Native fingerprint unchanged since the last build
+        run: node .agents/skills/eas-update-release/scripts/ota_check.mjs compare
+      - name: Bundle builds
+        run: npx expo export --platform ios --platform android --output-dir dist
+      - name: Publish to preview
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          # Passed through the environment, never interpolated into the script.
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: >
+          npx --yes eas-cli@25.1.1 update
+          --channel preview --environment preview
+          --message "$COMMIT_MESSAGE" --non-interactive

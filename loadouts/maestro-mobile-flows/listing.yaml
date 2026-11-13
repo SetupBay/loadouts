@@ -1,0 +1,83 @@
+id: maestro-mobile-flows
+type: loadout
+title: Maestro UI flows for iOS and Android agents
+summary: "Maestro MCP and CLI for coding agents: inspect the screen, try commands inline, save flows with ids and assertions, lint them, then run the smoke set."
+description: |
+  Maestro has become a common way to let a coding agent check a mobile app end to end: the CLI's built-in MCP server gives the agent inspect_screen, run, list_devices and a syntax cheat sheet, so it can look at the simulator, try a tap, and turn what worked into a YAML flow. Left alone, agents tend to write flows that tap by coordinates or visible text, never assert anything, and type a real password into the sign-in screen.
+
+  This loadout sets the house style for agents: inspect first, try commands inline, then save flows that start from a clean state, select by accessibility id, share sign-in through a subflow, and end with assertions. Test credentials come in with -e variables. A small Python linter (run with uv, PyYAML pinned) catches unknown commands, missing appId headers, missing subflow files, flows without assertions, bare assertScreenshot calls and literal values in password or OTP fields before anything touches a device. AGENTS.md keeps device resets, physical installs and cloud runs behind the human's go-ahead. Written against Maestro CLI 2.11.0.
+highlights:
+  - Maestro MCP (maestro mcp) for inspect_screen, inline runs and the cheat sheet
+  - Flows start clean, select by accessibility id, end with assertions
+  - Sign-in shared as a subflow; credentials only through -e variables
+  - flow_lint.py catches typos, missing appId or subflows, assertion-free flows, literal secrets
+  - Smoke tags and JUnit output for CI; no weakening assertions to go green
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: mobile-dev-inc/maestro (CLI 2.11.0, MCP tools, flow commands)
+    url: https://github.com/mobile-dev-inc/maestro
+  - title: "Maestro docs: Maestro MCP"
+    url: https://docs.maestro.dev/get-started/maestro-mcp
+  - title: "Maestro docs: commands reference"
+    url: https://docs.maestro.dev/reference/commands-available
+categories:
+  - web-app
+  - workflow
+stacks:
+  - ios
+  - android
+  - xcode
+  - maestro
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for writing and running Maestro flows.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/maestro-flows/SKILL.md
+    role: skill
+    skill: maestro-flows
+    description: Inspect, write, lint and run flows.
+  - path: skills/maestro-flows/scripts/flow_lint.py
+    role: reference
+    skill: maestro-flows
+    description: Read-only flow linter (uv, PyYAML pinned).
+  - path: skills/maestro-flows/references/login.yaml.txt
+    role: reference
+    skill: maestro-flows
+    description: Example top-level smoke flow.
+  - path: skills/maestro-flows/references/sign-in.yaml.txt
+    role: reference
+    skill: maestro-flows
+    description: Example sign-in subflow using -e variables.
+  - path: mcp.json
+    role: mcp
+    description: Maestro MCP server from the local CLI.
+requires:
+  tools:
+    - maestro
+    - java
+    - uv
+  env: []
+  mcp:
+    - maestro
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - flow_lint.py
+  notes: flow_lint.py only reads flow files; uv fetches PyYAML on first run. The MCP server is the local Maestro CLI and drives a simulator, emulator or device the human chose.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

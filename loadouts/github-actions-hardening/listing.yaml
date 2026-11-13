@@ -1,0 +1,67 @@
+id: github-actions-hardening
+type: loadout
+title: GitHub Actions hardening for agent workflows
+summary: "Rules and a zizmor skill for agents editing GitHub Actions: SHA-pinned actions, permissions: {}, no template injection, no pull_request_target, read-only agent jobs."
+description: |
+  Agents now write and edit CI workflows, and increasingly run inside them on untrusted issue and PR text. The common mistakes are the ones attackers use: actions pinned to a movable tag, an issue title expanded straight into a shell script, pull_request_target checking out fork code, a default token with write access to everything. This loadout gives your agent the hardening rules from GitHub's secure-use guide and Security Lab, a pattern for agent workflows that separates thinking (read-only) from acting (narrow writes), and a skill that runs zizmor offline and fixes each audit. The verifier runs zizmor 1.31.1 on the example workflow (clean) and on an unsafe agent-triage workflow.
+highlights:
+  - Actions pinned to full commit SHAs, kept current by Dependabot
+  - "permissions: {} at the top; per-job grants; persist-credentials: false"
+  - Untrusted event text through env, never inline in run
+  - Agent jobs read-only; a separate narrow job applies their output
+  - zizmor --offline as the check, no token needed
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "GitHub docs: secure use reference for Actions"
+    url: https://docs.github.com/en/actions/reference/security/secure-use
+  - title: "GitHub Security Lab: preventing pwn requests"
+    url: https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
+  - title: "zizmor: static analysis for GitHub Actions"
+    url: https://github.com/zizmorcore/zizmor
+  - title: "zizmor docs: audit rules"
+    url: https://docs.zizmor.sh/audits/
+categories:
+  - security
+  - workflow
+stacks:
+  - github-actions
+  - github
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for writing and changing GitHub Actions workflows, including ones that run AI agents.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/harden-workflow/SKILL.md
+    role: skill
+    skill: harden-workflow
+    description: Audit with zizmor and fix each finding.
+  - path: skills/harden-workflow/references/issue-triage.yml
+    role: reference
+    skill: harden-workflow
+    description: Hardened example workflow.
+requires:
+  tools:
+    - uv
+    - gh
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uvx downloads zizmor from PyPI. Offline mode makes no GitHub API calls; the online audits need a GH_TOKEN. The rules forbid pushing workflow changes to the default branch unless asked.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

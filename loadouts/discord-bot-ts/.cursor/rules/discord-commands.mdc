@@ -1,0 +1,27 @@
+---
+description: Shape of a discord.js v14 slash command file
+globs: src/commands/**/*.ts
+alwaysApply: false
+---
+
+Each file exports `data` and `execute`, nothing else:
+
+```ts
+import { SlashCommandBuilder, MessageFlags, type ChatInputCommandInteraction } from "discord.js";
+
+export const data = new SlashCommandBuilder()
+  .setName("roll")                       // lowercase, 1–32 chars, no spaces
+  .setDescription("Roll a dice")         // required, 1–100 chars
+  .addIntegerOption((o) => o.setName("sides").setDescription("Number of sides").setMinValue(2).setMaxValue(1000));
+
+export async function execute(interaction: ChatInputCommandInteraction) {
+  const sides = interaction.options.getInteger("sides") ?? 6;
+  const result = 1 + Math.floor(Math.random() * sides);
+  await interaction.reply({ content: `🎲 ${result} (d${sides})` });
+}
+```
+
+- If `execute` awaits anything slow, `deferReply()` first and `editReply()` after.
+- Use `flags: MessageFlags.Ephemeral` for private replies, not `ephemeral: true`.
+- Required options must be added before optional ones.
+- Do not register commands from here; that is `src/deploy-commands.ts`.

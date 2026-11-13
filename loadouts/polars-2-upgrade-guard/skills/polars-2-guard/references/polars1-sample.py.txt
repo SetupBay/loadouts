@@ -1,0 +1,18 @@
+# A Polars 1.x report script, used to check the guard. Every marked line fails or changes in Polars 2.
+import io
+
+import polars as pl
+
+sales = pl.read_csv("sales.csv", dtypes={"store": pl.Utf8})                  # csv-dtypes
+sales = sales.with_row_count()                                               # with-row-count
+long = sales.melt(id_vars="store", value_vars=["q1", "q2"])                  # melt
+per_store = sales.group_by("store").count()                                  # groupby-count
+joined = sales.join(per_store, on="store", how="outer")                      # join-outer
+labels = sales.select(pl.col("store").str.concat(", "))                      # str-concat
+smooth = sales.select(pl.col("q1").rolling_mean(3, min_periods=1))           # min-periods
+big = sales.lazy().filter(pl.col("q1") > 10).collect(streaming=True)         # streaming-flag
+days = sales.with_columns(pl.col("day").cast(pl.Date))                       # string-to-temporal-cast
+names = sales.with_columns(pl.col("store").map_dict({"A": "Leeds"}))         # map-dict
+buf = io.BytesIO()                                                           # bytesio-seek
+sales.write_parquet(buf)
+again = pl.read_parquet(buf)

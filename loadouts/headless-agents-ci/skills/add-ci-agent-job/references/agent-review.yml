@@ -1,0 +1,51 @@
+# .github/workflows/agent-review.yml: read-only agent review that comments on the PR.
+name: agent-review
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+concurrency:
+  group: agent-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install Claude Code (pinned)
+        run: npm install -g @anthropic-ai/claude-code@2.1.302
+      - name: Collect the diff (untrusted data, passed as a file)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh pr diff "$PR" > pr.diff
+      - name: Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude --bare -p "$(cat .github/prompts/review.md)" \
+            --permission-mode dontAsk \
+            --allowedTools "Read,Grep,Glob" \
+            --max-budget-usd 2 \
+            --output-format json < pr.diff > result.json
+          jq -e '.is_error == false' result.json > /dev/null
+          jq -r '.result' result.json > review.md
+      - name: Comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh pr comment "$PR" --body-file review.md
+
+# Codex variant of the Review step (read-only sandbox is the default):
+#   npm install -g @openai/codex@0.163.0
+#   env CODEX_API_KEY: ${{ secrets.CODEX_API_KEY }}
+#   codex exec --ephemeral -o review.md "$(cat .github/prompts/review.md)" < pr.diff

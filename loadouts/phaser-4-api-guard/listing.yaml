@@ -1,0 +1,82 @@
+id: phaser-4-api-guard
+type: loadout
+title: Phaser 4 guard for Phaser 3 pipelines, FX and masks
+summary: Stop agents writing setPipeline, preFX, postFX, BitmapMask and setTintFill into Phaser 4 games, and catch the Math.TAU change that compiles but breaks rotations.
+description: |
+  npm i phaser has installed Phaser 4 since April 2026, but nearly every Phaser example an agent learnt from is Phaser 3. Phaser 4 replaced the WebGL renderer, so the commonest Phaser 3 calls are gone: pipelines (setPipeline('Light2D')), preFX and postFX, BitmapMask, setTintFill, Geom.Point and Structs.Set. Other changes compile and still break the game: Math.TAU is now PI * 2 rather than PI / 2, RenderTexture drawing waits for render(), and roundPixels is off by default.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (check the version, then a never/always table) with a skill that checks the work. A standard-library Python scanner reports removed Phaser 3 APIs as errors and the silent changes as warnings, then tsc checks the code against Phaser 4's own types. It also points the agent at the migration skills Phaser now ships inside the npm package. The verifier runs it on a Phaser 4 scene and a Phaser 3.90 sample with the pinned phaser 4.2.1 and TypeScript 7.0.2.
+highlights:
+  - Checks package.json first, and stays on Phaser 3 if the game is still 3.x
+  - Scanner flags pipelines, preFX/postFX, BitmapMask and setTintFill as errors
+  - Warns on Math.TAU, now PI * 2, and RenderTexture draws without render()
+  - tsc against Phaser 4.2.1's types rejects every removed call in the sample
+  - Points agents at the migration skills shipped in node_modules/phaser/skills
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Phaser v3 to v4 migration guide"
+    url: https://cdn.jsdelivr.net/npm/phaser@4.2.1/changelog/v4/4.0/MIGRATION-GUIDE.md
+  - title: "Phaser's v3-to-v4-migration agent skill"
+    url: https://github.com/phaserjs/phaser/tree/master/skills/v3-to-v4-migration
+  - title: "phaser 4.2.1 on npm"
+    url: https://www.npmjs.com/package/phaser/v/4.2.1
+  - title: "@shipthejam: npm i phaser now installs Phaser 4, so pin the version and tell the agent"
+    url: https://x.com/shipthejam/status/2112434664006951184
+  - title: "@phaser_: building a Phaser 4 game with Codex"
+    url: https://x.com/phaser_/status/2111917873304121443
+categories:
+  - gamedev
+stacks:
+  - phaser
+  - typescript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Version check, Phaser 4 rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/phaser-4-only.mdc
+    role: rules
+    description: Never/always table for game source and package.json.
+  - path: skills/phaser-4-guard/SKILL.md
+    role: skill
+    skill: phaser-4-guard
+    description: Scan for Phaser 3 APIs and silent changes, then type-check against Phaser 4's types.
+  - path: skills/phaser-4-guard/scripts/phaser4_guard.py
+    role: reference
+    skill: phaser-4-guard
+    description: Read-only scanner for removed Phaser 3 APIs and Phaser 4 behaviour changes.
+  - path: skills/phaser-4-guard/references/v3-to-v4.md
+    role: reference
+    skill: phaser-4-guard
+    description: Phaser 3 to Phaser 4 table for the calls agents get wrong.
+  - path: skills/phaser-4-guard/references/phaser3-sample.ts.txt
+    role: reference
+    skill: phaser-4-guard
+    description: A Phaser 3.90 scene for checking the guard.
+requires:
+  tools:
+    - node
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - phaser4_guard.py
+  notes: The scanner only reads source files and package.json and prints findings; it never edits files and makes no network calls. Installing the project's pinned packages with npm downloads them.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

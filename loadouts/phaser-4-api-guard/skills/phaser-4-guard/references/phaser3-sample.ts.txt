@@ -1,0 +1,25 @@
+// A Phaser 3.90 scene, used to check the guard. Phaser 4 removed or changed every marked call.
+import Phaser from "phaser";
+
+export class GameScene extends Phaser.Scene {
+  create() {
+    const hero = this.add.sprite(100, 100, "hero");
+    hero.setTintFill(0xff0000);
+    hero.setPipeline("Light2D");
+    hero.preFX?.addGlow(0xffffff);
+    const glow = hero.postFX.addBloom();
+    const mask = new Phaser.Display.Masks.BitmapMask(this, this.add.image(0, 0, "mask"));
+    hero.setMask(mask);
+    const p = new Phaser.Geom.Point(1, 2);
+    const quarter = Phaser.Math.TAU;
+    const full = Phaser.Math.PI2;
+    const seen = new Phaser.Structs.Set<string>();
+    const rt = this.add.renderTexture(0, 0, 64, 64);
+    rt.draw(hero);
+    const mesh = this.add.mesh(0, 0, "hero");
+    const cm = this.cameras.main.postFX.addColorMatrix();
+    cm.sepia();
+    this.textures.generate("dot", { data: ["1"] });
+    console.log(p, quarter, full, seen, glow, mesh);
+  }
+}

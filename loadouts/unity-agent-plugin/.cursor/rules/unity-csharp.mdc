@@ -1,0 +1,12 @@
+---
+description: Unity C# script conventions.
+globs: Assets/**/*.cs
+alwaysApply: false
+---
+
+- One public type per file; the file name matches the type. Namespaces follow the folder under `Assets/Scripts/`.
+- Serialise private fields with `[SerializeField] private`, not public fields.
+- Cache component lookups in `Awake`; no `GetComponent`, `Find` or allocations in `Update`.
+- Use `TryGetComponent` instead of `GetComponent` plus a null check.
+- Do not compare Unity objects with `?.` or `??`; use `== null` or implicit bool, which respect destroyed objects.
+- New input code uses the Input System package, not `UnityEngine.Input`, if the project has it installed.

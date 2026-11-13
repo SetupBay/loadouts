@@ -1,0 +1,94 @@
+id: swiftui-swift-test-ci
+type: loadout
+title: SwiftUI with a Swift package core and swift test in CI
+summary: SwiftUI screens as thin views over @Observable view models in a Swift package, with Swift Testing tests run by swift test on Linux and macOS CI.
+description: |
+  Agents writing SwiftUI put the logic in body, where nothing can test it, and then claim the feature works because Xcode built. This loadout gives your agent a structure that tests can reach. Each screen's state, validation and side effects live in a main-actor @Observable view model inside a local Swift package. The network and clock come in through Sendable protocols, so tests swap in actor fakes. The SwiftUI view stays thin and sits behind canImport(SwiftUI), so the package builds and tests on Linux too. A cheap Linux CI job runs swift format lint and swift test in the Swift 6.4.1 container. A macOS job builds the views for the iOS simulator. The verifier runs the full example in the Swift 6 language mode on Swift 6.4.1: six tests and nine cases pass. It also checks that a swallowed error fails the tests and that a main-actor violation fails the build.
+highlights:
+  - "@MainActor @Observable view model with enum state and no SwiftUI import"
+  - Injected Sendable client and clock; actor fakes in tests
+  - Swift Testing with parameterised cases instead of XCTest copies
+  - Linux CI runs swift test; macOS CI compiles the views for the simulator
+  - Verified on Swift 6.4.1 in the Swift 6 language mode
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: Swift Testing documentation
+    url: https://developer.apple.com/documentation/testing
+  - title: "Apple: Managing model data in your app (Observation)"
+    url: https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app
+  - title: "Swift.org: migrating to Swift 6 (data-race safety)"
+    url: https://www.swift.org/migration/documentation/migrationguide/
+  - title: swiftlang/swift-format
+    url: https://github.com/swiftlang/swift-format
+  - title: Swift official Docker images
+    url: https://hub.docker.com/_/swift
+categories:
+  - web-app
+  - workflow
+stacks:
+  - swift
+  - swiftui
+  - ios
+  - github-actions
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for a SwiftUI app whose view models live in a Swift package covered by swift test.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/swiftui-testable-feature/SKILL.md
+    role: skill
+    skill: swiftui-testable-feature
+    description: Layout, view model and view rules, tests and commands.
+  - path: skills/swiftui-testable-feature/references/Package.swift
+    role: reference
+    skill: swiftui-testable-feature
+    description: Swift 6 language mode package for iOS 18 and macOS 15.
+  - path: skills/swiftui-testable-feature/references/Note.swift
+    role: reference
+    skill: swiftui-testable-feature
+    description: Value type, client protocol and errors.
+  - path: skills/swiftui-testable-feature/references/NotesModel.swift
+    role: reference
+    skill: swiftui-testable-feature
+    description: "@MainActor @Observable view model."
+  - path: skills/swiftui-testable-feature/references/NotesView.swift
+    role: reference
+    skill: swiftui-testable-feature
+    description: Thin SwiftUI view behind canImport(SwiftUI).
+  - path: skills/swiftui-testable-feature/references/NotesModelTests.swift
+    role: reference
+    skill: swiftui-testable-feature
+    description: Swift Testing suite with actor fakes.
+  - path: skills/swiftui-testable-feature/references/swift-format.json
+    role: reference
+    skill: swiftui-testable-feature
+    description: swift-format config, saved as .swift-format.
+  - path: skills/swiftui-testable-feature/references/swift-ci.yml
+    role: reference
+    skill: swiftui-testable-feature
+    description: Linux swift test job and macOS simulator build job.
+requires:
+  tools:
+    - swift
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+  notes: No dependencies beyond the Swift toolchain and Foundation. Tests use in-memory actor fakes and make no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,65 @@
+id: parallel-agents-worktrees
+type: loadout
+title: Parallel agents in git worktrees
+summary: "Rules and two skills for running several coding agents at once, one task per git worktree: isolation, ports, dependencies, rebasing and clean-up."
+description: |
+  Running three or four agents in parallel is now routine, and the tools have caught up: Claude Code has --worktree and
+  worktree-isolated subagents, Codex manages worktrees, and gh can create one per issue. What breaks is the etiquette:
+  agents editing the main checkout, two dev servers on one port, a shared database migrated twice, or a worktree deleted
+  with unpushed work. This loadout gives every agent the same rules and a start and land procedure.
+highlights:
+  - "Isolation rules: own directory, own branch, no branch switching"
+  - Port and shared-resource conventions so agents do not collide
+  - "Start skill: worktree outside the repo, lockfile install, baseline test run"
+  - "Land skill: rebase, checks, PR, safe clean-up with git branch -d"
+  - "Notes for claude --worktree, isolation: worktree subagents, Codex managed worktrees and gh issue develop --worktree"
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: worktrees"
+    url: https://code.claude.com/docs/en/worktrees
+  - title: GitHub CLI 2.99.0 release notes
+    url: https://github.com/cli/cli/releases/tag/v2.99.0
+  - title: git-worktree documentation
+    url: https://git-scm.com/docs/git-worktree
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - git
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for agents working in parallel worktrees.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/start-worktree/SKILL.md
+    role: skill
+    skill: start-worktree
+    description: Create a worktree for one task with deps, port and baseline tests.
+  - path: skills/land-worktree/SKILL.md
+    role: skill
+    skill: land-worktree
+    description: Rebase, check, open a PR and clean up after merge.
+requires:
+  tools:
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

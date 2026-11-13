@@ -1,0 +1,82 @@
+id: sqlalchemy-2-style-guard
+type: loadout
+title: SQLAlchemy 2 guard against 1.x and legacy Query code
+summary: Stop agents writing engine.execute, select([...]), row["name"] and session.query into SQLAlchemy 2 projects, and catch writes that are never committed.
+description: |
+  SQLAlchemy 2.0 has been out since January 2023, but agents still write 1.x code: engine.execute("..."), plain SQL strings, select([...]), row["name"], MetaData(bind=), autocommit=True, and untyped Column models behind declarative_base(). The removed APIs fail at once. session.query() keeps running as the legacy Query API, so it spreads. The costly change is silent: 2.x has no autocommit, so an insert inside engine.connect() with no commit is rolled back when the block ends, and nothing reports it.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (a never/always table) with a skill that checks the work. A standard-library Python scanner reports removed 1.x APIs and legacy Query calls as errors, and untyped columns, backref, lazy="dynamic" and writes inside connect() as warnings. Then the tests run with SADeprecationWarning raised as an error and read every write back in a new session. The verifier runs both against a 2.0-style app on the pinned SQLAlchemy 2.1.6 and a 1.x sample, and shows SQLAlchemy refusing the sample's removed calls and rolling back its uncommitted write.
+highlights:
+  - Never/always table for 2.0-style SQLAlchemy in a .py-scoped Cursor rule
+  - Scanner flags removed 1.x APIs and legacy session.query as errors
+  - Warns on writes inside engine.connect() that are never committed
+  - Typed Mapped models, back_populates and WriteOnlyMapped instead of legacy forms
+  - Tests run with SADeprecationWarning as an error and read writes back
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "SQLAlchemy docs: SQLAlchemy 2.0 migration guide"
+    url: https://docs.sqlalchemy.org/en/21/changelog/migration_20.html
+  - title: "SQLAlchemy docs: ORM querying guide"
+    url: https://docs.sqlalchemy.org/en/21/orm/queryguide/index.html
+  - title: "SQLAlchemy docs: working with transactions and the DBAPI"
+    url: https://docs.sqlalchemy.org/en/21/tutorial/dbapi_transactions.html
+  - title: "SQLAlchemy 2.1.6 on PyPI (released 21 Oct 2026)"
+    url: https://pypi.org/project/SQLAlchemy/2.1.6/
+categories:
+  - web-app
+  - data
+stacks:
+  - sqlalchemy
+  - python
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: SQLAlchemy 2 version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/sqlalchemy-2-style.mdc
+    role: rules
+    description: Never/always table for Python files.
+  - path: skills/sqlalchemy-2-guard/SKILL.md
+    role: skill
+    skill: sqlalchemy-2-guard
+    description: Scan for 1.x and legacy SQLAlchemy code, then run the tests with deprecations as errors.
+  - path: skills/sqlalchemy-2-guard/scripts/sqlalchemy2_guard.py
+    role: reference
+    skill: sqlalchemy-2-guard
+    description: Read-only scanner for removed and legacy SQLAlchemy APIs and uncommitted writes.
+  - path: skills/sqlalchemy-2-guard/references/migration-table.md
+    role: reference
+    skill: sqlalchemy-2-guard
+    description: SQLAlchemy 1.x to 2.0 style table, including transactions.
+  - path: skills/sqlalchemy-2-guard/references/sqlalchemy1-sample.py.txt
+    role: reference
+    skill: sqlalchemy-2-guard
+    description: A SQLAlchemy 1.x module for checking the guard.
+requires:
+  tools:
+    - python3
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - sqlalchemy2_guard.py
+  notes: The scanner only reads .py files and prints findings; it never edits files and makes no network calls. Running the tests with uv may download the pinned packages.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

@@ -1,0 +1,37 @@
+# Labels new issues from their title. Shows the hardened shape: SHA pins, no default permissions,
+# per-job grants, no persisted credentials, untrusted text passed through env.
+name: issue-triage
+on:
+  issues:
+    types: [opened]
+
+permissions: {}
+
+jobs:
+  triage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Pick a label from a fixed list
+        id: pick
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          label=question
+          case "${TITLE,,}" in
+            *bug*|*crash*|*error*) label=bug ;;
+            *feature*|*request*) label=enhancement ;;
+          esac
+          echo "label=$label" >> "$GITHUB_OUTPUT"
+      - name: Apply the label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          LABEL: ${{ steps.pick.outputs.label }}
+        run: gh issue edit "$ISSUE" --repo "$GITHUB_REPOSITORY" --add-label "$LABEL"

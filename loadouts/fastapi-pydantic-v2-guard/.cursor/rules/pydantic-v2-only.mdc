@@ -1,0 +1,23 @@
+---
+description: FastAPI with Pydantic v2 only; no Pydantic v1 models, config or methods
+globs: "**/*.py"
+alwaysApply: false
+---
+
+This FastAPI service uses Pydantic v2. FastAPI refuses `pydantic.v1` models.
+
+| Never (Pydantic v1) | Always (Pydantic v2) |
+|---|---|
+| `class Config: orm_mode = True` | `model_config = ConfigDict(from_attributes=True)` |
+| `@validator("x")` | `@field_validator("x")` + `@classmethod` |
+| `@root_validator` | `@model_validator(mode="after")` |
+| `m.dict()`, `m.json()` | `m.model_dump()`, `m.model_dump_json()` |
+| `M.parse_obj(d)`, `M.from_orm(row)` | `M.model_validate(d)`, `M.model_validate(row)` |
+| `m.copy(update=...)` | `m.model_copy(update=...)` |
+| `Field(regex=...)`, `Field(min_items=1)` | `Field(pattern=...)`, `Field(min_length=1)` |
+| `Field(const=True)` | `Literal["value"]` |
+| `from pydantic import BaseSettings` | `from pydantic_settings import BaseSettings` |
+| `note: Optional[str]` meaning "may be left out" | `note: str \| None = None` |
+| `@app.on_event("startup")` | `FastAPI(lifespan=lifespan)` |
+
+- After editing, run the `pydantic-v2-guard` skill's scanner, then pytest with `-W error::pydantic.warnings.PydanticDeprecatedSince20`.

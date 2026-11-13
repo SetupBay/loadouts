@@ -1,0 +1,15 @@
+{
+  "name": "pr-tidy",
+  "version": "1.2.0",
+  "description": "Tidy a branch before review: small commits, a clear PR description and current library docs.",
+  "author": { "name": "Your Team", "url": "https://github.com/your-org" },
+  "license": "MIT",
+  "repository": "https://github.com/your-org/pr-tidy",
+  "keywords": ["pull-requests", "review"],
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@4.4.2"]
+    }
+  }
+}

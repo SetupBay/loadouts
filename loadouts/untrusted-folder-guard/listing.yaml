@@ -1,0 +1,79 @@
+id: untrusted-folder-guard
+type: loadout
+title: Don't start agents in Downloads
+summary: "After the planted AGENTS.md attack: check what instruction and config files an agent will read in a folder, refuse drop zones, and treat setup steps as data."
+description: |
+  In October 2026 Forever Security found a malicious AGENTS.md in a customer's Downloads folder. A web page can save a file there without a click, and an agent started in that folder reads it as project instructions. The file told Codex to add an MCP server to its own config and install a malicious npm package; in their tests Codex did it in over 90% of runs. A CLAUDE.md variant had Claude Code point ANTHROPIC_BASE_URL at the attacker in about half of runs. They also report that about half of their customers run coding agents in Downloads.
+
+  This loadout gives your agent, and you, a check to run before working in any folder you didn't create. A read-only Python script lists every instruction, rule, skill and agent config file the agent will load from the folder and its parents. It refuses Downloads, Desktop, temp and home folders, and flags files git doesn't track that tell an agent to install packages, edit its own config, change API endpoints, turn off safety or keep quiet. The rules say instruction files you didn't write are data. There's also an optional shell wrapper that won't launch claude, codex, gemini, agy or cursor-agent in a drop zone.
+highlights:
+  - Lists every AGENTS.md, CLAUDE.md, GEMINI.md, rule, skill and agent config the agent will read, up to the git root
+  - Refuses Downloads, Desktop, iCloud Drive, temp and home as start folders
+  - Flags installs, pipe-to-shell, MCP and settings changes, API endpoint or key changes and keep-quiet wording
+  - Spots invisible Unicode and HTML comments addressed to the agent
+  - Untracked or uncommitted instruction files are treated as unreviewed
+  - Optional shell wrapper for claude, codex, gemini, agy and cursor-agent (you add it, not the agent)
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Forever Security: Markdown is the new executable (planted AGENTS.md in Downloads, 22 Oct 2026)"
+    url: https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+  - title: "The Hacker News: malicious file in Downloads folder tries to trick an AI coding agent"
+    url: https://thehackernews.com/2026/10/malicious-file-in-downloads-folder.html
+  - title: "OpenAI Codex docs: how Codex discovers AGENTS.md"
+    url: https://developers.openai.com/codex/guides/agents-md
+  - title: "Claude Code docs: how Claude remembers your project (CLAUDE.md loading)"
+    url: https://code.claude.com/docs/en/memory
+  - title: "@robshocks: if you launch Claude Code or Codex from Downloads, stop"
+    url: https://x.com/robshocks/status/2114459859764556122
+categories:
+  - security
+  - workflow
+stacks:
+  - bash
+  - python
+  - git
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Where not to start, and how to treat instruction files you didn't write.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/check-start-folder/SKILL.md
+    role: skill
+    skill: check-start-folder
+    description: Run the start-folder check and act on what it finds.
+  - path: skills/check-start-folder/scripts/start_check.py
+    role: reference
+    skill: check-start-folder
+    description: Read-only check of the folder and the files an agent will read there.
+  - path: skills/check-start-folder/references/agent-launch-guard.sh
+    role: reference
+    skill: check-start-folder
+    description: Optional shell wrapper that refuses to launch agents in drop zones.
+requires:
+  tools:
+    - python3
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - start_check.py
+    - agent-launch-guard.sh
+  notes: Marked as network because start_check.py matches install and download commands in the files it checks. It makes no network calls; it reads files and runs git. The shell wrapper only checks the folder and then runs the agent you asked for.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

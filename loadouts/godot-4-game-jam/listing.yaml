@@ -1,0 +1,52 @@
+id: godot-4-game-jam
+type: loadout
+title: Godot 4 game jam
+summary: GDScript conventions, jam-scope discipline and a ship-to-itch.io skill so your agent helps you finish a Godot 4 game in 48 hours.
+description: |
+  Game jams are lost to scope creep and a broken web build at hour 47. This loadout teaches your agent
+  typed GDScript and Godot 4 scene conventions, makes it protect the core loop before adding features,
+  and gives it a step-by-step skill for exporting a web build and pushing it to itch.io with butler.
+highlights:
+  - Typed GDScript 4 conventions, signals over hard references, scenes as the unit of reuse
+  - "Jam rules: playable loop first, feature freeze, a cut list instead of crunch"
+  - Ship skill covering headless web export, the single-threaded vs threaded trap, and butler pushes
+  - Cursor rule scoped to .gd files
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [gamedev]
+stacks: [godot, gdscript]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Godot 4 project and game jam rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/gdscript.mdc
+    role: rules
+    description: GDScript style rule, applied to .gd files.
+  - path: skills/godot-jam-ship/SKILL.md
+    role: skill
+    skill: godot-jam-ship
+    description: Exports a web build and publishes it to itch.io.
+requires:
+  tools: [godot-4, butler]
+  env: [BUTLER_API_KEY]
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The ship skill uploads builds to itch.io with butler, only when you ask it to.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

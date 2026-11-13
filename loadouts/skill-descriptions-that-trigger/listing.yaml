@@ -1,0 +1,73 @@
+id: skill-descriptions-that-trigger
+type: loadout
+title: Skill descriptions that fit the listing and trigger
+summary: Keep every SKILL.md description inside Claude Code's 1,536-character cap and both agents' listing budgets, with a trigger clause, so skills fire on their own.
+description: |
+  Agents pick a skill from its description, read from a listing with a fixed budget. Claude Code gives the whole listing 1% of the context window and cuts each entry at 1,536 characters. When it overflows, the least-used skills lose their descriptions. Codex allows 2% of the window, or 8,000 characters when it doesn't know the window, and shortens descriptions before dropping skills. Once a description is cut, the keywords that matched the user's request are gone. That is why a skill works as /name and never fires by itself.
+
+  This loadout adds the rules for writing descriptions (what it does first, then "Use when ..." in the user's words) and an audit skill. A standard-library script checks each SKILL.md's front matter, the 1,536-character cap, missing triggers, long first sentences, unquoted colons and near-duplicate descriptions. It then estimates the listing against both budgets. The skill ends with a with-and-without trigger check in fresh sessions, as Anthropic's skills guide recommends.
+highlights:
+  - "Documented limits: 1,536 characters per entry, 1% (Claude Code) and 2% or 8,000 characters (Codex)"
+  - Audit flags cut-off, missing, untriggered and near-duplicate descriptions
+  - Catches the unquoted-colon front matter that makes skills silently fail to load
+  - Before/after examples for vague, buried and look-alike descriptions
+  - Trigger check in fresh sessions, with and without the skill
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: skills (listing budget, 1,536-character cap, /skill-doctor)"
+    url: https://code.claude.com/docs/en/skills
+  - title: "Codex docs: agent skills (2% of context, 8,000 characters, skills.max_context_tokens)"
+    url: https://developers.openai.com/codex/skills
+  - title: "Claude Code changelog (2.1.105 raised the cap from 250 to 1,536; 2.1.69 colon fix)"
+    url: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+  - title: "@ekcheungAI: Claude Code caps its skill list at 1% of context, Codex at 2%"
+    url: https://x.com/ekcheungAI/status/2111834671164346422
+categories:
+  - ai-agents
+  - workflow
+stacks:
+  - markdown
+  - python
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for every SKILL.md and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/skill-listing-audit/SKILL.md
+    role: skill
+    skill: skill-listing-audit
+    description: Audit descriptions against listing limits, then fix and check triggers.
+  - path: skills/skill-listing-audit/scripts/skill_listing.py
+    role: reference
+    skill: skill-listing-audit
+    description: Read-only audit of SKILL.md front matter and listing size.
+  - path: skills/skill-listing-audit/references/description-examples.md
+    role: reference
+    skill: skill-listing-audit
+    description: Before/after description examples.
+requires:
+  tools:
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - skill_listing.py
+  notes: The audit only reads SKILL.md files and prints a report. It changes no files and makes no network calls.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

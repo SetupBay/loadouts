@@ -1,0 +1,17 @@
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+plugins:
+  - rubocop-rspec
+  - rubocop-rspec_rails
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "db/schema.rb"
+    - "vendor/**/*"
+
+RSpec/MultipleExpectations:
+  Max: 3
+RSpec/ExampleLength:
+  Max: 12

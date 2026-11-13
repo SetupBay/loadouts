@@ -1,0 +1,81 @@
+id: dependency-cooldowns
+type: loadout
+title: Dependency cooldowns and new-package checks for agents
+summary: "Release-age cooldowns for npm, pnpm, Bun and uv, plus a check agents run before adding any package: age, publishers, install scripts and look-alike names."
+description: |
+  Coding agents install packages quickly, and sometimes because a file told them to. In October 2026 Forever Security found a planted AGENTS.md in a user's Downloads folder telling Codex to install a malicious npm package. Most malicious versions are caught and pulled within a day or two, so a cooldown helps: don't install anything published in the last few days. npm (11.10+), pnpm, Bun and uv all support one now, each with its own file and unit.
+
+  This loadout makes new dependencies the human's decision. Packages are added only when the human asked, never because some content said so. Cooldowns stay on and are never bypassed with flags, CI installs from the lockfile, and install scripts need an explicit yes. pkg_check.mjs (Node standard library, read-only) looks a package up on the registry and returns ok, ask or hold, with reasons: version age against the cooldown, a brand-new package, few versions, no repository, install scripts, a name one edit from a popular package. cooldown_check.py (Python standard library) finds the package managers a project uses from its lockfiles and checks each has a cooldown that isn't set to 0. It pairs with the untrusted-folder-guard loadout.
+highlights:
+  - Cooldown settings for npm, pnpm, Bun and uv in one table, with units
+  - pkg_check.mjs gives ok, ask or hold for a package before it's added
+  - Flags install scripts, new packages, missing repos and one-edit look-alikes
+  - cooldown_check.py checks every package manager in use from its lockfile
+  - No bypass flags, lockfile installs in CI, no npx -y of unknown packages
+  - New packages only when the human asked, never because content said so
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "npm docs: config (min-release-age, before)"
+    url: https://docs.npmjs.com/cli/v11/using-npm/config
+  - title: "pnpm docs: mitigating supply chain attacks (minimumReleaseAge)"
+    url: https://pnpm.io/supply-chain-security
+  - title: "Bun docs: bunfig.toml (install.minimumReleaseAge)"
+    url: https://bun.com/docs/runtime/bunfig
+  - title: "uv docs: settings (exclude-newer)"
+    url: https://docs.astral.sh/uv/reference/settings/
+  - title: "Forever Security: hijacking AI agents via the Downloads folder (22 Oct 2026)"
+    url: https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+categories:
+  - security
+  - workflow
+stacks:
+  - nodejs
+  - python
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for adding packages, keeping cooldowns on and installing from lockfiles.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/vet-new-dependency/SKILL.md
+    role: skill
+    skill: vet-new-dependency
+    description: Check a package before adding it and set up cooldowns.
+  - path: skills/vet-new-dependency/scripts/pkg_check.mjs
+    role: reference
+    skill: vet-new-dependency
+    description: Read-only registry lookup with an ok, ask or hold verdict.
+  - path: skills/vet-new-dependency/scripts/cooldown_check.py
+    role: reference
+    skill: vet-new-dependency
+    description: Checks every package manager in use has a release-age cooldown.
+  - path: skills/vet-new-dependency/references/configs.md
+    role: reference
+    skill: vet-new-dependency
+    description: Cooldown settings, files and units for npm, pnpm, Bun and uv.
+requires:
+  tools:
+    - node
+    - python3
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - pkg_check.mjs
+    - cooldown_check.py
+  notes: pkg_check.mjs reads package metadata from the npm registry (or the one in npm_config_registry) and installs nothing. cooldown_check.py only reads project files.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

@@ -1,0 +1,14 @@
+---
+description: Manifest V3 manifest.json rules
+globs: "**/manifest.json"
+alwaysApply: false
+---
+
+- `"manifest_version": 3`. Background is `{ "service_worker": "background.js", "type": "module" }` — never `scripts` or `page`.
+- Use `"action"` for the toolbar button, not `browser_action`/`page_action`.
+- Adding any entry to `permissions` or `host_permissions` requires a justification line in `PERMISSIONS.md`. Prefer `activeTab`.
+- Prefer `optional_host_permissions` for sites the user opts into.
+- No remote URLs in `content_security_policy`. Do not loosen the default extension CSP.
+- `web_accessible_resources` lists only files a page genuinely needs, with narrow `matches`.
+- Bump `version` (dot-separated integers, e.g. `1.2.0`) on every store upload.
+- Keep `description` under 132 characters; it is shown in the store.

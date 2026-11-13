@@ -1,0 +1,84 @@
+id: fastapi-pydantic-v2-guard
+type: loadout
+title: FastAPI guard against Pydantic v1 code
+summary: Stop agents writing class Config, orm_mode, @validator, .dict() and pydantic.v1 into FastAPI apps on Pydantic v2, and catch Optional fields that became required.
+description: |
+  Agents still write FastAPI code from the Pydantic v1 years: class Config with orm_mode, @validator, .dict(), parse_obj, Field(regex=). On Pydantic 2.14 most of it still runs with a PydanticDeprecatedSince20 warning, which nobody reads, so it piles up until v3 removes it. Some of it fails outright. Field(regex=) and from pydantic import BaseSettings break at import, and current FastAPI refuses pydantic.v1 models with PydanticV1NotSupportedError. One change fails quietly. Optional[str] with no default is a required field in v2, so clients that leave it out start getting 422s.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (a never/always table) with a skill that checks the work. A standard-library Python scanner reports 26 v1 constructs and deprecated FastAPI patterns as errors and Optional-without-default fields as warnings. Then the tests run with PydanticDeprecatedSince20 raised as an error, which catches v1 calls the scanner can't see. The verifier runs both against a FastAPI app with pinned fastapi 0.162.0, pydantic 2.14.1 and pydantic-settings 2.16.2, and against a v1 sample.
+highlights:
+  - Never/always table for Pydantic v2 in a .py-scoped Cursor rule
+  - Scanner flags 26 Pydantic v1 constructs and on_event, read-only
+  - Warns when Optional[X] has no default, which v2 makes required
+  - Tests run with PydanticDeprecatedSince20 as an error
+  - Migration table checked against pinned FastAPI and Pydantic versions
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Pydantic docs: migration guide"
+    url: https://docs.pydantic.dev/latest/migration/
+  - title: "FastAPI docs: lifespan events"
+    url: https://fastapi.tiangolo.com/advanced/events/
+  - title: "pydantic-settings docs: settings management"
+    url: https://docs.pydantic.dev/latest/concepts/pydantic_settings/
+  - title: "@Romilpatel1988: Upshift, an agent that upgrades code from Pydantic v1 to v2"
+    url: https://x.com/Romilpatel1988/status/2109646729025105978
+  - title: "@RDJArc: scoped .cursor/rules files for FastAPI"
+    url: https://x.com/RDJArc/status/2111064912952979818
+categories:
+  - web-app
+stacks:
+  - fastapi
+  - pydantic
+  - python
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Pydantic v2 and FastAPI version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/pydantic-v2-only.mdc
+    role: rules
+    description: Never/always table for Python files.
+  - path: skills/pydantic-v2-guard/SKILL.md
+    role: skill
+    skill: pydantic-v2-guard
+    description: Scan for Pydantic v1 code, then run the tests with v1 deprecations as errors.
+  - path: skills/pydantic-v2-guard/scripts/pydantic_v2_guard.py
+    role: reference
+    skill: pydantic-v2-guard
+    description: Read-only scanner for Pydantic v1 constructs and Optional fields without defaults.
+  - path: skills/pydantic-v2-guard/references/migration-table.md
+    role: reference
+    skill: pydantic-v2-guard
+    description: Pydantic v1 to v2 table for FastAPI services.
+  - path: skills/pydantic-v2-guard/references/v1-sample.py.txt
+    role: reference
+    skill: pydantic-v2-guard
+    description: A FastAPI module written for Pydantic v1, for checking the guard.
+requires:
+  tools:
+    - python3
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - pydantic_v2_guard.py
+  notes: The scanner only reads .py files and prints findings; it never edits files and makes no network calls. Running the tests with uv may download the pinned packages.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

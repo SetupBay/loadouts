@@ -1,0 +1,29 @@
+-- A Studio-coupled inventory module, used to check the guard. It only runs inside Roblox.
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Money = require(script.Parent.Money)
+local Config = require(game.ReplicatedStorage.Shared.Config)
+
+local Inventory = {}
+
+function Inventory.buy(player, item, quantity)
+	local stats = player:FindFirstChild("leaderstats")
+	if stats.Coins.Value < item.price * quantity then
+		warn("not enough coins")
+		return false
+	end
+	stats.Coins.Value -= item.price * quantity
+	local drop = Instance.new("Part")
+	drop.Position = Vector3.new(0, 10, 0)
+	drop.Parent = workspace
+	if math.random() < Config.bonusChance then
+		spawn(function()
+			wait(2)
+			stats.Coins.Value += 5
+		end)
+	end
+	player:SetAttribute("lastBuy", tick())
+	ReplicatedStorage.Remotes.Bought:FireClient(player, item.id)
+	return true
+end
+
+return Inventory

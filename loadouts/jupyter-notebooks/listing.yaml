@@ -1,0 +1,64 @@
+id: jupyter-notebooks
+type: loadout
+title: Jupyter notebooks agents can edit
+summary: "Notebook rules for agents: edit Jupytext-paired .py files instead of JSON, run top to bottom in a fresh kernel, keep outputs out of git with nbstripout, check data first."
+description: |
+  Agents struggle with notebooks for a simple reason: an .ipynb is JSON full of outputs and execution counts, so edits are fragile and diffs unreadable, and a notebook that ran once out of order passes for working. This loadout uses the tools data teams already rely on: Jupytext pairs each notebook with a percent-format .py file that the agent edits, nbstripout keeps outputs out of git, and done means executed from a fresh kernel. It adds reproducibility and data-care rules, and the verifier converts and runs the example notebook.
+highlights:
+  - Edit the paired .py (Jupytext percent format), never the .ipynb JSON
+  - Done means executed top to bottom in a fresh kernel
+  - nbstripout git filter keeps outputs and counts out of commits
+  - Parameters cell, seeded randomness, relative paths
+  - Data-check cell with asserts before any result
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Jupytext documentation: paired notebooks"
+    url: https://jupytext.readthedocs.io/en/latest/paired-notebooks.html
+  - title: kynan/nbstripout
+    url: https://github.com/kynan/nbstripout
+  - title: "Jupytext documentation: percent format"
+    url: https://jupytext.readthedocs.io/en/latest/formats-scripts.html
+categories:
+  - data
+stacks:
+  - python
+  - jupyter
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Notebook editing, execution, reproducibility and data-care rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/notebook-change/SKILL.md
+    role: skill
+    skill: notebook-change
+    description: Edit via the paired .py, run fresh, strip outputs.
+  - path: skills/notebook-change/references/analysis.py
+    role: reference
+    skill: notebook-change
+    description: Percent-format example with parameters and a data check.
+requires:
+  tools:
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uv downloads Jupytext, nbconvert, ipykernel and nbstripout from PyPI. The example notebook makes no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

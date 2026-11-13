@@ -1,0 +1,64 @@
+id: phaser-web-game
+type: loadout
+title: Phaser 4 web game
+summary: "Phaser 4 rules that send the agent to the skills Phaser ships in node_modules, not v3 tutorials: pooled objects, delta movement, a play test after each change."
+description: |
+  Phaser 4 changed the renderer, turned FX and masks into filters and reworked tinting, so agents trained on years of Phaser 3 tutorials write code that no longer works. Phaser's answer is to ship agent skills inside the npm package, one per subsystem plus a v3-to-v4 migration guide. This loadout makes the agent read those version-matched skills before using an API, and adds the game rules that keep a web game smooth: scenes per mode, assets in preload, pooled groups, delta-based movement and a play test after every change.
+highlights:
+  - Reads Phaser's own skills from node_modules/phaser/skills/ for the installed version
+  - v3-to-v4 migration skill first when porting old code
+  - Pooled Arcade groups; no allocation in update()
+  - Delta-based movement and constants in one tuning module
+  - Example scene type-checked against Phaser 4.2.1 by the verifier
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "phaserjs/phaser: agent skills shipped in the repository and npm package"
+    url: https://github.com/phaserjs/phaser/tree/master/skills
+  - title: "Phaser: migrating from Phaser 3 to Phaser 4"
+    url: https://phaser.io/news/2026/04/migrating-from-phaser-3-to-phaser-4-what-you-need-to-know
+  - title: Phaser 4 migration guide
+    url: https://github.com/phaserjs/phaser/blob/master/changelog/v4/4.0/MIGRATION-GUIDE.md
+categories:
+  - gamedev
+stacks:
+  - phaser
+  - typescript
+  - vite
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Phaser 4 game rules and where the version-matched docs live.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/phaser-feature/SKILL.md
+    role: skill
+    skill: phaser-feature
+    description: Gameplay change with Phaser's skills, checks and a play test.
+  - path: skills/phaser-feature/references/GameScene.ts
+    role: reference
+    skill: phaser-feature
+    description: Example v4 scene with pooling and delta movement.
+requires:
+  tools:
+    - node
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: npm install downloads Phaser and the build tools from npm. The example scene makes no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

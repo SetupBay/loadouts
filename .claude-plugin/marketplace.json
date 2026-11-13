@@ -1,0 +1,2653 @@
+{
+  "name": "setupbay",
+  "description": "SetupBay loadouts as Claude Code plugins: skills, subagents and MCP servers for one job each. Project rules (AGENTS.md, CLAUDE.md) install from each loadout page.",
+  "owner": {
+    "name": "SetupBay",
+    "url": "https://setupbay.com"
+  },
+  "plugins": [
+    {
+      "name": "agent-extension-vetting",
+      "displayName": "Vet skills, plugins and MCP servers before install",
+      "description": "Treat agent skills, plugins and MCP servers as dependencies: pin by SHA or exact version, prove HEAD matches the pin, scan every file, and get a human yes. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/agent-extension-vetting/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/agent-extension-vetting.zip",
+        "sha256": "63500b74dc9083aa3e0813e77697a29bce3b02015da69f95418374ab7ff0f7fb"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/agent-extension-vetting/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "any",
+        "mcp",
+        "git",
+        "security",
+        "ai-agents"
+      ],
+      "keywords": [
+        "any",
+        "mcp",
+        "git",
+        "security",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "agent-handoff",
+      "displayName": "Handoff without compaction",
+      "description": "Write HANDOFF.md before you clear context or switch agents: goal, decisions, exact failing test, next step, commit. A checker flags stale or incomplete handoffs. Plugin adds 2 skills. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/agent-handoff/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/agent-handoff.zip",
+        "sha256": "3b1075600e3c8c766c96fa7d635b2751e32c3fdcc09cf7be095156f75923f063"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/agent-handoff/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "any",
+        "git",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "any",
+        "git",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "agent-plugin-authoring",
+      "displayName": "Author plugins for Claude Code and Antigravity",
+      "description": "Build one plugin for Claude Code and Antigravity from a single source tree, pin its MCP servers, and pass claude plugin validate --strict before anyone installs. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/agent-plugin-authoring/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/agent-plugin-authoring.zip",
+        "sha256": "3774c5f73c57167e9f86cdcfe43c0acbe29f2b7758908b5a0e36b6117b6b402b"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/agent-plugin-authoring/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "mcp",
+        "nodejs",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "mcp",
+        "nodejs",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "agent-spend-cap",
+      "displayName": "One spend cap across Claude Code, Codex and Antigravity",
+      "description": "Run headless Claude Code, Codex and Antigravity CLI through one guard: a shared daily cap, per-run budgets, a ledger, and the provider limits that stop spend. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/agent-spend-cap/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/agent-spend-cap.zip",
+        "sha256": "0d80f1c83acc09e1486efa0f5d0ee241797de5e7adcf35957400058360c393d2"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/agent-spend-cap/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "python",
+        "bash",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "python",
+        "bash",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "agents-md-examples",
+      "displayName": "AGENTS.md examples for seven kinds of repository",
+      "description": "Seven worked AGENTS.md examples (web app, Python library, monorepo, Go CLI, Godot game, OpenTofu) and a lint that checks commands exist, sizes, and CLAUDE.md shadowing. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/agents-md-examples/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/agents-md-examples.zip",
+        "sha256": "605eb8ff35ff39972b4d7d7de88b03c1670edbcee32e50a9edd6cda86d1b6b71"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/agents-md-examples/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "markdown",
+        "python",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "markdown",
+        "python",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "ai-code-review-rules",
+      "displayName": "AI code review rules",
+      "description": "Review-only rule files for Claude Code Review, Cursor Bugbot and Copilot, built from one list: severity, a nit cap, what to skip and what to always check. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/ai-code-review-rules/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/ai-code-review-rules.zip",
+        "sha256": "b52f7f2f18649c20382f45b3a2ebea8f36703a881608fed4e2f7c5ad157bb440"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/ai-code-review-rules/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "github",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "github",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "astro-starlight-docs",
+      "displayName": "Starlight docs on Astro 7 with checked links",
+      "description": "Agent rules for Starlight 0.42 docs sites on Astro 7: front matter that search and llms.txt can use, links the validator checks, and the 0.39 sidebar change. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/astro-starlight-docs/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/astro-starlight-docs.zip",
+        "sha256": "14fa5e00dfa12eff2d9cd5aceddbad8751eb56c0deabc17b17746c06d4cacff5"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/astro-starlight-docs/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "astro",
+        "javascript",
+        "typescript",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "astro",
+        "javascript",
+        "typescript",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "astro-static-site",
+      "displayName": "Astro static site",
+      "description": "Astro conventions for fast, zero-JS-by-default sites with content collections, plus a skill for deploying to Cloudflare Pages with headers and redirects. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/astro-static-site/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/astro-static-site.zip",
+        "sha256": "44831f1167b8c556a6e9ef87ae2d05ebaa40f79b270e2c2ffe5af5936e567a01"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/astro-static-site/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "astro",
+        "typescript",
+        "cloudflare",
+        "web-app"
+      ],
+      "keywords": [
+        "astro",
+        "typescript",
+        "cloudflare",
+        "web-app"
+      ]
+    },
+    {
+      "name": "browser-verified-ui",
+      "displayName": "Browser-verified UI changes",
+      "description": "Make the agent load every UI change in a real browser via Playwright MCP, exercise it, fail on console or network errors and attach screenshots at two widths. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/browser-verified-ui/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/browser-verified-ui.zip",
+        "sha256": "9a128a41987b5d9a78a21d26853fbd0e9e68792f15377aa7b4ea180a239cb39e"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/browser-verified-ui/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "playwright",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "playwright",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "chrome-devtools-web-perf",
+      "displayName": "Page speed with Chrome DevTools MCP, measured not guessed",
+      "description": "Chrome DevTools MCP pinned with a throwaway profile and telemetry off, plus a trace, fix, re-trace loop that compares medians with Core Web Vitals thresholds. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/chrome-devtools-web-perf/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/chrome-devtools-web-perf.zip",
+        "sha256": "ae7336b998d9bffc5fc9b63c060acf011faebeb3b2910430f9b5cdb94ccc92b0"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/chrome-devtools-web-perf/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "chrome",
+        "javascript",
+        "nodejs",
+        "web-app",
+        "browser-extension"
+      ],
+      "keywords": [
+        "chrome",
+        "javascript",
+        "nodejs",
+        "web-app",
+        "browser-extension"
+      ]
+    },
+    {
+      "name": "chrome-extension-mv3",
+      "displayName": "Chrome extension (Manifest V3)",
+      "description": "Manifest V3 rules for service workers, messaging and minimal permissions, Playwright tests that load the extension in headless Chromium, and Chrome Web Store review prep. Plugin adds 2 skills. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/chrome-extension-mv3/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/chrome-extension-mv3.zip",
+        "sha256": "5d9e66c8428655d5bdb311f547645b054507e8e17ab5e3f918d18ce9009137a3"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/chrome-extension-mv3/",
+      "license": "MIT",
+      "category": "browser-extension",
+      "tags": [
+        "chrome",
+        "javascript",
+        "typescript",
+        "playwright",
+        "browser-extension"
+      ],
+      "keywords": [
+        "chrome",
+        "javascript",
+        "typescript",
+        "playwright",
+        "browser-extension"
+      ]
+    },
+    {
+      "name": "chrome-mv3-service-worker-guard",
+      "displayName": "Chrome MV3 service worker guard for MV2 code",
+      "description": "Stop agents writing MV2 background-page habits into MV3 extensions, such as globals as state and long timers, and prove state survives a service worker restart. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/chrome-mv3-service-worker-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/chrome-mv3-service-worker-guard.zip",
+        "sha256": "44f6dd778603dafa7a8bfa906c0da8a60f081f14dc46df10b6ba1b5a54b61b0a"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/chrome-mv3-service-worker-guard/",
+      "license": "MIT",
+      "category": "browser-extension",
+      "tags": [
+        "chrome",
+        "javascript",
+        "playwright",
+        "browser-extension"
+      ],
+      "keywords": [
+        "chrome",
+        "javascript",
+        "playwright",
+        "browser-extension"
+      ]
+    },
+    {
+      "name": "cloudflare-agents-sdk",
+      "displayName": "Cloudflare Agents SDK, wired right before deploy",
+      "description": "Stateful agents on Workers with the agents package (SQL, state, schedules, @callable) and a check that every Agent class is bound, on SQLite, with nodejs_compat. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/cloudflare-agents-sdk/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/cloudflare-agents-sdk.zip",
+        "sha256": "8cfd06561249aaafa3e7d9d34e4d3a222e836dc6e0913dc5687470ab8283baaf"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/cloudflare-agents-sdk/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "cloudflare",
+        "cloudflare-workers",
+        "typescript",
+        "web-app",
+        "ai-agents"
+      ],
+      "keywords": [
+        "cloudflare",
+        "cloudflare-workers",
+        "typescript",
+        "web-app",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "cloudflare-workers",
+      "displayName": "Cloudflare Workers rules",
+      "description": "Workers rules for agents: bindings from env, wrangler types, prepared D1 queries, waitUntil, secrets via wrangler secret, no deploys or --remote writes unasked. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/cloudflare-workers/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/cloudflare-workers.zip",
+        "sha256": "c594f391a6d68480cceb72d50c264bb2cf65c9ad9291e527dbb3bbb56eb2b1f2"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/cloudflare-workers/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "cloudflare",
+        "cloudflare-workers",
+        "typescript",
+        "web-app"
+      ],
+      "keywords": [
+        "cloudflare",
+        "cloudflare-workers",
+        "typescript",
+        "web-app"
+      ]
+    },
+    {
+      "name": "cursor-hooks-fail-closed",
+      "displayName": "Cursor hooks that fail closed for shell, reads and MCP",
+      "description": "A Python guard for Cursor's permission hooks that blocks risky commands, secret reads and unlisted MCP servers, set to fail closed, with a config checker and self-test. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/cursor-hooks-fail-closed/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/cursor-hooks-fail-closed.zip",
+        "sha256": "698ce567a8c2394e97d0c928300ffcfaf093a0dc0529b8abe099969358cbfe25"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/cursor-hooks-fail-closed/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "cursor",
+        "python",
+        "security",
+        "ai-agents"
+      ],
+      "keywords": [
+        "cursor",
+        "python",
+        "security",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "cursor-rules-that-load",
+      "displayName": "Cursor rules that load",
+      "description": "How to decide between AGENTS.md, Cursor .mdc rules, skills and hooks, write front matter that loads, and check that a rule is really attached. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/cursor-rules-that-load/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/cursor-rules-that-load.zip",
+        "sha256": "78c6a638989372592ab04ea80517014384a1a721d1dba3fb1adf7cc26826bbce"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/cursor-rules-that-load/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "any",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "any",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "definition-of-done-proof",
+      "displayName": "Definition of done for agents, with proof",
+      "description": "Make \"done\" mean the feature works, a test shows it, and no test was weakened, with a git-diff check for changed assertions, skips and deleted tests. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/definition-of-done-proof/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/definition-of-done-proof.zip",
+        "sha256": "fedd20eb3ec408e89466e6777a22445266cf3d312755290352313b429f3a9b24"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/definition-of-done-proof/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "git",
+        "python",
+        "bash",
+        "pytest",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "git",
+        "python",
+        "bash",
+        "pytest",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "dependency-cooldowns",
+      "displayName": "Dependency cooldowns and new-package checks for agents",
+      "description": "Release-age cooldowns for npm, pnpm, Bun and uv, plus a check agents run before adding any package: age, publishers, install scripts and look-alike names. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/dependency-cooldowns/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/dependency-cooldowns.zip",
+        "sha256": "bd16fc8e24b7880a9bb884614781b8f97054901558bf92d2c4a7418ed0d6c827"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/dependency-cooldowns/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "nodejs",
+        "python",
+        "uv",
+        "security",
+        "workflow"
+      ],
+      "keywords": [
+        "nodejs",
+        "python",
+        "uv",
+        "security",
+        "workflow"
+      ]
+    },
+    {
+      "name": "discord-bot-python",
+      "displayName": "Discord bot in Python (discord.py 2)",
+      "description": "discord.py 2 rules for agents: slash commands in cogs, range-limited options, 3-second responses, manual syncing, default intents and offline tests of the payload. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/discord-bot-python/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/discord-bot-python.zip",
+        "sha256": "18ad2d1bca84b4e146da8f29169d0631287ecad4cea28094c59c70a036efa6e8"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/discord-bot-python/",
+      "license": "MIT",
+      "category": "bots",
+      "tags": [
+        "python",
+        "discord",
+        "uv",
+        "pytest",
+        "bots"
+      ],
+      "keywords": [
+        "python",
+        "discord",
+        "uv",
+        "pytest",
+        "bots"
+      ]
+    },
+    {
+      "name": "discord-bot-ts",
+      "displayName": "Discord bot (TypeScript)",
+      "description": "discord.js v14 rules and an add-a-slash-command skill for building a Discord bot that registers commands properly and never leaks its token. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/discord-bot-ts/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/discord-bot-ts.zip",
+        "sha256": "2b48b5bcca885a012b6f1cb899f34922d6da006348719a335aef4f71ad908a49"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/discord-bot-ts/",
+      "license": "MIT",
+      "category": "bots",
+      "tags": [
+        "discord",
+        "nodejs",
+        "typescript",
+        "bots"
+      ],
+      "keywords": [
+        "discord",
+        "nodejs",
+        "typescript",
+        "bots"
+      ]
+    },
+    {
+      "name": "django-6-upgrade-guard",
+      "displayName": "Django 6 guard for removed APIs and django-upgrade",
+      "description": "Stop agents writing url(), ugettext, is_ajax(), index_together and CheckConstraint(check=) into Django 6.1 projects, then run django-upgrade and Django's own checks. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/django-6-upgrade-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/django-6-upgrade-guard.zip",
+        "sha256": "f7ea84ab06e26c3f7ba1179ecc63e8ce0fb8efe06772dd87388fffc3b8d35455"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/django-6-upgrade-guard/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "django",
+        "python",
+        "uv",
+        "web-app"
+      ],
+      "keywords": [
+        "django",
+        "python",
+        "uv",
+        "web-app"
+      ]
+    },
+    {
+      "name": "django-app",
+      "displayName": "Django app rules",
+      "description": "Django rules and a safe-migration skill: migrations checked in CI, two-step destructive changes, N+1 caught with query-count tests, settings from the environment. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/django-app/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/django-app.zip",
+        "sha256": "999bbc9c47bb379576344424c0c5a098bbf30599855fd8c7686184e4d55be0f3"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/django-app/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "python",
+        "django",
+        "uv",
+        "pytest",
+        "web-app"
+      ],
+      "keywords": [
+        "python",
+        "django",
+        "uv",
+        "pytest",
+        "web-app"
+      ]
+    },
+    {
+      "name": "django-rest-api",
+      "displayName": "Django REST Framework API rules",
+      "description": "DRF rules for agents: explicit serializer fields, querysets scoped to the user, owner set on the server, pagination, and six tests for every endpoint. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/django-rest-api/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/django-rest-api.zip",
+        "sha256": "0951fafd412031d8426bb4a72bc6da9de5f0c81321075037a52e1d795a7c13d0"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/django-rest-api/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "python",
+        "django",
+        "uv",
+        "web-app",
+        "security"
+      ],
+      "keywords": [
+        "python",
+        "django",
+        "uv",
+        "web-app",
+        "security"
+      ]
+    },
+    {
+      "name": "docs-markdown-checks",
+      "displayName": "Markdown docs with markdownlint and offline link checks",
+      "description": "Agent-written READMEs and docs checked offline: markdownlint-cli2, relative links and #anchors resolve, and every npm run command in the docs exists. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/docs-markdown-checks/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/docs-markdown-checks.zip",
+        "sha256": "5ef3cb326632df72b27d93f9ec6032d87b84c6205fcba5347d7b45c8e5d83c21"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/docs-markdown-checks/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "markdown",
+        "nodejs",
+        "workflow"
+      ],
+      "keywords": [
+        "markdown",
+        "nodejs",
+        "workflow"
+      ]
+    },
+    {
+      "name": "electron-app",
+      "displayName": "Electron desktop app rules",
+      "description": "Electron rules for agents: sandboxed renderers, narrow contextBridge APIs, sender-checked IPC, deny-by-default windows, CSP and fuses, with a static security check. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/electron-app/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/electron-app.zip",
+        "sha256": "34cb455296f87b4291dbd253e57463ce3f4b2df11a193eb865fd198e25cfb24d"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/electron-app/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "electron",
+        "desktop",
+        "typescript",
+        "nodejs",
+        "web-app"
+      ],
+      "keywords": [
+        "electron",
+        "desktop",
+        "typescript",
+        "nodejs",
+        "web-app"
+      ]
+    },
+    {
+      "name": "electron-playwright-e2e",
+      "displayName": "Electron end-to-end tests with Playwright",
+      "description": "Playwright tests that drive the real Electron app: secure webPreferences, no Node in the renderer, IPC round trips, input validation and blocked navigation. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/electron-playwright-e2e/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/electron-playwright-e2e.zip",
+        "sha256": "479d0f31f0e5ee0332fdb6bc479d6d399578fa9fecf2bba2d8e644cc52439564"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/electron-playwright-e2e/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "electron",
+        "playwright",
+        "javascript",
+        "desktop",
+        "github-actions",
+        "web-app",
+        "security"
+      ],
+      "keywords": [
+        "electron",
+        "playwright",
+        "javascript",
+        "desktop",
+        "github-actions",
+        "web-app",
+        "security"
+      ]
+    },
+    {
+      "name": "evals-from-real-failures",
+      "displayName": "Evals from real failures",
+      "description": "Build LLM and agent evals the practitioner way: read real traces first, tally failure categories, then turn each into code-checked regression cases. Plugin adds 2 skills. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/evals-from-real-failures/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/evals-from-real-failures.zip",
+        "sha256": "14f2f3336e85fcce5654888a73ce58e1aab66e1cc233ce37188d75f8cbb1657f"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/evals-from-real-failures/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "python",
+        "pytest",
+        "uv",
+        "ai-agents",
+        "data"
+      ],
+      "keywords": [
+        "python",
+        "pytest",
+        "uv",
+        "ai-agents",
+        "data"
+      ]
+    },
+    {
+      "name": "expo-eas-update",
+      "displayName": "Expo EAS Update without shipping native changes over the air",
+      "description": "Checks whether an Expo change can ship as an EAS Update or needs a new build, using the native fingerprint; preview by CI, production rollouts by a person. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/expo-eas-update/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/expo-eas-update.zip",
+        "sha256": "5a0c1fe6376dbcaf04c4e601b1c651382c73fa902a131aa07cccca9d2696be53"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/expo-eas-update/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "expo",
+        "react-native",
+        "typescript",
+        "github-actions",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "expo",
+        "react-native",
+        "typescript",
+        "github-actions",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "expo-maestro-eas-workflows",
+      "displayName": "Maestro end-to-end tests on EAS Workflows",
+      "description": "Run Maestro flows on EAS Workflows with fingerprint, get-build and repack, so pull requests skip native builds, plus a check of profiles, workers and flows. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/expo-maestro-eas-workflows/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/expo-maestro-eas-workflows.zip",
+        "sha256": "5f7b62f47f36ef5d5505fb373c8a38205472bc636486bfc121d8d4ddfb86a8fe"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/expo-maestro-eas-workflows/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "expo",
+        "maestro",
+        "react-native",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "expo",
+        "maestro",
+        "react-native",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "expo-react-native",
+      "displayName": "Expo and React Native with Expo MCP",
+      "description": "Expo rules for agents plus Expo's official MCP server: npx expo install, Expo Router, no secrets in EXPO_PUBLIC_, no production EAS releases, check on a simulator. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/expo-react-native/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/expo-react-native.zip",
+        "sha256": "02af049838aa5b8897befed400d0f267c2db690724dd9abdc25541e01faa41c4"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/expo-react-native/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "react-native",
+        "expo",
+        "typescript",
+        "ios",
+        "android",
+        "web-app"
+      ],
+      "keywords": [
+        "react-native",
+        "expo",
+        "typescript",
+        "ios",
+        "android",
+        "web-app"
+      ]
+    },
+    {
+      "name": "fastapi-async-sqlalchemy",
+      "displayName": "FastAPI with async SQLAlchemy 2.1 and Alembic",
+      "description": "FastAPI on async SQLAlchemy 2.1: per-request AsyncSession, lazy=\"raise\" with eager loads, async Alembic with alembic check, and tests that count queries. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/fastapi-async-sqlalchemy/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/fastapi-async-sqlalchemy.zip",
+        "sha256": "1c69245864ebacbcd5cfa9fdb4c14a84c7a2149dd3cd3fb67596ab3195a346a5"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/fastapi-async-sqlalchemy/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "python",
+        "fastapi",
+        "sqlalchemy",
+        "uv",
+        "pytest",
+        "web-app",
+        "data"
+      ],
+      "keywords": [
+        "python",
+        "fastapi",
+        "sqlalchemy",
+        "uv",
+        "pytest",
+        "web-app",
+        "data"
+      ]
+    },
+    {
+      "name": "fastapi-pydantic-v2-guard",
+      "displayName": "FastAPI guard against Pydantic v1 code",
+      "description": "Stop agents writing class Config, orm_mode, @validator, .dict() and pydantic.v1 into FastAPI apps on Pydantic v2, and catch Optional fields that became required. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/fastapi-pydantic-v2-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/fastapi-pydantic-v2-guard.zip",
+        "sha256": "9d5354cb197830714dbc446d7736eb791bf51a678517f1b6a05670d0f3a0bd7b"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/fastapi-pydantic-v2-guard/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "fastapi",
+        "pydantic",
+        "python",
+        "pytest",
+        "web-app"
+      ],
+      "keywords": [
+        "fastapi",
+        "pydantic",
+        "python",
+        "pytest",
+        "web-app"
+      ]
+    },
+    {
+      "name": "fastapi-service",
+      "displayName": "FastAPI service rules",
+      "description": "Rules and an endpoint skill for FastAPI with uv and Pydantic v2: Annotated dependencies, typed responses, async only when awaited, lifespan, routes with tests. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/fastapi-service/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/fastapi-service.zip",
+        "sha256": "4b05132a98885af52585de011b64c1260e17cd43c2ec5b88d0dbf7bbb5183c67"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/fastapi-service/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "python",
+        "fastapi",
+        "uv",
+        "pytest",
+        "web-app"
+      ],
+      "keywords": [
+        "python",
+        "fastapi",
+        "uv",
+        "pytest",
+        "web-app"
+      ]
+    },
+    {
+      "name": "github-actions-hardening",
+      "displayName": "GitHub Actions hardening for agent workflows",
+      "description": "Rules and a zizmor skill for agents editing GitHub Actions: SHA-pinned actions, permissions: {}, no template injection, no pull_request_target, read-only agent jobs. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/github-actions-hardening/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/github-actions-hardening.zip",
+        "sha256": "4d2cb37c8e64d7ace1cb73e91e9d78308d506cf9c3654db460dac1e15eacf3d6"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/github-actions-hardening/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "github-actions",
+        "github",
+        "security",
+        "workflow"
+      ],
+      "keywords": [
+        "github-actions",
+        "github",
+        "security",
+        "workflow"
+      ]
+    },
+    {
+      "name": "go-service",
+      "displayName": "Go service rules",
+      "description": "Go rules for agents: wrapped errors with errors.Is, context first, owned goroutines, 1.22+ routing, timeouts, and gofmt, vet and go test -race as the gate. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/go-service/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/go-service.zip",
+        "sha256": "6c136d99589d33d06a5c1ab4ed59a1b578d42d1c39f70b4005115f3e86d34ccf"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/go-service/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "go",
+        "web-app"
+      ],
+      "keywords": [
+        "go",
+        "web-app"
+      ]
+    },
+    {
+      "name": "godot-4-api-guard",
+      "displayName": "Godot 4 guard against Godot 3 code",
+      "description": "Stop agents writing yield, export var, KinematicBody2D and other Godot 3 code into Godot 4 projects, with a scanner that finds every case and Godot's own check. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/godot-4-api-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/godot-4-api-guard.zip",
+        "sha256": "69e3a560512d6504bdd7b0aef41b4c191884f0977d70fbac2f6209af9bc310f7"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/godot-4-api-guard/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "godot",
+        "gdscript",
+        "python",
+        "gamedev"
+      ],
+      "keywords": [
+        "godot",
+        "gdscript",
+        "python",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "godot-4-game-jam",
+      "displayName": "Godot 4 game jam",
+      "description": "GDScript conventions, jam-scope discipline and a ship-to-itch.io skill so your agent helps you finish a Godot 4 game in 48 hours. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/godot-4-game-jam/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/godot-4-game-jam.zip",
+        "sha256": "b6700e19f3edc580a9d8aa8575feb1a73d3a079c3fdbbf38ab9a687e35cdf00e"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/godot-4-game-jam/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "godot",
+        "gdscript",
+        "gamedev"
+      ],
+      "keywords": [
+        "godot",
+        "gdscript",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "godot-4-headless-tests",
+      "displayName": "Godot 4 headless GDScript tests",
+      "description": "A SceneTree test runner the agent runs with godot --headless after every change, failing on script errors with a non-zero exit, plus a linter for tests that can't fail. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/godot-4-headless-tests/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/godot-4-headless-tests.zip",
+        "sha256": "b83069d40d916caa84b863f24b73f208af3d349713e6fe48b7607a75743c2537"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/godot-4-headless-tests/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "godot",
+        "gdscript",
+        "gamedev",
+        "workflow"
+      ],
+      "keywords": [
+        "godot",
+        "gdscript",
+        "gamedev",
+        "workflow"
+      ]
+    },
+    {
+      "name": "godot-blender-mcp",
+      "displayName": "Godot and Blender through MCP",
+      "description": "Drive Godot 4 and Blender from one agent: Godot MCP to run the game and read errors, MCP for Blender in safe mode to model assets, and a glTF pipeline between them. Plugin adds 1 skill and 2 MCP servers. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/godot-blender-mcp/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/godot-blender-mcp.zip",
+        "sha256": "2bebaf3ba045224e0af6c7d82ed86a2b88a9b497cbcd48b2dacfdd52b2eef213"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/godot-blender-mcp/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "godot",
+        "gdscript",
+        "blender",
+        "gamedev"
+      ],
+      "keywords": [
+        "godot",
+        "gdscript",
+        "blender",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "headless-agents-ci",
+      "displayName": "Headless agents in CI",
+      "description": "Rules and a GitHub Actions template for unattended claude -p or codex exec: bare mode, read-only, a spend cap, pinned versions, PR text as untrusted data. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/headless-agents-ci/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/headless-agents-ci.zip",
+        "sha256": "b594027d8e608ea556cba28b9fbbd4ff6aa541fd6959342a1ff864efbaa6cbcd"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/headless-agents-ci/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "github",
+        "github-actions",
+        "workflow",
+        "security"
+      ],
+      "keywords": [
+        "github",
+        "github-actions",
+        "workflow",
+        "security"
+      ]
+    },
+    {
+      "name": "hook-audit",
+      "displayName": "Audit agent hooks before you trust them",
+      "description": "Hook security for Claude Code, Codex and Cursor: list every hook and settings command, flag guards that fail open, missing scripts, wrong exit codes and API redirects. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/claude-code-hook-audit/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/hook-audit.zip",
+        "sha256": "9301639dd2fc8f284a56825ba419b82c71ba2ce48ef0f14edbff5292e1655391"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/claude-code-hook-audit/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "bash",
+        "python",
+        "git",
+        "security",
+        "workflow"
+      ],
+      "keywords": [
+        "bash",
+        "python",
+        "git",
+        "security",
+        "workflow"
+      ]
+    },
+    {
+      "name": "hooks-guardrails",
+      "displayName": "Claude Code hooks guard rails",
+      "description": "Fail-closed PreToolUse, post-edit and Stop hooks that block force-pushes, .env reads and wild deletes, check each edit and run tests before done. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/claude-code-hooks-guardrails/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/hooks-guardrails.zip",
+        "sha256": "ffd9da9270c2748c4c7233e5371e26fc9174832120c1784a9d42a763a5b74f5d"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/claude-code-hooks-guardrails/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "bash",
+        "jq",
+        "workflow",
+        "security"
+      ],
+      "keywords": [
+        "bash",
+        "jq",
+        "workflow",
+        "security"
+      ]
+    },
+    {
+      "name": "ios-mobilebuildmcp",
+      "displayName": "iOS builds with MobileBuildMCP (XcodeBuildMCP)",
+      "description": "Let the agent build, test, run and screenshot iOS and macOS apps through MobileBuildMCP, pinned with telemetry off, with Swift concurrency and pbxproj rules. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/ios-mobilebuildmcp/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/ios-mobilebuildmcp.zip",
+        "sha256": "4157bad6008c0d487349716d9903efe1932365da5c70843e9856a37843434b37"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/ios-mobilebuildmcp/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "swift",
+        "ios",
+        "xcode",
+        "web-app"
+      ],
+      "keywords": [
+        "swift",
+        "ios",
+        "xcode",
+        "web-app"
+      ]
+    },
+    {
+      "name": "jupyter-mcp-live-notebooks",
+      "displayName": "Live Jupyter notebooks through Jupyter MCP",
+      "description": "Agents in a running JupyterLab via jupyter-mcp-server 2.2.4: loopback and a random token, saved cells over hidden kernel state, and a fresh-kernel rerun before done. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/jupyter-mcp-live-notebooks/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/jupyter-mcp-live-notebooks.zip",
+        "sha256": "aee8ad3c0d813432d19d690fe47fce207eed6520f6cc070911ab982390a068d9"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/jupyter-mcp-live-notebooks/",
+      "license": "MIT",
+      "category": "data",
+      "tags": [
+        "python",
+        "jupyter",
+        "uv",
+        "data",
+        "workflow"
+      ],
+      "keywords": [
+        "python",
+        "jupyter",
+        "uv",
+        "data",
+        "workflow"
+      ]
+    },
+    {
+      "name": "jupyter-notebooks",
+      "displayName": "Jupyter notebooks agents can edit",
+      "description": "Notebook rules for agents: edit Jupytext-paired .py files instead of JSON, run top to bottom in a fresh kernel, keep outputs out of git with nbstripout, check data first. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/jupyter-notebooks/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/jupyter-notebooks.zip",
+        "sha256": "1585ffecd70ed48c97e98f6f62f2c0b7c5808af914d540cc158cf216db0ef366"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/jupyter-notebooks/",
+      "license": "MIT",
+      "category": "data",
+      "tags": [
+        "python",
+        "jupyter",
+        "uv",
+        "data"
+      ],
+      "keywords": [
+        "python",
+        "jupyter",
+        "uv",
+        "data"
+      ]
+    },
+    {
+      "name": "maestro-mobile-flows",
+      "displayName": "Maestro UI flows for iOS and Android agents",
+      "description": "Maestro MCP and CLI for coding agents: inspect the screen, try commands inline, save flows with ids and assertions, lint them, then run the smoke set. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/maestro-mobile-flows/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/maestro-mobile-flows.zip",
+        "sha256": "c769dfaa814f38007ee75498809c1671f9ac64a7b252ca6d3a8e1f6714c62932"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/maestro-mobile-flows/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "ios",
+        "android",
+        "xcode",
+        "maestro",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "ios",
+        "android",
+        "xcode",
+        "maestro",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "mcp-2026-07-28-migration",
+      "displayName": "Migrate an MCP server to protocol 2026-07-28",
+      "description": "Move an MCP server to the stateless 2026-07-28 revision on the official SDKs: no sessions or handshake, server/discover, input_required, then a raw stdio probe. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/mcp-2026-07-28-migration/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/mcp-2026-07-28-migration.zip",
+        "sha256": "84e7af45aa9af0bb6914c59010725b7a1342b868d45800900e9ebd5f3febfce5"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/mcp-2026-07-28-migration/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "mcp",
+        "typescript",
+        "nodejs",
+        "python",
+        "ai-agents"
+      ],
+      "keywords": [
+        "mcp",
+        "typescript",
+        "nodejs",
+        "python",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "mcp-server-go",
+      "displayName": "MCP server in Go (official go-sdk)",
+      "description": "Build MCP servers in Go with the official go-sdk: typed tools with jsonschema tags, tool errors not panics, stdout kept for the protocol, in-memory client tests. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/mcp-server-go/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/mcp-server-go.zip",
+        "sha256": "bb515005f068afdf347f5567138d1b494d58ab43ea44d067ecc7c7271174b341"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/mcp-server-go/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "go",
+        "mcp",
+        "ai-agents"
+      ],
+      "keywords": [
+        "go",
+        "mcp",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "mcp-server-python",
+      "displayName": "MCP server in Python (official SDK v2)",
+      "description": "Build MCP servers on the official Python SDK v2: MCPServer, Annotated schemas, structured output, ToolError for fixable failures and in-memory Client tests. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/mcp-server-python/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/mcp-server-python.zip",
+        "sha256": "628402fad012db29a7e614795ab2798c67b033300165696ebb5b0ef9a7ff6d04"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/mcp-server-python/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "python",
+        "mcp",
+        "uv",
+        "pytest",
+        "ai-agents"
+      ],
+      "keywords": [
+        "python",
+        "mcp",
+        "uv",
+        "pytest",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "mcp-server-typescript",
+      "displayName": "MCP server (TypeScript)",
+      "description": "Rules and an add-a-tool skill for building a Model Context Protocol server in TypeScript that agents can actually use well — clear tools, safe inputs, no stdout noise. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/mcp-server-typescript/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/mcp-server-typescript.zip",
+        "sha256": "1d3fc45a2214bfc132b610487741298693b57529e9fa8ecd2c7e64721301acf2"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/mcp-server-typescript/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "mcp",
+        "typescript",
+        "nodejs",
+        "ai-agents"
+      ],
+      "keywords": [
+        "mcp",
+        "typescript",
+        "nodejs",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "nextjs-16-agent-loop",
+      "displayName": "Next.js 16 for agents: bundled docs and dev-server MCP",
+      "description": "Agents read the docs shipped with the installed Next.js, check code with the dev server's MCP tools, keep the managed AGENTS.md block intact and leave agent feedback off. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/nextjs-16-agent-loop/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/nextjs-16-agent-loop.zip",
+        "sha256": "03aead6c2ad1e597a3a208d1f9905ce3a9bc5de93e1d9bf97cd29f1d133b84c2"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/nextjs-16-agent-loop/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "nextjs",
+        "react",
+        "typescript",
+        "web-app"
+      ],
+      "keywords": [
+        "nextjs",
+        "react",
+        "typescript",
+        "web-app"
+      ]
+    },
+    {
+      "name": "nextjs-supabase-saas",
+      "displayName": "Next.js + Supabase SaaS",
+      "description": "Rules, an RLS audit skill and a read-only Supabase MCP config for vibe-coding a Next.js App Router SaaS without leaking your database. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/nextjs-supabase-saas/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/nextjs-supabase-saas.zip",
+        "sha256": "4178925b53db89024c4cadfc51781e91be9500c961cb1ce2ac2e9ca6fa2807e5"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/nextjs-supabase-saas/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "nextjs",
+        "react",
+        "typescript",
+        "supabase",
+        "postgres",
+        "web-app"
+      ],
+      "keywords": [
+        "nextjs",
+        "react",
+        "typescript",
+        "supabase",
+        "postgres",
+        "web-app"
+      ]
+    },
+    {
+      "name": "no-ai-voice-writing",
+      "displayName": "Writing rules that avoid AI-sounding prose",
+      "description": "Rules and a linter that stop agents writing 'seamlessly empowers', 'not just X, it's Y', fake proof and em-dash runs into your docs, PRs and release notes. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/no-ai-voice-writing/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/no-ai-voice-writing.zip",
+        "sha256": "4e560f60c29d2c8267a63759d06ecfd9c08bd2427be75f51a855b5044e636731"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/no-ai-voice-writing/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "any",
+        "markdown",
+        "workflow"
+      ],
+      "keywords": [
+        "any",
+        "markdown",
+        "workflow"
+      ]
+    },
+    {
+      "name": "one-agents-md-every-agent",
+      "displayName": "One AGENTS.md for every agent",
+      "description": "Keep one AGENTS.md as the source of truth, with thin imports and a single MCP list, so Claude Code, Codex, Cursor, Copilot and Antigravity CLI all load the same rules. Plugin adds 2 skills. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/one-agents-md-every-agent/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/one-agents-md-every-agent.zip",
+        "sha256": "27cf38323089a49f60fffa19dd88aee2054d5b81219cf66ff92e45308ff97a40"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/one-agents-md-every-agent/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "any",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "any",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "opentofu-module-checkov",
+      "displayName": "OpenTofu modules gated by tofu test and Checkov",
+      "description": "Agents write OpenTofu modules that pass a local gate: fmt, a read-only lock file, tofu test with a mocked AWS provider, and Checkov with reasoned skips only. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/opentofu-module-checkov/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/opentofu-module-checkov.zip",
+        "sha256": "e6e67b93f23067556452fbe1ff6fda9b5c2e15f07b7921b7697d70e99918ab85"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/opentofu-module-checkov/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "opentofu",
+        "terraform",
+        "aws",
+        "bash",
+        "security",
+        "workflow"
+      ],
+      "keywords": [
+        "opentofu",
+        "terraform",
+        "aws",
+        "bash",
+        "security",
+        "workflow"
+      ]
+    },
+    {
+      "name": "overnight-agent-runs",
+      "displayName": "Overnight agent runs with budgets and a morning report",
+      "description": "Queue coding tasks to run unattended, each with a finish-line check, its own worktree and branch, a dollar cap inside a nightly total, and safe retry settings. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/overnight-agent-runs/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/overnight-agent-runs.zip",
+        "sha256": "784f7eb35d9b640a925b1d0785e2579cc032a561000d74821dc4ac195f45cba0"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/overnight-agent-runs/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "python",
+        "git",
+        "bash",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "python",
+        "git",
+        "bash",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "pandas-3-upgrade-guard",
+      "displayName": "pandas 3 guard for copy-on-write and removed APIs",
+      "description": "Stop agents writing applymap, fillna(method=), freq=\"H\" and chained assignment into pandas 3 projects, where copy-on-write silently drops the write. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/pandas-3-upgrade-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/pandas-3-upgrade-guard.zip",
+        "sha256": "f3ad66c8643583d605881e6c74eb4eb061dffeab89db2afb03d0b8efb50bd962"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/pandas-3-upgrade-guard/",
+      "license": "MIT",
+      "category": "data",
+      "tags": [
+        "pandas",
+        "python",
+        "uv",
+        "data"
+      ],
+      "keywords": [
+        "pandas",
+        "python",
+        "uv",
+        "data"
+      ]
+    },
+    {
+      "name": "parallel-agents-worktrees",
+      "displayName": "Parallel agents in git worktrees",
+      "description": "Rules and two skills for running several coding agents at once, one task per git worktree: isolation, ports, dependencies, rebasing and clean-up. Plugin adds 2 skills. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/parallel-agents-worktrees/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/parallel-agents-worktrees.zip",
+        "sha256": "7f1d214bc4b390e5a894e95016672dc2464c9e9d90e7aca53c930f57c281d758"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/parallel-agents-worktrees/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "git",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "git",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "phaser-4-api-guard",
+      "displayName": "Phaser 4 guard for Phaser 3 pipelines, FX and masks",
+      "description": "Stop agents writing setPipeline, preFX, postFX, BitmapMask and setTintFill into Phaser 4 games, and catch the Math.TAU change that compiles but breaks rotations. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/phaser-4-api-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/phaser-4-api-guard.zip",
+        "sha256": "b04c440ccd05a44361c35b10987ad73c0eeea0625d4bfb20d44086fbe6e74fa9"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/phaser-4-api-guard/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "phaser",
+        "typescript",
+        "gamedev"
+      ],
+      "keywords": [
+        "phaser",
+        "typescript",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "phaser-web-game",
+      "displayName": "Phaser 4 web game",
+      "description": "Phaser 4 rules that send the agent to the skills Phaser ships in node_modules, not v3 tutorials: pooled objects, delta movement, a play test after each change. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/phaser-web-game/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/phaser-web-game.zip",
+        "sha256": "344552acf45d8b04020d1934e13e7abf7043c25416d928af17f0c8fc4333f282"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/phaser-web-game/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "phaser",
+        "typescript",
+        "vite",
+        "gamedev"
+      ],
+      "keywords": [
+        "phaser",
+        "typescript",
+        "vite",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "playwright-e2e-tests",
+      "displayName": "Playwright end-to-end tests agents don't make flaky",
+      "description": "Rules for agents writing and healing Playwright tests, including Playwright's test agents: role locators, web-first assertions, no sleeps, never weaken a test to pass. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/playwright-e2e-tests/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/playwright-e2e-tests.zip",
+        "sha256": "19524dd8f0a540dbd60de433cac0a48eead264481e9842d7c62593c5dd38a00b"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/playwright-e2e-tests/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "playwright",
+        "typescript",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "playwright",
+        "typescript",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "polars-2-upgrade-guard",
+      "displayName": "Polars 2 guard against Polars 1 code",
+      "description": "Stop agents writing melt, with_row_count, how=\"outer\" and other names Polars 2 removed, and flag the calls whose results changed silently in 2.0. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/polars-2-upgrade-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/polars-2-upgrade-guard.zip",
+        "sha256": "8d0c925a26b1e5cb8c9404c93adf7044c0008b2bf95d967c6031a05ca972b994"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/polars-2-upgrade-guard/",
+      "license": "MIT",
+      "category": "data",
+      "tags": [
+        "polars",
+        "python",
+        "uv",
+        "data"
+      ],
+      "keywords": [
+        "polars",
+        "python",
+        "uv",
+        "data"
+      ]
+    },
+    {
+      "name": "pr-hygiene-for-agents",
+      "displayName": "PR hygiene for agents",
+      "description": "Commit and PR rules for coding agents: small PRs, a four-part body, screenshots with gh --attach and a leak check for session links and secrets before pushing. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/pr-hygiene-for-agents/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/pr-hygiene-for-agents.zip",
+        "sha256": "857d8d7a0422b791dfe40180bb3c6431ac85aac378e2b4cef1b5494e7992018a"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/pr-hygiene-for-agents/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "git",
+        "github",
+        "workflow"
+      ],
+      "keywords": [
+        "git",
+        "github",
+        "workflow"
+      ]
+    },
+    {
+      "name": "python-data-script",
+      "displayName": "Python data script",
+      "description": "Rules for reproducible, single-file Python data scripts with uv and inline dependencies, plus a skill that sanity-checks a dataset before anyone trusts the numbers. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/python-data-script/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/python-data-script.zip",
+        "sha256": "be09d5b2056df7d49a4ffccd6464e8f44ddddc50bbff07f8fc3b319f09e1d461"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/python-data-script/",
+      "license": "MIT",
+      "category": "data",
+      "tags": [
+        "python",
+        "uv",
+        "polars",
+        "pandas",
+        "data"
+      ],
+      "keywords": [
+        "python",
+        "uv",
+        "polars",
+        "pandas",
+        "data"
+      ]
+    },
+    {
+      "name": "rails-app",
+      "displayName": "Rails app rules",
+      "description": "Rails 8 rules for agents: reversible migrations with real constraints, params.expect, N+1 checks with assert_queries_count, and rubocop and brakeman as the gate. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/rails-app/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/rails-app.zip",
+        "sha256": "368f49ec23a7eacf6348af2d1e2a6ed21777c454c2abfdac88a708b2d826dea5"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/rails-app/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "ruby",
+        "rails",
+        "web-app"
+      ],
+      "keywords": [
+        "ruby",
+        "rails",
+        "web-app"
+      ]
+    },
+    {
+      "name": "rails-rspec",
+      "displayName": "Rails request specs with RSpec and FactoryBot",
+      "description": "RSpec request specs for Rails 8.1 JSON endpoints: happy path, 422 errors, missing params, owner scoping and mass assignment, with FactoryBot and rubocop-rspec. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/rails-rspec/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/rails-rspec.zip",
+        "sha256": "3554a31b3523b5b73f9a2425890d9fa692331a269c06a00c6b2fc568d611bfde"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/rails-rspec/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "ruby",
+        "rails",
+        "rspec",
+        "web-app"
+      ],
+      "keywords": [
+        "ruby",
+        "rails",
+        "rspec",
+        "web-app"
+      ]
+    },
+    {
+      "name": "ralph-loop-guarded",
+      "displayName": "Guarded Ralph loop",
+      "description": "Run an agent in a Ralph-style loop with guard rails: a fresh process per pass, state in files, iteration and no-progress limits, and a check it cannot fake. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/ralph-loop-guarded/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/ralph-loop-guarded.zip",
+        "sha256": "20606cca29bc0a82446628513c0bfbd407da532ba256b6eb6bb4528f97760ad3"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/ralph-loop-guarded/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "any",
+        "bash",
+        "git",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "any",
+        "bash",
+        "git",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "roblox-luau",
+      "displayName": "Roblox Luau (Rojo)",
+      "description": "Luau conventions for Rojo projects with a server-authoritative mindset, plus a skill that reviews every RemoteEvent for exploits before you publish. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/roblox-luau/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/roblox-luau.zip",
+        "sha256": "941295bb7f4008abbd293a354273dea263998bae82bfb07a9e9a8d27c146c7ca"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/roblox-luau/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "roblox",
+        "luau",
+        "rojo",
+        "gamedev",
+        "security"
+      ],
+      "keywords": [
+        "roblox",
+        "luau",
+        "rojo",
+        "gamedev",
+        "security"
+      ]
+    },
+    {
+      "name": "roblox-luau-pure-modules",
+      "displayName": "Roblox pure Luau modules checked outside Studio",
+      "description": "Keep Roblox game rules in pure --!strict Luau modules that the luau CLI can type-check and test in milliseconds, with a scanner that keeps Roblox APIs out of them. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/roblox-luau-pure-modules/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/roblox-luau-pure-modules.zip",
+        "sha256": "e71fc66864dab0e876d4b1a038fd8839a943ead361cc30e51ee473ab6183b046"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/roblox-luau-pure-modules/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "roblox",
+        "luau",
+        "rojo",
+        "gamedev"
+      ],
+      "keywords": [
+        "roblox",
+        "luau",
+        "rojo",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "rust-crate",
+      "displayName": "Rust crate rules",
+      "description": "Rust rules for agents: typed errors instead of unwrap, clippy -D warnings, fmt and tests as the done-gate, no unsafe without a SAFETY note, no surprise MSRV bumps. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/rust-crate/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/rust-crate.zip",
+        "sha256": "80b29092c5531ffda833fff20b981e65105a459a739bd6b72fff86bd212584e3"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/rust-crate/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "rust",
+        "cargo",
+        "workflow"
+      ],
+      "keywords": [
+        "rust",
+        "cargo",
+        "workflow"
+      ]
+    },
+    {
+      "name": "second-opinion-review",
+      "displayName": "Second-opinion review from another model",
+      "description": "Before calling work done, the agent gets a read-only review of its diff from a different model, checks each finding and stops after two rounds. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/second-opinion-review/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/second-opinion-review.zip",
+        "sha256": "59e732fdc4022dcb9cc04c47ab256da8bc38f3c80e3eac67f324a7594cf4781d"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/second-opinion-review/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "any",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "any",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "secure-before-you-ship",
+      "displayName": "Secure before you ship",
+      "description": "A launch-check skill and always-on security rules that catch leaked keys, open databases and missing auth before your vibe-coded app goes live. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/secure-before-you-ship/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/secure-before-you-ship.zip",
+        "sha256": "2fc481a8e909c630cd8df8064e59ac0327fbb80054ddb7d8957cfc0f0d615cc3"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/secure-before-you-ship/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "any",
+        "javascript",
+        "typescript",
+        "python",
+        "security",
+        "web-app"
+      ],
+      "keywords": [
+        "any",
+        "javascript",
+        "typescript",
+        "python",
+        "security",
+        "web-app"
+      ]
+    },
+    {
+      "name": "skill-descriptions-that-trigger",
+      "displayName": "Skill descriptions that fit the listing and trigger",
+      "description": "Keep every SKILL.md description inside Claude Code's 1,536-character cap and both agents' listing budgets, with a trigger clause, so skills fire on their own. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/skill-descriptions-that-trigger/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/skill-descriptions-that-trigger.zip",
+        "sha256": "9e6b2ff32502273ce6150598c5cc83b7341bbc1e01f886e0806bccd0cfb23bc9"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/skill-descriptions-that-trigger/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "markdown",
+        "python",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "markdown",
+        "python",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "spec-first-tickets",
+      "displayName": "Spec first, then tickets",
+      "description": "Lightweight spec-driven flow: a SPEC.md with testable acceptance criteria, small tickets, test-first builds in parallel waves and a review against the spec. Plugin adds 2 skills. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/spec-first-tickets/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/spec-first-tickets.zip",
+        "sha256": "12cc35871179b4643d943cc3ae29e3358507bee6cceb5c4b46838dcea13e52de"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/spec-first-tickets/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "any",
+        "workflow",
+        "ai-agents"
+      ],
+      "keywords": [
+        "any",
+        "workflow",
+        "ai-agents"
+      ]
+    },
+    {
+      "name": "sqlalchemy-2-style-guard",
+      "displayName": "SQLAlchemy 2 guard against 1.x and legacy Query code",
+      "description": "Stop agents writing engine.execute, select([...]), row[\"name\"] and session.query into SQLAlchemy 2 projects, and catch writes that are never committed. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/sqlalchemy-2-style-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/sqlalchemy-2-style-guard.zip",
+        "sha256": "992aa8b38418d06849faf095aeb45c7ba5bdc80f6ef88ea2d759cf622bcdd457"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/sqlalchemy-2-style-guard/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "sqlalchemy",
+        "python",
+        "pytest",
+        "web-app",
+        "data"
+      ],
+      "keywords": [
+        "sqlalchemy",
+        "python",
+        "pytest",
+        "web-app",
+        "data"
+      ]
+    },
+    {
+      "name": "subagent-model-routing",
+      "displayName": "Subagent model routing",
+      "description": "Rules for when to delegate, which model and effort each subagent gets, and a brief template, with ready subagents for Claude Code and Codex. Plugin adds 1 skill and 3 subagents. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/subagent-model-routing/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/subagent-model-routing.zip",
+        "sha256": "9dd24dd7a153ea9b32bbcf13685422b9efe49ebba53f51df1bb89a7602ba8329"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/subagent-model-routing/",
+      "license": "MIT",
+      "category": "ai-agents",
+      "tags": [
+        "any",
+        "ai-agents",
+        "workflow"
+      ],
+      "keywords": [
+        "any",
+        "ai-agents",
+        "workflow"
+      ]
+    },
+    {
+      "name": "supabase-agent-safety",
+      "displayName": "Supabase with a safe agent",
+      "description": "Supabase MCP scoped to one dev project, read-only, database and docs tools only; every change as a reviewed migration with RLS, policy and expand-contract rules. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/supabase-agent-safety/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/supabase-agent-safety.zip",
+        "sha256": "f6c47fad48dd3614fe836f10d737174ea807007ba4d897f98671890561b6c9d8"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/supabase-agent-safety/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "supabase",
+        "postgres",
+        "web-app",
+        "security"
+      ],
+      "keywords": [
+        "supabase",
+        "postgres",
+        "web-app",
+        "security"
+      ]
+    },
+    {
+      "name": "swiftui-swift-test-ci",
+      "displayName": "SwiftUI with a Swift package core and swift test in CI",
+      "description": "SwiftUI screens as thin views over @Observable view models in a Swift package, with Swift Testing tests run by swift test on Linux and macOS CI. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/swiftui-swift-test-ci/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/swiftui-swift-test-ci.zip",
+        "sha256": "0dfc33834ac381b841513962f69055ef224a97718e08823213b9ef43dfd291b9"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/swiftui-swift-test-ci/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "swift",
+        "swiftui",
+        "ios",
+        "github-actions",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "swift",
+        "swiftui",
+        "ios",
+        "github-actions",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "swiftui-xcode-mcp",
+      "displayName": "SwiftUI with Xcode's MCP tools (build, preview, test)",
+      "description": "Use Xcode 26.3+'s MCP server (xcrun mcpbridge) to build, read the log, render and look at SwiftUI previews, and run tests after every change. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/swiftui-xcode-mcp/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/swiftui-xcode-mcp.zip",
+        "sha256": "961b6c8b0754c4d02ac1d6e4553f17d113a72054089a9e236f182c56ae88ab8e"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/swiftui-xcode-mcp/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "swiftui",
+        "swift",
+        "xcode",
+        "web-app",
+        "workflow"
+      ],
+      "keywords": [
+        "swiftui",
+        "swift",
+        "xcode",
+        "web-app",
+        "workflow"
+      ]
+    },
+    {
+      "name": "tauri-2-api-guard",
+      "displayName": "Tauri 2 guard for Tauri 1 imports, config and Rust APIs",
+      "description": "Stop agents writing @tauri-apps/api/tauri, appWindow, the allowlist, get_window and emit_all into Tauri 2 apps, and catch the snake_case invoke arguments Tauri 2 rejects. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/tauri-2-api-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/tauri-2-api-guard.zip",
+        "sha256": "959909d642d16b2fbabfef1bb84365521812b1348e1c3ce40566dbd32c8a379b"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/tauri-2-api-guard/",
+      "license": "MIT",
+      "category": "web-app",
+      "tags": [
+        "tauri",
+        "typescript",
+        "rust",
+        "web-app"
+      ],
+      "keywords": [
+        "tauri",
+        "typescript",
+        "rust",
+        "web-app"
+      ]
+    },
+    {
+      "name": "tauri-desktop-app",
+      "displayName": "Tauri 2 desktop app, least privilege",
+      "description": "Tauri 2 rules and a permissions skill: capabilities for named windows, scoped fs and http, no shell execute, a CSP kept, plus a checker that flags wide grants. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/tauri-desktop-app/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/tauri-desktop-app.zip",
+        "sha256": "325ebcd7657907e104de8568a61f777096502b7085948a8509c96c943e089b08"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/tauri-desktop-app/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "tauri",
+        "rust",
+        "typescript",
+        "desktop",
+        "security",
+        "web-app"
+      ],
+      "keywords": [
+        "tauri",
+        "rust",
+        "typescript",
+        "desktop",
+        "security",
+        "web-app"
+      ]
+    },
+    {
+      "name": "telegram-bot-grammy-workers",
+      "displayName": "Telegram bot with grammY on Cloudflare Workers",
+      "description": "grammY 1.46 webhook bots on Workers: secret-token check, botInfo, error boundaries instead of bot.catch, Queues for slow work, and tests with a fake Bot API. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/telegram-bot-grammy-workers/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/telegram-bot-grammy-workers.zip",
+        "sha256": "c7b59db0c1c3c481cc130062e44d376267b9e4e4b6b5c58bc96b5b3a23d0b0ba"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/telegram-bot-grammy-workers/",
+      "license": "MIT",
+      "category": "bots",
+      "tags": [
+        "telegram",
+        "cloudflare-workers",
+        "typescript",
+        "bots",
+        "web-app"
+      ],
+      "keywords": [
+        "telegram",
+        "cloudflare-workers",
+        "typescript",
+        "bots",
+        "web-app"
+      ]
+    },
+    {
+      "name": "telegram-bot-python",
+      "displayName": "Telegram bot with python-telegram-bot",
+      "description": "Rules and a command skill for Telegram bots on python-telegram-bot v22: token from the environment, async-safe handlers, testable logic, escaped output, webhook secrets. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/telegram-bot-python/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/telegram-bot-python.zip",
+        "sha256": "9468f4d401fc37f138b247761ef778fb8f32e89ece9b8cdf1aa71454d7a16899"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/telegram-bot-python/",
+      "license": "MIT",
+      "category": "bots",
+      "tags": [
+        "python",
+        "telegram",
+        "uv",
+        "pytest",
+        "bots"
+      ],
+      "keywords": [
+        "python",
+        "telegram",
+        "uv",
+        "pytest",
+        "bots"
+      ]
+    },
+    {
+      "name": "terraform-plan-only",
+      "displayName": "Terraform, plan only",
+      "description": "Let agents write Terraform and produce plans but never apply: a guard hook for apply, destroy and state changes, a plan summary that flags deletes, pinned providers. Plugin adds 1 skill and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/terraform-plan-only/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/terraform-plan-only.zip",
+        "sha256": "33e8e5cf1298975a34bcb05a6cf9c2b90c48964f25a16b62247df57da3eaaab1"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/terraform-plan-only/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "terraform",
+        "opentofu",
+        "bash",
+        "jq",
+        "security",
+        "workflow"
+      ],
+      "keywords": [
+        "terraform",
+        "opentofu",
+        "bash",
+        "jq",
+        "security",
+        "workflow"
+      ]
+    },
+    {
+      "name": "unity-agent-plugin",
+      "displayName": "Unity 6 with the official agent plugin",
+      "description": "Project rules for using Unity's official agent plugin safely in Claude Code or Codex: commit first, Editor-driven scene edits, .meta discipline, compile and test checks. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/unity-agent-plugin/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/unity-agent-plugin.zip",
+        "sha256": "6428f7e7ea52ce5d1f369bcb2b3ecfe765c6b22798f607e9a9461c4bce60cddf"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/unity-agent-plugin/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "unity",
+        "csharp",
+        "gamedev"
+      ],
+      "keywords": [
+        "unity",
+        "csharp",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "unity-game-jam",
+      "displayName": "Unity C# game jam",
+      "description": "Unity C# conventions that respect the editor, .meta files and serialisation, plus a skill for scripted web builds ready for itch.io. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/unity-game-jam/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/unity-game-jam.zip",
+        "sha256": "b267c187e552d335cac7094c77c40a3783bf21a63c6243689c83b983705bc331"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/unity-game-jam/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "unity",
+        "csharp",
+        "gamedev"
+      ],
+      "keywords": [
+        "unity",
+        "csharp",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "unity-test-runner",
+      "displayName": "Unity tests from the command line, read properly",
+      "description": "Run Unity Test Framework Edit Mode and Play Mode tests headless and read the NUnit results, so a run of zero tests (Unity exits 0) never passes as green. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/unity-test-runner/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/unity-test-runner.zip",
+        "sha256": "aba6e4c1104800d5c8008879f57ef1a944b812459e20ec2bce01fed778608291"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/unity-test-runner/",
+      "license": "MIT",
+      "category": "gamedev",
+      "tags": [
+        "unity",
+        "csharp",
+        "python",
+        "gamedev"
+      ],
+      "keywords": [
+        "unity",
+        "csharp",
+        "python",
+        "gamedev"
+      ]
+    },
+    {
+      "name": "untrusted-folder-guard",
+      "displayName": "Don't start agents in Downloads",
+      "description": "After the planted AGENTS.md attack: check what instruction and config files an agent will read in a folder, refuse drop zones, and treat setup steps as data. Plugin adds 1 skill. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/untrusted-folder-guard/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/untrusted-folder-guard.zip",
+        "sha256": "5333ef48c4b9622861641243be0e2e8f17faa5d99d750b1aa135704b1b6a53ab"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/untrusted-folder-guard/",
+      "license": "MIT",
+      "category": "security",
+      "tags": [
+        "bash",
+        "python",
+        "git",
+        "security",
+        "workflow"
+      ],
+      "keywords": [
+        "bash",
+        "python",
+        "git",
+        "security",
+        "workflow"
+      ]
+    },
+    {
+      "name": "vibe-coding-guardrails",
+      "displayName": "Vibe-coding guard rails",
+      "description": "A stack-agnostic working style for coding agents — plan first, small diffs, never delete tests to go green — plus handoff notes and up-to-date docs via MCP. Plugin adds 2 skills and 1 MCP server. Project rules (AGENTS.md, CLAUDE.md) aren't carried by plugins; get them from https://setupbay.com/loadouts/vibe-coding-guardrails/",
+      "source": {
+        "source": "archive",
+        "url": "https://setupbay.com/plugins/vibe-coding-guardrails.zip",
+        "sha256": "ad036649ba787de857366692027e3f41cdad5af1a0b2f444159e4925e68694b1"
+      },
+      "author": {
+        "name": "SetupBay",
+        "url": "https://setupbay.com"
+      },
+      "homepage": "https://setupbay.com/loadouts/vibe-coding-guardrails/",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "any",
+        "workflow"
+      ],
+      "keywords": [
+        "any",
+        "workflow"
+      ]
+    }
+  ]
+}

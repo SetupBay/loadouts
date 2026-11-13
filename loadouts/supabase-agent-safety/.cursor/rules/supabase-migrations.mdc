@@ -1,0 +1,11 @@
+---
+description: Supabase migration rules.
+globs: supabase/migrations/**/*.sql
+alwaysApply: false
+---
+
+- Never edit a migration that may have been applied; create a new one with `supabase migration new <name>`.
+- New tables in exposed schemas: `alter table … enable row level security;` plus explicit policies in the same file.
+- In policies write `(select auth.uid())`, and index the columns the policies filter on.
+- No `drop` or `rename` in the same migration that introduces the replacement. Split expand and contract.
+- Functions: `security invoker` by default; `security definer` only with `set search_path = ''` and a comment saying why.

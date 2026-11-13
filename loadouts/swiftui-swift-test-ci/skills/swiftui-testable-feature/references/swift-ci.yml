@@ -1,0 +1,39 @@
+# .github/workflows/swift.yml
+# Linux: format lint and swift test for the core package (fast, cheap, no Xcode).
+# macOS: build the package for macOS and the iOS simulator, so the SwiftUI views compile too.
+name: Swift
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    container: swift:6.4.1-noble
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: Packages/NotesCore
+    steps:
+      - uses: actions/checkout@v7
+      - run: swift format lint --strict --recursive Sources Tests Package.swift
+      - run: swift build --build-tests
+      - run: swift test --parallel
+
+  macos:
+    runs-on: macos-26
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: Packages/NotesCore
+    steps:
+      - uses: actions/checkout@v7
+      - run: sudo xcode-select -s /Applications/Xcode_26.6.app
+      - run: swift test --parallel
+      - name: Build for the iOS simulator (compiles the SwiftUI views)
+        run: xcodebuild -scheme NotesCore -destination 'generic/platform=iOS Simulator' -skipPackagePluginValidation build

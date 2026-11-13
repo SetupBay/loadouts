@@ -1,0 +1,80 @@
+id: agent-handoff
+type: loadout
+title: Handoff without compaction
+summary: "Write HANDOFF.md before you clear context or switch agents: goal, decisions, exact failing test, next step, commit. A checker flags stale or incomplete handoffs."
+description: |
+  Automatic compaction keeps what a summariser thought mattered, and decisions are the first thing to go. Practitioners have converged on the same fix: before clearing context or moving work to another agent or person, write a short handoff file with the goal, files touched, decisions and why, the exact failing test and error, and one next step. This loadout makes that a habit. One skill writes HANDOFF.md from git facts and a template; another resumes from it by re-running the verify commands before changing anything. A small checker flags missing sections, leftover placeholders, secrets, and handoffs written at an older commit. The verifier runs the checker through a template, a good handoff, a stale one and a leaky one.
+highlights:
+  - Write a handoff before /clear, compaction or switching agents, not after
+  - "Template: goal, state, files, decisions, exact failure, next step, verify commands"
+  - Checker compares the recorded commit with HEAD and counts the commits since
+  - Resume skill re-runs the checks and confirms the next step before editing
+  - Works across Claude Code, Codex, Antigravity, Cursor and Copilot
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@automater_ai: keep a handoff with the goal, files touched, what is done and the next step"
+    url: https://x.com/automater_ai/status/2107481727073395054
+  - title: "@PublicAI_: handoff notes with goal, files touched, failing test and last error"
+    url: https://x.com/PublicAI_/status/2104179567510556875
+  - title: "@calloway_dev: one owner per task; read the handoff before starting"
+    url: https://x.com/calloway_dev/status/2107099970562085278
+  - title: "@jai_kora: record decisions and what still fails, not a narrative"
+    url: https://x.com/jai_kora/status/2101657904147517719
+  - title: "@agentjeanclaude: commit a handoff file when switching agents; re-add MCP servers"
+    url: https://x.com/agentjeanclaude/status/2104989005813260667
+  - title: "Claude Code docs: manage costs and context (/clear and /compact)"
+    url: https://code.claude.com/docs/en/costs
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - any
+  - git
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: When to write and read a handoff file, and what goes in it.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/write-handoff/SKILL.md
+    role: skill
+    skill: write-handoff
+    description: Write HANDOFF.md from git facts and check it.
+  - path: skills/write-handoff/references/HANDOFF.template.md
+    role: reference
+    skill: write-handoff
+    description: Handoff template with every required section.
+  - path: skills/write-handoff/scripts/check_handoff.py
+    role: reference
+    skill: write-handoff
+    description: Checks sections, commit freshness, length and secrets.
+  - path: skills/resume-from-handoff/SKILL.md
+    role: skill
+    skill: resume-from-handoff
+    description: "Start a session from HANDOFF.md: check, re-run, confirm."
+requires:
+  tools:
+    - python3
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - check_handoff.py
+  notes: The checker reads HANDOFF.md and runs read-only git commands. No network access. It rejects secret-shaped strings so a handoff can be shared safely.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

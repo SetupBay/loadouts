@@ -1,0 +1,58 @@
+id: secure-before-you-ship
+type: loadout
+title: Secure before you ship
+summary: A launch-check skill and always-on security rules that catch leaked keys, open databases and missing auth before your vibe-coded app goes live.
+description: |
+  Most vibe-coded apps that get burnt at launch fail on the same ten things: a secret key in the
+  front end, a database anyone can read, an admin route with no auth check, or a free API endpoint
+  someone scripts to run up your bill. This loadout gives your agent a repeatable pre-launch audit
+  and a set of rules that stop the worst mistakes being written in the first place.
+  Stack-agnostic: works for Next.js, Vite, Astro, Express, Flask, Supabase, Firebase and friends.
+highlights:
+  - Launch-check skill that produces a plain-English, severity-ranked fix list
+  - Checklist reference covering secrets, auth, data access, abuse, headers and dependencies
+  - Always-on rule that stops agents hard-coding or logging secrets
+  - Read-only by design — the skill reports and proposes fixes, it does not rewrite your app unasked
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+categories: [security, web-app]
+stacks: [any, javascript, typescript, python]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Security baseline rules for any agent that reads AGENTS.md.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/no-secrets.mdc
+    role: rules
+    description: Always-on Cursor rule about secrets and environment variables.
+  - path: skills/launch-check/SKILL.md
+    role: skill
+    skill: launch-check
+    description: Runs a pre-launch security and readiness audit.
+  - path: skills/launch-check/references/checklist.md
+    role: reference
+    skill: launch-check
+    description: The full checklist the launch-check skill works through.
+requires:
+  tools: [git]
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+  notes: Instructions only. No scripts, no network access required.
+last_checked: 2026-10-15
+published: 2026-10-15
+updated: 2026-10-15

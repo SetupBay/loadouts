@@ -1,0 +1,69 @@
+id: mcp-server-go
+type: loadout
+title: MCP server in Go (official go-sdk)
+summary: "Build MCP servers in Go with the official go-sdk: typed tools with jsonschema tags, tool errors not panics, stdout kept for the protocol, in-memory client tests."
+description: |
+  The official Go SDK for the Model Context Protocol reached v1.8 in September 2026 and generates each tool's input schema from a Go struct. That makes the struct tags the documentation the model reads, and it makes a careless fmt.Println on stdout a protocol error. This loadout gives your agent the rules for a Go MCP server (stdout hygiene, typed tools, validation, read-only by default, untrusted tool output) and a skill for adding tools with an in-memory client test. The verifier builds the example on go-sdk v1.8.0, runs the tests under the race detector and talks raw JSON-RPC to the binary over stdio.
+highlights:
+  - Official github.com/modelcontextprotocol/go-sdk, pinned at v1.8.0
+  - Typed input and output structs; jsonschema tags become the schema
+  - Errors returned as isError tool results, never panics
+  - Logs on stderr only; the verifier checks stdout is pure JSON-RPC
+  - Every tool has a test that calls it through a real client over in-memory transports
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: modelcontextprotocol/go-sdk (official Go SDK)
+    url: https://github.com/modelcontextprotocol/go-sdk
+  - title: go-sdk v1.8.0 release
+    url: https://github.com/modelcontextprotocol/go-sdk/releases/tag/v1.8.0
+  - title: "MCP specification: tools"
+    url: https://modelcontextprotocol.io/specification/latest/server/tools
+  - title: "MCP docs: build a server"
+    url: https://modelcontextprotocol.io/docs/develop/build-server
+categories:
+  - ai-agents
+stacks:
+  - go
+  - mcp
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: "Rules for a Go MCP server: protocol hygiene, tools, safety and dependencies."
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/go-mcp-tool/SKILL.md
+    role: skill
+    skill: go-mcp-tool
+    description: Add a typed tool with tests to a Go MCP server.
+  - path: skills/go-mcp-tool/references/server.go
+    role: reference
+    skill: go-mcp-tool
+    description: Glossary server with one validated tool.
+  - path: skills/go-mcp-tool/references/server_test.go
+    role: reference
+    skill: go-mcp-tool
+    description: In-memory client tests for the tool.
+requires:
+  tools:
+    - go
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: go get downloads the SDK through the Go module proxy. The example tool is read-only and makes no network calls. The Inspector command is suggested only with a pinned version and after asking.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

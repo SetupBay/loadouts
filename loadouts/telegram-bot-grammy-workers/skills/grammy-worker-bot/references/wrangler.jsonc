@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tide-bot",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true },
+  // Public bot info only. BOT_TOKEN and WEBHOOK_SECRET are secrets: wrangler secret put, and .dev.vars locally.
+  "vars": {
+    "BOT_INFO": "{\"id\":1234567890,\"is_bot\":true,\"first_name\":\"Tide bot\",\"username\":\"tide_example_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_inline_queries\":false}"
+  }
+}

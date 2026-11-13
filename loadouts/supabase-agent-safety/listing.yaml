@@ -1,0 +1,73 @@
+id: supabase-agent-safety
+type: loadout
+title: Supabase with a safe agent
+summary: Supabase MCP scoped to one dev project, read-only, database and docs tools only; every change as a reviewed migration with RLS, policy and expand-contract rules.
+description: |
+  Database horror stories are a staple of agent failure threads: a tool with write access to production, a migration run
+  from chat, a table shipped without row level security. This loadout connects the hosted Supabase MCP server in its
+  safest documented form (project-scoped, read_only=true, database and docs feature groups) and makes every change a
+  migration file that is run against a local database first and applied by a human. It adds RLS and policy rules, an expand-contract rule for
+  destructive changes, and a reminder that query results are untrusted data.
+highlights:
+  - Hosted Supabase MCP, project-scoped, read-only, database and docs tools only
+  - Changes only as migrations, checked with a local db reset
+  - RLS on every new table; (select auth.uid()) in policies; indexed policy columns
+  - Expand, backfill, switch, contract for destructive changes
+  - Query results treated as untrusted data
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Supabase MCP server: security and configuration"
+    url: https://supabase.com/docs/guides/getting-started/mcp
+  - title: supabase-community/supabase-mcp
+    url: https://github.com/supabase-community/supabase-mcp
+categories:
+  - web-app
+  - security
+stacks:
+  - supabase
+  - postgres
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Supabase access and migration rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: mcp.json
+    role: mcp
+    description: Supabase MCP, project-scoped and read-only.
+  - path: .cursor/rules/supabase-migrations.mdc
+    role: rules
+    description: Migration rules for SQL files.
+  - path: skills/database-change/SKILL.md
+    role: skill
+    skill: database-change
+    description: Plan, write and test a schema change as a migration.
+  - path: skills/database-change/references/checklist.md
+    role: reference
+    skill: database-change
+    description: Migration review checklist.
+requires:
+  tools:
+    - supabase
+  env: []
+  mcp:
+    - supabase
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: Connects to the hosted Supabase MCP server in read-only mode, scoped to one project the user fills in.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

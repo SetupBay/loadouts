@@ -1,0 +1,74 @@
+id: nextjs-16-agent-loop
+type: loadout
+title: "Next.js 16 for agents: bundled docs and dev-server MCP"
+summary: Agents read the docs shipped with the installed Next.js, check code with the dev server's MCP tools, keep the managed AGENTS.md block intact and leave agent feedback off.
+description: |
+  Next.js now meets coding agents halfway. Since 16.2 every install carries its own docs in node_modules/next/dist/docs, so an agent can read the guide for the exact version instead of guessing from training data (middleware is proxy, caching is Cache Components). Since 16.3, next dev writes a managed block into AGENTS.md telling agents to do exactly that, and the dev server exposes /_next/mcp with tools such as get_compilation_issues and compile_route that check code without a full build.
+
+  This loadout ties those together. AGENTS.md carries the managed block as Next.js 16.4.3 writes it, with project rules kept outside the markers so next dev never fights your edits. The skill's script reports the installed version, confirms the bundled docs, checks the block is intact and current, fails if experimental.agentFeedback has been switched on, and searches the bundled docs by topic. next-devtools-mcp 0.4.0 is pinned for nextjs_index and nextjs_call. The agent-feedback pass stays an owner decision: the loadout tells agents never to enable it or act on its block unprompted.
+highlights:
+  - Reads the docs bundled with the installed Next.js, searchable by topic
+  - Managed AGENTS.md block kept intact; project rules outside the markers
+  - get_compilation_issues and compile_route while editing, next build at the end
+  - next-devtools-mcp 0.4.0 pinned
+  - Fails if experimental.agentFeedback is on; enabling it stays the owner's call
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Next.js docs: AI coding agents guide"
+    url: https://nextjs.org/docs/app/guides/ai-agents
+  - title: "Next.js docs: Next.js MCP server (next-devtools-mcp, /_next/mcp tools)"
+    url: https://nextjs.org/docs/app/guides/mcp
+  - title: Next.js source, generate-agent-files (managed AGENTS.md block)
+    url: https://github.com/vercel/next.js/blob/canary/packages/next/src/server/lib/generate-agent-files.ts
+  - title: vercel/next-devtools-mcp
+    url: https://github.com/vercel/next-devtools-mcp
+categories:
+  - web-app
+stacks:
+  - nextjs
+  - react
+  - typescript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Managed Next.js block plus project rules outside it.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/next-version-docs/SKILL.md
+    role: skill
+    skill: next-version-docs
+    description: Version-matched docs, dev-server MCP loop, managed block and feedback rules.
+  - path: skills/next-version-docs/scripts/next_agent_check.mjs
+    role: reference
+    skill: next-version-docs
+    description: Checks the setup and searches the bundled docs.
+  - path: mcp.json
+    role: mcp
+    description: next-devtools-mcp pinned.
+requires:
+  tools:
+    - node
+    - npm
+  env: []
+  mcp:
+    - next-devtools
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - next_agent_check.mjs
+  notes: next_agent_check.mjs is read-only apart from a temporary copy of AGENTS.md used to compare the managed block. The MCP server is fetched from npm and talks to the local dev server.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

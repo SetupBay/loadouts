@@ -1,0 +1,80 @@
+id: django-rest-api
+type: loadout
+title: Django REST Framework API rules
+summary: "DRF rules for agents: explicit serializer fields, querysets scoped to the user, owner set on the server, pagination, and six tests for every endpoint."
+description: |
+  The DRF code agents write usually works for the person testing it and leaks for everyone else: fields set to __all__, a queryset of every row with a permission check bolted on, an owner field accepted from the request body, an unpaginated list that runs a query per row. This loadout gives your agent the DRF conventions that prevent that, from the official docs and the OWASP API Security Top 10's broken object level authorisation. A skill adds endpoints with the six tests each one needs. The verifier runs the tests on Django 6.1 and DRF 3.18, and checks that the query-count test fails without select_related.
+highlights:
+  - IsAuthenticated by default; AllowAny only when asked
+  - "get_queryset scoped to request.user: other users' rows are a 404"
+  - Owner set in perform_create, never from the request body
+  - Explicit serializer fields; no __all__ or exclude
+  - Six tests per endpoint, including a flat query count
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Django REST Framework docs: permissions"
+    url: https://www.django-rest-framework.org/api-guide/permissions/
+  - title: "Django REST Framework docs: serializers"
+    url: https://www.django-rest-framework.org/api-guide/serializers/
+  - title: "Django REST Framework docs: testing"
+    url: https://www.django-rest-framework.org/api-guide/testing/
+  - title: "OWASP API Security Top 10 2023: broken object level authorisation"
+    url: https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/
+categories:
+  - web-app
+  - security
+stacks:
+  - python
+  - django
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: "Rules for a Django REST Framework API: security defaults, serializers, queries and tests."
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/drf-endpoint/SKILL.md
+    role: skill
+    skill: drf-endpoint
+    description: Add an endpoint with the six tests it needs.
+  - path: skills/drf-endpoint/references/serializers.py
+    role: reference
+    skill: drf-endpoint
+    description: Explicit serializer with validation.
+  - path: skills/drf-endpoint/references/views.py
+    role: reference
+    skill: drf-endpoint
+    description: User-scoped viewset.
+  - path: skills/drf-endpoint/references/urls.py
+    role: reference
+    skill: drf-endpoint
+    description: Router registration.
+  - path: skills/drf-endpoint/references/tests.py
+    role: reference
+    skill: drf-endpoint
+    description: API tests for auth, ownership, validation and queries.
+requires:
+  tools:
+    - uv
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uv downloads Django and Django REST Framework from PyPI. Settings come from the environment and DEBUG defaults to off.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

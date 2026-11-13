@@ -1,0 +1,97 @@
+id: chrome-mv3-service-worker-guard
+type: loadout
+title: Chrome MV3 service worker guard for MV2 code
+summary: Stop agents writing MV2 background-page habits into MV3 extensions, such as globals as state and long timers, and prove state survives a service worker restart.
+description: |
+  A Manifest V3 extension's background script is a service worker. Chrome stops it after about 30 seconds without events and starts it again for the next one. Code written for an MV2 background page assumes it runs forever, so it works while you click around and breaks later: counters reset, timers never fire, and document, localStorage and XMLHttpRequest don't exist. Agents still write chrome.browserAction, tabs.executeScript, getBackgroundPage and blocking webRequest too.
+
+  This loadout pairs a Cursor rule and AGENTS.md (what a service worker isn't, and the API replacements) with a skill that checks the work. A standard-library Python scanner reports MV2 APIs and things a worker can't do as errors, and lifecycle risks (globals, long timers, nested listeners, keep-alive hacks) as warnings. A Playwright test then stops the worker through the DevTools protocol and uses the extension again. The verifier runs it in Playwright's Chromium: storage-backed state survives the restart, and the same extension with a global counter resets to 0. It works alongside the Chrome extension (Manifest V3) loadout, which covers manifests, permissions and store review.
+highlights:
+  - Scanner flags MV2 APIs and DOM, localStorage or XHR in the worker
+  - Warns on globals as state, long timers and listeners below the top level
+  - Playwright test stops the service worker through CDP, then retries
+  - Shows a global counter resetting to 0 after a real worker restart
+  - API table from browserAction, executeScript and blocking webRequest to MV3
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Chrome docs: migrate to a service worker"
+    url: https://developer.chrome.com/docs/extensions/develop/migrate/to-service-workers
+  - title: "Chrome docs: the extension service worker lifecycle"
+    url: https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle
+  - title: "Chrome docs: replace blocking web request listeners"
+    url: https://developer.chrome.com/docs/extensions/develop/migrate/blocking-web-requests
+  - title: "Playwright docs: Chrome extensions"
+    url: https://playwright.dev/docs/chrome-extensions
+  - title: "Chrome DevTools Protocol: ServiceWorker domain"
+    url: https://chromedevtools.github.io/devtools-protocol/tot/ServiceWorker/
+  - title: "@unblckhq: ask the agent for MV3 and declarativeNetRequest, not blocking webRequest"
+    url: https://x.com/unblckhq/status/2114719662881833243
+categories:
+  - browser-extension
+stacks:
+  - chrome
+  - javascript
+  - playwright
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Service worker facts, MV2 to MV3 replacements and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/mv3-service-worker.mdc
+    role: rules
+    description: Never/always table for background scripts and manifest.json.
+  - path: skills/mv3-worker-guard/SKILL.md
+    role: skill
+    skill: mv3-worker-guard
+    description: Scan for MV2 APIs and lifecycle bugs, then restart the worker and check the state survived.
+  - path: skills/mv3-worker-guard/scripts/mv3_worker_guard.py
+    role: reference
+    skill: mv3-worker-guard
+    description: Read-only scanner for MV2 APIs, worker-only problems and lifecycle risks.
+  - path: skills/mv3-worker-guard/references/mv2-to-mv3.md
+    role: reference
+    skill: mv3-worker-guard
+    description: MV2 to MV3 table and the service worker lifecycle facts.
+  - path: skills/mv3-worker-guard/references/worker-restart.spec.mjs
+    role: reference
+    skill: mv3-worker-guard
+    description: Playwright test that stops the service worker through CDP and checks state survives.
+  - path: skills/mv3-worker-guard/references/mv2-sample/background.js.txt
+    role: reference
+    skill: mv3-worker-guard
+    description: MV2 background page for checking the guard.
+  - path: skills/mv3-worker-guard/references/mv2-sample/popup.js.txt
+    role: reference
+    skill: mv3-worker-guard
+    description: MV2 popup that reaches into the background page.
+  - path: skills/mv3-worker-guard/references/mv2-sample/manifest.json.txt
+    role: reference
+    skill: mv3-worker-guard
+    description: MV2 manifest for checking the guard.
+requires:
+  tools:
+    - node
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - mv3_worker_guard.py
+  notes: The scanner only reads source files and manifest.json and prints findings; it never edits files and makes no network calls. Installing Playwright and its Chromium with npm downloads them.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

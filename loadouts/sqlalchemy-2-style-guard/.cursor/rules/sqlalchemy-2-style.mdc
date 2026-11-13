@@ -1,0 +1,22 @@
+---
+description: SQLAlchemy 2.0 style only; no removed 1.x APIs or legacy Query code
+globs: "**/*.py"
+alwaysApply: false
+---
+
+This project uses SQLAlchemy 2.x in 2.0 style. There is no autocommit.
+
+| Never (1.x / legacy) | Always (2.0 style) |
+|---|---|
+| `engine.execute("select ...")` | `with engine.begin() as conn: conn.execute(text("..."), params)` |
+| `conn.execute("raw sql")` | `conn.execute(text("... :id"), {"id": 1})` |
+| `select([User.id])` | `select(User.id)` |
+| `session.query(User).filter_by(name=n).all()` | `session.scalars(select(User).where(User.name == n)).all()` |
+| `session.query(User).get(1)` | `session.get(User, 1)` |
+| `row["name"]` | `row.name` or `row._mapping["name"]` |
+| `declarative_base()`, `id = Column(Integer, ...)` | `class Base(DeclarativeBase)`, `id: Mapped[int] = mapped_column(primary_key=True)` |
+| `relationship(backref="x")`, `lazy="dynamic"` | `back_populates=` both sides, `WriteOnlyMapped` |
+| `MetaData(bind=engine)`, `autocommit=True` | pass the engine; `with Session(engine) as s, s.begin():` |
+| writes inside `engine.connect()` with no commit | `engine.begin()` |
+
+- After editing, run the `sqlalchemy-2-guard` skill's scanner and the tests.

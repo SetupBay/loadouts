@@ -1,0 +1,81 @@
+id: pandas-3-upgrade-guard
+type: loadout
+title: pandas 3 guard for copy-on-write and removed APIs
+summary: Stop agents writing applymap, fillna(method=), freq="H" and chained assignment into pandas 3 projects, where copy-on-write silently drops the write.
+description: |
+  pandas 3.0 removed the APIs deprecated through 2.x and made two behaviour changes permanent. Copy-on-write is always on, so chained assignment such as df["v"][0] = 1, or df["v"].fillna(0, inplace=True), changes a temporary copy and leaves the frame untouched, with only a warning. Strings are now the str dtype, so dtype == object checks quietly stop matching. Agents learnt pandas from a decade of answers that rely on all of this.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (a never/always table) with a skill that checks the work. A standard-library Python scanner reports removed APIs (applymap, append, fillna(method=), delim_whitespace, date_parser, old offset aliases such as H and M, errors="ignore") and chained writes as errors, and object-dtype checks and agg(np.sum) as warnings. Then the tests run with ChainedAssignmentError raised as an error, so every lost write fails. The verifier runs the scanner against a pandas 3 script and a pandas 2 sample, and runs both with the pinned pandas 3.1.0.
+highlights:
+  - Never/always table for pandas 3 in a .py-scoped Cursor rule
+  - Scanner flags removed APIs and chained writes as errors, read-only
+  - Catches writes copy-on-write throws away, like df["v"][0] = 1
+  - Tests run with ChainedAssignmentError as an error, so lost writes fail
+  - Warns on object-dtype string checks now that strings are dtype str
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "pandas docs: what's new in 3.0.0"
+    url: https://pandas.pydata.org/docs/whatsnew/v3.0.0.html
+  - title: "pandas docs: copy-on-write"
+    url: https://pandas.pydata.org/docs/user_guide/copy_on_write.html
+  - title: "pandas 3.1.0 on PyPI (released 22 Oct 2026)"
+    url: https://pypi.org/project/pandas/3.1.0/
+  - title: "@jmdevilleros: a pandas 3 update broke a data tool an agent was meant to use"
+    url: https://x.com/jmdevilleros/status/2112904481021075601
+categories:
+  - data
+stacks:
+  - pandas
+  - python
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: pandas 3 version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/pandas-3-only.mdc
+    role: rules
+    description: Never/always table for Python files.
+  - path: skills/pandas-3-guard/SKILL.md
+    role: skill
+    skill: pandas-3-guard
+    description: Scan for removed pandas APIs and lost writes, then run the tests with ChainedAssignmentError as an error.
+  - path: skills/pandas-3-guard/scripts/pandas3_guard.py
+    role: reference
+    skill: pandas-3-guard
+    description: Read-only scanner for removed pandas APIs, chained writes and dtype checks.
+  - path: skills/pandas-3-guard/references/rename-table.md
+    role: reference
+    skill: pandas-3-guard
+    description: pandas 1 and 2 to pandas 3 table, including copy-on-write fixes.
+  - path: skills/pandas-3-guard/references/pandas2-sample.py.txt
+    role: reference
+    skill: pandas-3-guard
+    description: A pandas 2 cleaning script for checking the guard.
+requires:
+  tools:
+    - python3
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - pandas3_guard.py
+  notes: The scanner only reads .py and .ipynb files and prints findings; it never edits files and makes no network calls. Running the project with uv may download the pinned packages.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

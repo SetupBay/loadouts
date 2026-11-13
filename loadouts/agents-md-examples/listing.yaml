@@ -1,0 +1,97 @@
+id: agents-md-examples
+type: loadout
+title: AGENTS.md examples for seven kinds of repository
+summary: Seven worked AGENTS.md examples (web app, Python library, monorepo, Go CLI, Godot game, OpenTofu) and a lint that checks commands exist, sizes, and CLAUDE.md shadowing.
+description: |
+  Most AGENTS.md files are either one vague line or a 500-line wall, and both get ignored. The ones that work share a shape: one line on what the project is, exact commands (including how to run a single test), the layout, conventions and a Never list, and what done means. This loadout gives seven worked examples in that shape. They cover a Next.js app, a published Python library, a monorepo root with a nested app file, a Go CLI with golden files, a Godot 4 game and an OpenTofu repo that agents may only plan.
+
+  The skill tells the agent to fill the file from the repository's real scripts and to run every command before writing it down. Then a standard-library lint checks it against what agents load. It errors when the chain from root to folder passes Codex's 32 KiB limit, when a CLAUDE.md beside the file doesn't import it (so Claude Code ignores it), and when an npm, pnpm, make or just command doesn't exist. It warns on a missing test command, a missing Never list, files over 150 lines and paths that aren't there, and it prints which files Codex joins for each folder.
+highlights:
+  - Seven 30–40 line examples, from web app to OpenTofu, in one five-part shape
+  - Lint checks every npm/pnpm/make/just command exists before an agent runs it
+  - Catches a CLAUDE.md that shadows AGENTS.md for Claude Code
+  - "Codex's 32 KiB project_doc_max_bytes checked across nested files"
+  - Shows which AGENTS.md files Codex joins for each folder
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Codex docs: custom instructions with AGENTS.md (discovery, 32 KiB project_doc_max_bytes)"
+    url: https://developers.openai.com/codex/guides/agents-md
+  - title: "Claude Code docs: memory, AGENTS.md (CLAUDE.md wins unless it imports AGENTS.md)"
+    url: https://code.claude.com/docs/en/memory
+  - title: AGENTS.md format
+    url: https://agents.md/
+  - title: "@torfinpd: in 161 of 283 top repos with AGENTS.md, a CLAUDE.md shadows it"
+    url: https://x.com/torfinpd/status/2108876607431553167
+categories:
+  - ai-agents
+  - workflow
+stacks:
+  - markdown
+  - python
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for keeping this repository's AGENTS.md files correct.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/agents-md-writer/SKILL.md
+    role: skill
+    skill: agents-md-writer
+    description: Pick an example, fill it from the repo, lint it.
+  - path: skills/agents-md-writer/scripts/agents_md_lint.py
+    role: reference
+    skill: agents-md-writer
+    description: Read-only lint for AGENTS.md files.
+  - path: skills/agents-md-writer/references/examples/web-app.md
+    role: reference
+    skill: agents-md-writer
+    description: Next.js + TypeScript + Postgres app.
+  - path: skills/agents-md-writer/references/examples/python-library.md
+    role: reference
+    skill: agents-md-writer
+    description: Published Python library with uv.
+  - path: skills/agents-md-writer/references/examples/monorepo-root.md
+    role: reference
+    skill: agents-md-writer
+    description: Monorepo root file.
+  - path: skills/agents-md-writer/references/examples/monorepo-api.md
+    role: reference
+    skill: agents-md-writer
+    description: Nested file for one app in the monorepo.
+  - path: skills/agents-md-writer/references/examples/go-cli.md
+    role: reference
+    skill: agents-md-writer
+    description: Go command-line tool.
+  - path: skills/agents-md-writer/references/examples/godot-game.md
+    role: reference
+    skill: agents-md-writer
+    description: Godot 4 game.
+  - path: skills/agents-md-writer/references/examples/infra-opentofu.md
+    role: reference
+    skill: agents-md-writer
+    description: OpenTofu, plan only.
+requires:
+  tools:
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - agents_md_lint.py
+  notes: The lint only reads AGENTS.md, CLAUDE.md, package.json, Makefile and justfile files and prints a report. It changes nothing and makes no network calls.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

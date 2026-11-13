@@ -1,0 +1,24 @@
+---
+description: Tauri 2 only; no Tauri 1 imports, Rust APIs or config keys
+globs: "src/**/*.ts,src/**/*.js,src/**/*.tsx,src/**/*.vue,src/**/*.svelte,src-tauri/**/*.rs,src-tauri/tauri.conf.json"
+alwaysApply: false
+---
+
+This app uses Tauri 2. Never write Tauri 1 code.
+
+| Never (Tauri 1) | Always (Tauri 2) |
+|---|---|
+| `import { invoke } from "@tauri-apps/api/tauri"` | `import { invoke } from "@tauri-apps/api/core"` |
+| `appWindow.setTitle(...)` | `getCurrentWebviewWindow().setTitle(...)` (`@tauri-apps/api/webviewWindow`) |
+| `@tauri-apps/api/fs`, `/dialog`, `/shell`, `/http` | `@tauri-apps/plugin-fs`, `-dialog`, `-shell`, `-http` (+ crate + permission) |
+| shell `open(url)` | `openUrl(url)` from `@tauri-apps/plugin-opener` |
+| `invoke("save_note", { note_title })` | `invoke("save_note", { noteTitle })` (camelCase) |
+| `"allowlist"` | `src-tauri/capabilities/*.json` permissions |
+| `"tauri": {...}`, `"package": {...}` | `"app": {...}`; top-level `productName`, `version`, `identifier` |
+| `build.devPath`, `build.distDir` | `build.devUrl`, `build.frontendDist` |
+| `app.get_window("main")` | `app.get_webview_window("main")` |
+| `window.emit_all(...)` | `window.emit(...)` (`use tauri::Emitter`) |
+| `SystemTray`, `CustomMenuItem`, `WindowBuilder` | `TrayIconBuilder`, `MenuItemBuilder`, `WebviewWindowBuilder` |
+| `app.path_resolver()`, `tauri::api::*` | `app.path()`, the plugin crates |
+
+- After editing, run the `tauri-2-guard` skill's scanner, the type-check and the config schema check.

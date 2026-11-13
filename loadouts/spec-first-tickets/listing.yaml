@@ -1,0 +1,69 @@
+id: spec-first-tickets
+type: loadout
+title: Spec first, then tickets
+summary: "Lightweight spec-driven flow: a SPEC.md with testable acceptance criteria, small tickets, test-first builds in parallel waves and a review against the spec."
+description: |
+  Spec-driven development was one of the most consistent practices among working developers this autumn, usually in a light
+  form: write the spec with the agent, split it into tickets, build each ticket with a test, review against the spec. This
+  loadout encodes that flow without a framework: when a spec is needed, what a testable acceptance criterion looks like,
+  ticket rules that make parallel work safe, and what to do when the spec turns out to be wrong. It points to Spec Kit and
+  OpenSpec for teams that want more.
+highlights:
+  - When a spec is required and when it is not
+  - SPEC.md and TASKS.md templates with testable acceptance criteria
+  - "Interview skill: at most five questions at a time, each with a recommended answer"
+  - Implementation in dependency waves, test first, one commit per ticket
+  - "Spec drift rule: stop and update the spec instead of improvising"
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@mattpocockuk: /implement-spec with research, parallel tickets and review"
+    url: https://x.com/mattpocockuk/status/2090744569960824949
+  - title: GitHub Spec Kit
+    url: https://github.com/github/spec-kit
+  - title: OpenSpec
+    url: https://github.com/Fission-AI/OpenSpec
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - any
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Spec, ticket and implementation rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/write-spec/SKILL.md
+    role: skill
+    skill: write-spec
+    description: Research, interview and write SPEC.md and TASKS.md.
+  - path: skills/write-spec/references/spec-template.md
+    role: reference
+    skill: write-spec
+    description: SPEC.md and TASKS.md templates.
+  - path: skills/implement-spec/SKILL.md
+    role: skill
+    skill: implement-spec
+    description: Build tickets test-first in waves and review against the spec.
+requires:
+  tools: []
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/skills/done-proof/scripts/done-gate.sh"],
+            "timeout": 60,
+            "statusMessage": "Checking tests were not weakened"
+          }
+        ]
+      }
+    ]
+  }
+}

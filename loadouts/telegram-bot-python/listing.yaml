@@ -1,0 +1,70 @@
+id: telegram-bot-python
+type: loadout
+title: Telegram bot with python-telegram-bot
+summary: "Rules and a command skill for Telegram bots on python-telegram-bot v22: token from the environment, async-safe handlers, testable logic, escaped output, webhook secrets."
+description: |
+  Telegram bots are a favourite first project for agents, and the same issues come up: a token pasted into code or a test, blocking requests calls inside async handlers, raw user text in HTML replies, no error handler, a bot that answers every message in a group. This loadout uses python-telegram-bot v22's documented patterns: an Application with registered handlers and an error handler, logic in plain functions that test without Telegram, escaped output, admin allow-lists, and run_webhook with a secret token in production.
+highlights:
+  - Token only from TELEGRAM_BOT_TOKEN; separate test bot for development
+  - No blocking calls in async handlers
+  - Logic in plain functions with unit tests; no network in tests
+  - Escaped user text in HTML replies; quiet in group chats
+  - Webhooks with secret_token in production
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: python-telegram-bot documentation
+    url: https://docs.python-telegram-bot.org/en/stable/
+  - title: "python-telegram-bot wiki: webhooks"
+    url: https://github.com/python-telegram-bot/python-telegram-bot/wiki/Webhooks
+  - title: Telegram Bot API
+    url: https://core.telegram.org/bots/api
+categories:
+  - bots
+stacks:
+  - python
+  - telegram
+  - uv
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: python-telegram-bot rules for secrets, structure and behaviour.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/add-bot-command/SKILL.md
+    role: skill
+    skill: add-bot-command
+    description: New command with testable logic and checks.
+  - path: skills/add-bot-command/references/split.py
+    role: reference
+    skill: add-bot-command
+    description: "Example /split command: plain function plus handler."
+  - path: skills/add-bot-command/references/test_split.py
+    role: reference
+    skill: add-bot-command
+    description: Unit tests and a no-network registration test.
+requires:
+  tools:
+    - uv
+  env:
+    - TELEGRAM_BOT_TOKEN
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The bot connects to the Telegram Bot API with your token when run. Tests make no network calls and use an obviously fake token. uv downloads packages from PyPI.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

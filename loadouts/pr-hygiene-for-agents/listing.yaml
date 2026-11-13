@@ -1,0 +1,72 @@
+id: pr-hygiene-for-agents
+type: loadout
+title: PR hygiene for agents
+summary: "Commit and PR rules for coding agents: small PRs, a four-part body, screenshots with gh --attach and a leak check for session links and secrets before pushing."
+description: |
+  Agent-written pull requests fail review for boring reasons: too big, no test evidence, no screenshots, and sometimes a
+  private session link or local path in a public commit. This loadout sets commit and PR rules an agent can follow, a
+  pre-push leak check, and a gh-based procedure that uses the --attach flag added in GitHub CLI 2.99 for screenshots.
+  It respects each repository's own AI-disclosure policy rather than hiding attribution.
+highlights:
+  - Commit and PR size rules, with a What / Why / How tested / Notes body
+  - Screenshots attached with gh pr create --attach and alt text (gh 2.99+)
+  - Pre-push leak check for session URLs, local paths and secret-looking lines
+  - Claude Code attribution.sessionUrl setting for cloud and Remote Control sessions
+  - Draft first, ready when checks are green
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@cwage: private session URLs in public PRs"
+    url: https://x.com/cwage/status/2099570173829087479
+  - title: "@neil_jhaveri: AGENTS.md rule to attach UI screenshots with gh"
+    url: https://x.com/neil_jhaveri/status/2108061424215789751
+  - title: GitHub CLI 2.99.0 release notes
+    url: https://github.com/cli/cli/releases/tag/v2.99.0
+  - title: "Claude Code settings: attribution"
+    url: https://code.claude.com/docs/en/settings
+categories:
+  - workflow
+stacks:
+  - git
+  - github
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Commit, pull request and leak rules for agents.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/open-pull-request/SKILL.md
+    role: skill
+    skill: open-pull-request
+    description: Self-review, leak check, screenshots and gh pr create.
+  - path: skills/open-pull-request/references/pr-body.md
+    role: reference
+    skill: open-pull-request
+    description: PR body template.
+  - path: skills/open-pull-request/references/attribution.json
+    role: reference
+    skill: open-pull-request
+    description: Claude Code settings snippet that drops session links.
+requires:
+  tools:
+    - git
+    - gh
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

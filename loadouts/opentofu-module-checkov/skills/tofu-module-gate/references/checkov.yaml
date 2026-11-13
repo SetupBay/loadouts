@@ -1,0 +1,10 @@
+# Repository .checkov.yaml. Findings fail the run: no soft-fail, no skip-check list.
+# Accepted exceptions are inline `#checkov:skip=<ID>:<reason>` comments next to the resource,
+# so the reason is reviewed in the same diff as the code.
+framework:
+  - terraform
+compact: true
+quiet: true
+download-external-modules: false
+skip-path:
+  - .terraform

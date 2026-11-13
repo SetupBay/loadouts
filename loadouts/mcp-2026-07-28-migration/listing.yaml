@@ -1,0 +1,84 @@
+id: mcp-2026-07-28-migration
+type: loadout
+title: Migrate an MCP server to protocol 2026-07-28
+summary: "Move an MCP server to the stateless 2026-07-28 revision on the official SDKs: no sessions or handshake, server/discover, input_required, then a raw stdio probe."
+description: |
+  MCP revision 2026-07-28 removed the initialize handshake and sessions. Every request now carries its own _meta envelope, and a tool asks the user for input by returning input_required instead of pushing a request mid-call. Upgrading the SDK is not enough on its own: a TypeScript v2 server still speaks 2025 until it is served through serveStdio, and session-keyed state or elicitInput calls survive the official codemod. This loadout gives your agent the changelog as a fix list, plus a scanner for removed patterns and a dependency-free stdio probe. The probe sends server/discover and stateless calls, runs one input_required round trip, and checks -32022 for unknown versions and dual-era fallback. The verifier builds a TypeScript v2 server and probes it alongside a Python SDK 2.3.0 server.
+highlights:
+  - Changes checked against the official 2026-07-28 changelog and spec pages
+  - Scanner for sessions, pushed elicitation and sampling, setLevel, subscribe and v1 wiring
+  - "stdio probe: server/discover, resultType, stable tools/list, -32022, dual-era check"
+  - input_required round trip in place of elicitInput, with a working TypeScript v2 example
+  - "Exact pins: @modelcontextprotocol/server 2.3.1, mcp 2.3.0, go-sdk v1.8.0"
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "MCP specification 2026-07-28: key changes"
+    url: https://modelcontextprotocol.io/specification/2026-07-28/changelog
+  - title: "MCP specification 2026-07-28: versioning and backward compatibility"
+    url: https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning
+  - title: "MCP specification 2026-07-28: multi-round-trip requests"
+    url: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr
+  - title: "MCP TypeScript SDK: supporting protocol revision 2026-07-28"
+    url: https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/migration/support-2026-07-28.md
+  - title: "MCP TypeScript SDK: upgrade-to-v2 skill and codemod"
+    url: https://github.com/modelcontextprotocol/typescript-sdk/tree/main/skills/mcp-typescript-sdk-upgrade-to-v2
+categories:
+  - ai-agents
+stacks:
+  - mcp
+  - typescript
+  - nodejs
+  - python
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for moving an MCP server to the stateless 2026-07-28 revision through the official SDKs.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/mcp-2026-migration/SKILL.md
+    role: skill
+    skill: mcp-2026-migration
+    description: Scan, upgrade, rewrite removed patterns and probe the result.
+  - path: skills/mcp-2026-migration/references/changes.md
+    role: reference
+    skill: mcp-2026-migration
+    description: Every 2026-07-28 change that affects servers, with the fix.
+  - path: skills/mcp-2026-migration/references/server.ts
+    role: reference
+    skill: mcp-2026-migration
+    description: TypeScript v2 dual-era stdio server with an input_required tool.
+  - path: skills/mcp-2026-migration/scripts/probe_mcp_2026.mjs
+    role: reference
+    skill: mcp-2026-migration
+    description: Dependency-free stdio probe for 2026-07-28 behaviour.
+  - path: skills/mcp-2026-migration/scripts/scan_mcp_legacy.mjs
+    role: reference
+    skill: mcp-2026-migration
+    description: Finds code using removed or changed protocol features.
+requires:
+  tools:
+    - nodejs
+    - npm
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - probe_mcp_2026.mjs
+    - scan_mcp_legacy.mjs
+  notes: npm installs the official MCP SDK packages and npx downloads the official codemod. The probe only starts the server command you give it and talks to it over stdio; the scanner reads files and changes nothing.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

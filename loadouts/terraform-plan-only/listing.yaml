@@ -1,0 +1,89 @@
+id: terraform-plan-only
+type: loadout
+title: Terraform, plan only
+summary: "Let agents write Terraform and produce plans but never apply: a guard hook for apply, destroy and state changes, a plan summary that flags deletes, pinned providers."
+description: |
+  Infrastructure is where an agent's confident mistake costs the most, and the stories are familiar: an apply with -auto-approve, a state rm to get past an error, a replace on a database nobody noticed in a long plan. This loadout draws a hard line: the agent writes code, validates and plans; a human applies. A Claude Code hook denies apply, destroy, import, state changes and -auto-approve for Terraform and OpenTofu, a jq script summarises plans and fails on any delete or replace, and HashiCorp's Terraform MCP server gives the agent current provider docs.
+highlights:
+  - Agent plans, human applies; apply and destroy blocked by a hook
+  - Plan summary that lists every delete and replace and exits 1
+  - Pinned providers, committed lock file, prevent_destroy on stateful resources
+  - moved blocks for renames instead of destroy and recreate
+  - HashiCorp Terraform MCP server for provider docs (no token needed)
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: hashicorp/terraform-mcp-server
+    url: https://github.com/hashicorp/terraform-mcp-server
+  - title: "Terraform docs: JSON output format (plan representation)"
+    url: https://developer.hashicorp.com/terraform/internals/json-format
+  - title: "Terraform docs: refactoring with moved blocks"
+    url: https://developer.hashicorp.com/terraform/language/modules/develop/refactoring
+  - title: "Claude Code docs: hooks reference"
+    url: https://code.claude.com/docs/en/hooks
+categories:
+  - security
+  - workflow
+stacks:
+  - terraform
+  - opentofu
+  - bash
+  - jq
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: "Plan-only Terraform rules: allowed commands, never list, code rules."
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/plan-review/SKILL.md
+    role: skill
+    skill: plan-review
+    description: Plan, summarise, flag deletes and install the guard hook.
+  - path: skills/plan-review/scripts/plan-summary.sh
+    role: reference
+    skill: plan-review
+    description: Counts plan actions and fails on deletes or replaces.
+  - path: skills/plan-review/scripts/guard-terraform.sh
+    role: reference
+    skill: plan-review
+    description: PreToolUse hook that denies apply, destroy and state changes.
+  - path: skills/plan-review/scripts/selftest.sh
+    role: reference
+    skill: plan-review
+    description: 20 sample commands through the guard hook.
+  - path: skills/plan-review/references/settings.example.json
+    role: reference
+    skill: plan-review
+    description: "Claude Code settings: deny rules and the hook."
+  - path: mcp.json
+    role: mcp
+    description: HashiCorp Terraform MCP server in Docker, pinned.
+requires:
+  tools:
+    - terraform
+    - jq
+    - docker
+  env: []
+  mcp:
+    - terraform
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - plan-summary.sh
+    - guard-terraform.sh
+    - selftest.sh
+  notes: The Terraform MCP server runs locally in Docker from HashiCorp's pinned image and reads the public Terraform Registry; no token is configured, so it has no HCP Terraform access. The scripts make no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

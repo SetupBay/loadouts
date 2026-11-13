@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Release Notes",
+    "slug": "release-notes",
+    "version": "1.4.0",
+    "owner": "acme",
+    "ios": { "bundleIdentifier": "com.acme.releasenotes" },
+    "android": { "package": "com.acme.releasenotes" },
+    "runtimeVersion": { "policy": "fingerprint" },
+    "updates": {
+      "url": "https://u.expo.dev/00000000-0000-4000-8000-000000000000",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
+    "extra": { "eas": { "projectId": "00000000-0000-4000-8000-000000000000" } },
+    "plugins": ["expo-updates"]
+  }
+}

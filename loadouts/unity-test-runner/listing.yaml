@@ -1,0 +1,79 @@
+id: unity-test-runner
+type: loadout
+title: Unity tests from the command line, read properly
+summary: "Run Unity Test Framework Edit Mode and Play Mode tests headless and read the NUnit results, so a run of zero tests (Unity exits 0) never passes as green."
+description: |
+  The Unity agent plugin lets coding agents edit scripts, scenes and assets. The step agents skip is proving the C# still works, and Unity's exit code makes that easy to get wrong. With -runTests, Unity exits 0 when every test passed and also when no tests ran at all, for example when a -testFilter matches nothing or the test assembly is missing. 3 means a run error, usually a compile error, and 4 a missing platform.
+
+  This loadout adds the testing half for Unity 6 projects. The rules keep logic in plain C# classes so Edit Mode tests cover it in milliseconds, with a test .asmdef and an example NUnit test to copy. A standard-library Python wrapper runs the Editor in batch mode with the documented flags, deletes stale results first, and reads the NUnit 3 XML. It lists each failure with its message and first stack line, pulls C# compile errors and the "project already open" case out of the log, and treats zero tests as a failure. The verifier drives it with a stub Editor that writes each outcome Unity documents.
+highlights:
+  - "Zero tests ran = failure, even though Unity exits 0"
+  - Exit codes 0/2/3/4 explained; compile errors pulled from the log
+  - Stale result files deleted before every run
+  - Edit Mode .asmdef and an NUnit example test to copy
+  - Plain C# logic, thin MonoBehaviours, so tests run in milliseconds
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Unity Manual: Test Framework command-line reference"
+    url: https://docs.unity.com/en-us/engine/7000.0/manual/programming-environment/test-framework-introduction/reference-command-line
+  - title: "Unity Test Framework source: CommandLineTest/Executer.cs (return codes, 'No tests were executed' exits 0)"
+    url: https://github.com/needle-mirror/com.unity.test-framework/blob/master/UnityEditor.TestRunner/CommandLineTest/Executer.cs
+  - title: Unity-Technologies/unity-agent-plugin
+    url: https://github.com/Unity-Technologies/unity-agent-plugin
+  - title: "@Spanky4thewin: version pins and a never-write list stop deprecated Unity APIs"
+    url: https://x.com/Spanky4thewin/status/2111340997728723331
+categories:
+  - gamedev
+stacks:
+  - unity
+  - csharp
+  - python
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Testable C# layout and the rules for running Unity tests.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/unity-tests/SKILL.md
+    role: skill
+    skill: unity-tests
+    description: Run tests headless and read the results.
+  - path: skills/unity-tests/scripts/unity_tests.py
+    role: reference
+    skill: unity-tests
+    description: Batch-mode runner and NUnit 3 results reader.
+  - path: skills/unity-tests/references/EditModeTests.asmdef.json
+    role: reference
+    skill: unity-tests
+    description: Edit Mode test assembly definition to copy.
+  - path: skills/unity-tests/references/HealthTests.cs
+    role: reference
+    skill: unity-tests
+    description: Example NUnit Edit Mode test.
+requires:
+  tools:
+    - unity-6
+    - python3
+  env:
+    - UNITY_PATH
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - unity_tests.py
+  notes: The runner starts the Unity Editor binary named in UNITY_PATH in batch mode and writes results under TestResults/. It makes no network calls of its own.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

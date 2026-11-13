@@ -1,0 +1,93 @@
+id: rails-rspec
+type: loadout
+title: Rails request specs with RSpec and FactoryBot
+summary: "RSpec request specs for Rails 8.1 JSON endpoints: happy path, 422 errors, missing params, owner scoping and mass assignment, with FactoryBot and rubocop-rspec."
+description: |
+  Agents asked to test a Rails endpoint write a controller spec that checks the status code and stops there. The bugs that matter go untested: an unscoped find that shows another user's record, an owner_id accepted from the request body, a missing params key that turns into a 500. This loadout gives your agent RSpec rules for Rails 8.1. It uses request specs, not controller specs, with params.expect strong params and lookups scoped to the current owner. FactoryBot keeps the minimum valid record, with traits for variants. A skill lists what every endpoint's spec must cover and ships a complete, passing example. The verifier runs it in a Rails 8.1.4 API app on rspec-rails 8.0.4 in random order, runs rubocop with rubocop-rspec, and checks that removing the owner scope fails the 404 spec.
+highlights:
+  - Request specs through routing, middleware and params, not controller specs
+  - "Every endpoint: happy path, 422, 400, someone else's record (404) and mass assignment"
+  - params.expect strong params; ownership set from the session, never the body
+  - FactoryBot sequences and traits; build_stubbed where no database is needed
+  - Verified on Rails 8.1.4, rspec-rails 8.0.4 and rubocop-rspec 3.10.2
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "rspec-rails: request specs"
+    url: https://rspec.info/features/8-0/rspec-rails/request-specs/request-spec/
+  - title: rspec/rspec-rails
+    url: https://github.com/rspec/rspec-rails
+  - title: FactoryBot getting started
+    url: https://thoughtbot.github.io/factory_bot/
+  - title: "Rails guides: Action Controller parameters (params.expect)"
+    url: https://guides.rubyonrails.org/action_controller_overview.html#strong-parameters
+  - title: RuboCop RSpec
+    url: https://docs.rubocop.org/rubocop-rspec/
+categories:
+  - web-app
+stacks:
+  - ruby
+  - rails
+  - rspec
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for testing a Rails 8.1 app with RSpec request specs and FactoryBot.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/rspec-request-spec/SKILL.md
+    role: skill
+    skill: rspec-request-spec
+    description: What every endpoint spec covers, and how to write and run it.
+  - path: skills/rspec-request-spec/references/projects_controller.rb
+    role: reference
+    skill: rspec-request-spec
+    description: Owner-scoped JSON controller with params.expect.
+  - path: skills/rspec-request-spec/references/project.rb
+    role: reference
+    skill: rspec-request-spec
+    description: Model with validations and an owner scope.
+  - path: skills/rspec-request-spec/references/projects_factory.rb
+    role: reference
+    skill: rspec-request-spec
+    description: FactoryBot factory with a sequence and a trait.
+  - path: skills/rspec-request-spec/references/projects_spec.rb
+    role: reference
+    skill: rspec-request-spec
+    description: Ten request specs covering every case.
+  - path: skills/rspec-request-spec/references/rails_helper.rb
+    role: reference
+    skill: rspec-request-spec
+    description: rails_helper with FactoryBot and transactional fixtures.
+  - path: skills/rspec-request-spec/references/spec_helper.rb
+    role: reference
+    skill: rspec-request-spec
+    description: spec_helper with random order and verified doubles.
+  - path: skills/rspec-request-spec/references/rubocop.yml
+    role: reference
+    skill: rspec-request-spec
+    description: "RuboCop config: omakase plus RSpec plugins."
+requires:
+  tools:
+    - ruby
+    - bundle
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: bundle install downloads Rails, RSpec, FactoryBot and RuboCop gems from rubygems.org. The specs use an in-memory SQLite database and make no network calls.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,18 @@
+// .markdownlint-cli2.jsonc at the repository root. Run: npx markdownlint-cli2
+{
+  "config": {
+    "default": true,
+    // Long lines are fine in prose; wrapping makes diffs noisy.
+    "MD013": false,
+    // Same heading text is fine under different parents (e.g. "Usage" per command).
+    "MD024": { "siblings_only": true },
+    // Allow the small amount of HTML GitHub renders well.
+    "MD033": { "allowed_elements": ["details", "summary", "kbd", "br", "img", "a"] },
+    // Fenced code blocks must say their language.
+    "MD040": true,
+    // Link fragments must match a heading in the same file.
+    "MD051": true
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules/**", "**/node_modules/**", "CHANGELOG.md", "dist/**"]
+}

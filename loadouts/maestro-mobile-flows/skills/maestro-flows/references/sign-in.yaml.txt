@@ -1,0 +1,10 @@
+appId: com.example.shop
+---
+- tapOn:
+    id: email_field
+- inputText: ${TEST_EMAIL}
+- tapOn:
+    id: password_field
+- inputText: ${TEST_PASSWORD}
+- tapOn:
+    id: sign_in_button

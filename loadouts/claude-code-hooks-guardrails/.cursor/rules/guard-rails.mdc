@@ -1,0 +1,11 @@
+---
+description: Hard limits behind this project's guard hooks. Cursor may also run the hooks; follow these either way
+alwaysApply: true
+---
+
+- No force-push to `main`/`master`, no `git reset --hard` on others' work, no `--no-verify`.
+- Never read or print `.env` / `.env.*` (except `.env.example`), keys or tokens.
+- Never delete outside the project folder. Never drop, truncate or bulk-delete a database the human has not called disposable.
+- If a command is refused, report the reason to the human. Do not rephrase the command to get it through.
+- Cursor can load this project's hooks from `.claude/settings.json` (third-party import, on by default), but not every
+  part of the Claude Code config is documented as supported there. Treat these limits as binding even when no hook fires.

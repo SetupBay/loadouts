@@ -1,0 +1,53 @@
+id: discord-bot-ts
+type: loadout
+title: Discord bot (TypeScript)
+summary: discord.js v14 rules and an add-a-slash-command skill for building a Discord bot that registers commands properly and never leaks its token.
+description: |
+  Discord bots are a classic first agent project and a classic way to leak a token to GitHub.
+  This loadout sets up a clean discord.js v14 structure (one file per slash command, a loader, a deploy
+  script), teaches the agent the three-second interaction rule and the intents model, and gives it a
+  skill for adding new commands end to end.
+highlights:
+  - One-file-per-command structure with a separate command deploy script
+  - "The three-second rule: defer, then edit the reply"
+  - Minimal intents; no privileged Message Content intent unless you really need it
+  - Skill that adds, registers and documents a new slash command
+version: 1.1.0
+license: MIT
+author:
+  name: SetupBay
+categories: [bots]
+stacks: [discord, nodejs, typescript]
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Discord bot project rules.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/discord-commands.mdc
+    role: rules
+    description: Rule for files in src/commands/.
+  - path: skills/add-slash-command/SKILL.md
+    role: skill
+    skill: add-slash-command
+    description: Adds and registers a new slash command.
+requires:
+  tools: [node]
+  env: [DISCORD_TOKEN, DISCORD_CLIENT_ID, DISCORD_GUILD_ID]
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: Registering commands calls the Discord API with your bot token.
+last_checked: 2026-10-16
+published: 2026-10-15
+updated: 2026-10-16

@@ -1,0 +1,68 @@
+id: no-ai-voice-writing
+type: loadout
+title: Writing rules that avoid AI-sounding prose
+summary: Rules and a linter that stop agents writing 'seamlessly empowers', 'not just X, it's Y', fake proof and em-dash runs into your docs, PRs and release notes.
+description: |
+  Readers now spot machine prose in a sentence and stop trusting the page. The tells are well documented: inflated words like delve, tapestry and pivotal, 'it's not just X, it's Y', reflexive groups of three, em-dash runs, emoji bullets, chat filler and proof nobody can check. This loadout gives the agent plain-English rules for every file it writes, a word list with the plain alternative for each pattern, and a standard-library linter that skips code and quotations. The verifier runs the linter on a sloppy README (22 findings) and on a plain rewrite (none).
+highlights:
+  - Rules for docs, READMEs, PRs, commit messages, release notes and UI copy
+  - Word list with the plain alternative for each pattern, UK spelling
+  - Linter skips fenced code, inline code, quotes and front matter
+  - Flags fake proof such as '10,000+ users' and 'trusted by thousands'
+  - Allow-list for deliberate exceptions
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Wikipedia: Signs of AI writing (WikiProject AI Cleanup)"
+    url: https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing
+  - title: "@CDGalpha: the tells, from 'delve' and 'seamless' to em-dash spam and fake '10,000+ users' proof"
+    url: https://x.com/CDGalpha/status/2110292549210620174
+  - title: "plainlanguage.gov: federal plain language guidelines"
+    url: https://www.plainlanguage.gov/guidelines/
+categories:
+  - workflow
+stacks:
+  - any
+  - markdown
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Plain-writing rules for every file and reply the agent writes.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/plain-prose/SKILL.md
+    role: skill
+    skill: plain-prose
+    description: Lint, rewrite and re-check prose.
+  - path: skills/plain-prose/scripts/prose_lint.py
+    role: reference
+    skill: plain-prose
+    description: Standard-library linter for machine-prose patterns.
+  - path: skills/plain-prose/references/word-list.md
+    role: reference
+    skill: plain-prose
+    description: Patterns and plain alternatives.
+requires:
+  tools:
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - prose_lint.py
+  notes: The linter only reads the files you pass it. No network access, no dependencies.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

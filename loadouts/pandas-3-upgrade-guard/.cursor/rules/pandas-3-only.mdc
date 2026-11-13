@@ -1,0 +1,25 @@
+---
+description: pandas 3 only; copy-on-write and the str dtype, no APIs removed in 3.0
+globs: "**/*.py,**/*.ipynb"
+alwaysApply: false
+---
+
+This project pins pandas 3. Copy-on-write is always on and strings are dtype `str`.
+
+| Never (pandas 1 and 2) | Always (pandas 3) |
+|---|---|
+| `df["a"][0] = 1` | `df.loc[0, "a"] = 1` |
+| `df["a"].fillna(0, inplace=True)` | `df["a"] = df["a"].fillna(0)` |
+| `df.applymap(f)` | `df.map(f)` |
+| `df.append(other)` | `pd.concat([df, other], ignore_index=True)` |
+| `fillna(method="ffill")` | `.ffill()` |
+| `read_csv(delim_whitespace=True)` | `read_csv(sep=r"\s+")` |
+| `read_csv(date_parser=...)` | `read_csv(date_format="%Y-%m-%d")` |
+| `freq="H"`, `"T"`, `"M"`, `"Y"` | `freq="h"`, `"min"`, `"ME"`, `"YE"` |
+| `to_numeric(s, errors="ignore")` | `to_numeric(s, errors="coerce")` |
+| `pd.read_json('[{...}]')` | `pd.read_json(io.StringIO(text))` |
+| `s.dtype == object` for strings | `pd.api.types.is_string_dtype(s)` |
+| `agg(np.sum)` | `agg("sum")` |
+
+- No defensive `.copy()` to silence SettingWithCopyWarning; that warning no longer exists.
+- After editing, run the `pandas-3-guard` skill's scanner and the tests.

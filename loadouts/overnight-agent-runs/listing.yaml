@@ -1,0 +1,78 @@
+id: overnight-agent-runs
+type: loadout
+title: Overnight agent runs with budgets and a morning report
+summary: "Queue coding tasks to run unattended, each with a finish-line check, its own worktree and branch, a dollar cap inside a nightly total, and safe retry settings."
+description: |
+  Leaving agents running overnight is now common, and so are the two ways it goes wrong. One stuck task burns the whole budget. Or a rate or usage limit leaves a request waiting until morning with nothing done. Claude Code now has the controls for both. --max-budget-usd and --max-turns cap a print-mode run. CLAUDE_CODE_RETRY_WATCHDOG keeps retrying capacity errors, and since 2.1.295 and 2.1.301 it can be told to give up after a set wait or when a usage limit resets too far away.
+
+  This loadout turns those controls into a routine. Every task needs a finish line (a command that exits 0), and each runs in its own git worktree and branch. A standard-library runner gives each task the smaller of its budget and what is left of the night's total, sets the retry variables, runs the finish-line check after the agent, and writes a ledger and a morning report with result, cost, turns and commits per branch. It refuses --dangerously-skip-permissions outside a sandbox and never pushes or merges. The verifier drives it with a stub agent that prints Claude Code's documented JSON result.
+highlights:
+  - One finish-line command per task; no check, no unattended run
+  - Worktree and branch per task; nothing pushed, merged or deleted
+  - Per-task --max-budget-usd inside a nightly total; queue stops when it runs out
+  - "Retry watchdog with MAX_WAIT_MS and MAX_USAGE_LIMIT_WAIT_MS, so limits end runs instead of hanging them"
+  - Morning report per branch with result, cost, turns and commits
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: environment variables (CLAUDE_CODE_RETRY_WATCHDOG and its limits)"
+    url: https://code.claude.com/docs/en/env-vars
+  - title: "Claude Code docs: CLI reference (--max-budget-usd, --max-turns, --worktree)"
+    url: https://code.claude.com/docs/en/cli-reference
+  - title: "Claude Code changelog (2.1.239, 2.1.295, 2.1.301, 2.1.305 retry watchdog changes)"
+    url: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+  - title: "@harshit10sehgal: CLAUDE_CODE_RETRY_WATCHDOG for unattended runs"
+    url: https://x.com/harshit10sehgal/status/2110984543494967721
+  - title: "@ekcheungAI: cap a headless run with --max-turns and --max-budget-usd"
+    url: https://x.com/ekcheungAI/status/2111524159755010507
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - python
+  - git
+  - bash
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for any unattended agent task.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/night-shift/SKILL.md
+    role: skill
+    skill: night-shift
+    description: Plan, run and review an overnight batch.
+  - path: skills/night-shift/scripts/night_shift.py
+    role: reference
+    skill: night-shift
+    description: Worktree-per-task runner with budgets, checks and a report.
+  - path: skills/night-shift/references/night-shift.example.json
+    role: reference
+    skill: night-shift
+    description: Example plan with three tasks.
+requires:
+  tools:
+    - python3
+    - git
+    - claude
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - night_shift.py
+  notes: The runner starts the agent command you put in the plan (which calls its model provider) and runs your finish-line commands. It creates worktrees and branches under .night-shift/, adds that folder to .git/info/exclude, and never pushes, merges or deletes anything.
+last_checked: 2026-10-24
+published: 2026-10-24
+updated: 2026-10-24

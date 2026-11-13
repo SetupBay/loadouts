@@ -1,0 +1,77 @@
+id: agent-spend-cap
+type: loadout
+title: One spend cap across Claude Code, Codex and Antigravity
+summary: "Run headless Claude Code, Codex and Antigravity CLI through one guard: a shared daily cap, per-run budgets, a ledger, and the provider limits that stop spend."
+description: |
+  Each coding agent has its own meter. Claude Code reports dollars and can stop itself with --max-budget-usd. Codex and Antigravity CLI report only tokens and have no budget flag, so a script that mixes them can burn through every budget overnight. This loadout puts one standard-library guard in front of every headless run. It refuses the run once the shared daily or monthly cap or the run count is reached, and gives Claude Code a budget no bigger than what is left. It prices Codex and Antigravity tokens from prices you set, and writes one ledger line per run. It also lists the provider-side limits that hold when something bypasses the guard, including keeping Antigravity's useG1Credits off. The verifier drives the guard with stubs that print each agent's documented JSON and checks the arithmetic and the refusal.
+highlights:
+  - One daily, monthly and run-count cap across three agents
+  - "Claude Code: --max-budget-usd shrinks to what is left; total_cost_usd recorded"
+  - "Codex and Antigravity: documented token usage priced from your own price table"
+  - Exit 3 means stop the loop; agents never raise caps or buy credits
+  - Provider-side limits listed, including Antigravity's useG1Credits
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Claude Code docs: manage costs"
+    url: https://code.claude.com/docs/en/costs
+  - title: "Claude Code docs: run Claude Code programmatically (total_cost_usd, --max-budget-usd)"
+    url: https://code.claude.com/docs/en/headless
+  - title: "Antigravity CLI docs: headless mode (usage envelope)"
+    url: https://antigravity.google/docs/cli/headless
+  - title: "Antigravity CLI docs: settings (useG1Credits)"
+    url: https://antigravity.google/docs/cli/reference
+  - title: Codex SDK event types (turn.completed usage)
+    url: https://github.com/openai/codex/blob/main/sdk/typescript/src/events.ts
+categories:
+  - ai-agents
+  - workflow
+stacks:
+  - python
+  - bash
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for running coding agents headless under one shared spend cap.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/spend-cap/SKILL.md
+    role: skill
+    skill: spend-cap
+    description: Set caps, run agents through the guard, read the ledger.
+  - path: skills/spend-cap/scripts/spend_guard.py
+    role: reference
+    skill: spend-cap
+    description: Shared cap, per-run budget and ledger for three agents.
+  - path: skills/spend-cap/references/caps.example.json
+    role: reference
+    skill: spend-cap
+    description: Caps and price table to copy into .agent-spend/.
+  - path: skills/spend-cap/references/provider-limits.md
+    role: reference
+    skill: spend-cap
+    description: Where each provider's own limit lives.
+requires:
+  tools:
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - spend_guard.py
+  notes: The guard runs only the agent command you pass it and writes a ledger under .agent-spend/. It makes no network calls of its own and never changes agent settings or billing.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

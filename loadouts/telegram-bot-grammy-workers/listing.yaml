@@ -1,0 +1,91 @@
+id: telegram-bot-grammy-workers
+type: loadout
+title: Telegram bot with grammY on Cloudflare Workers
+summary: "grammY 1.46 webhook bots on Workers: secret-token check, botInfo, error boundaries instead of bot.catch, Queues for slow work, and tests with a fake Bot API."
+description: |
+  grammY runs well on Cloudflare Workers, but the usual long-polling habits break there. `bot.start()` does nothing useful, `bot.catch()` doesn't cover webhooks, so one buggy handler makes Telegram resend the same update dozens of times, and the official quick start leaves the webhook open to anyone who finds the URL. Agents also like to put the bot token in `vars`.
+
+  This loadout pins grammY 1.46.0 and ships a reference Worker. The webhook is checked with `secretToken`, the getMe result goes in a `BOT_INFO` var, handlers sit inside `bot.errorBoundary()`, and a `handle()` export lets tests drive real update JSON through the Worker with a fake Bot API, with no token and no network. bot_check.mjs (Node standard library) flags tokens in config or code, secrets in `vars`, a missing `.dev.vars` ignore, `bot.start()`, webhooks without a secret, a missing error boundary and `onTimeout: "return"`. set_webhook.mjs is for the human to run after a deploy. It sets the webhook with `secret_token` and `allowed_updates` and prints getWebhookInfo. It's the Workers counterpart to the telegram-bot-python loadout.
+highlights:
+  - grammY 1.46.0 with webhookCallback "cloudflare-mod" and secretToken (401 without it)
+  - botInfo from a BOT_INFO var, so no getMe call per request
+  - Handlers in bot.errorBoundary(); bot.catch only covers long polling
+  - Slow work to a Queue inside grammY's 10-second webhook window
+  - Tests post real update JSON through the Worker with a fake Bot API
+  - bot_check.mjs flags leaked tokens, secrets in vars, polling and open webhooks
+  - set_webhook.mjs sets secret_token and allowed_updates, then shows getWebhookInfo
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "grammY docs: hosting on Cloudflare Workers (Node.js)"
+    url: https://grammy.dev/hosting/cloudflare-workers-nodejs
+  - title: "grammY docs: long polling vs. webhooks (timeouts and retries)"
+    url: https://grammy.dev/guide/deployment-types
+  - title: "grammY docs: error handling (webhooks and error boundaries)"
+    url: https://grammy.dev/guide/errors
+  - title: "Telegram Bot API: setWebhook (secret_token)"
+    url: https://core.telegram.org/bots/api#setwebhook
+  - title: "Cloudflare docs: Workers secrets"
+    url: https://developers.cloudflare.com/workers/configuration/secrets/
+  - title: "Cloudflare docs: Queues"
+    url: https://developers.cloudflare.com/queues/
+categories:
+  - bots
+  - web-app
+stacks:
+  - telegram
+  - cloudflare-workers
+  - typescript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for secrets, webhooks, error handling and deploys in a grammY Worker bot.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/grammy-worker-bot/SKILL.md
+    role: skill
+    skill: grammy-worker-bot
+    description: Add commands, test them with a fake Bot API, and go live with the webhook secret.
+  - path: skills/grammy-worker-bot/references/index.ts
+    role: reference
+    skill: grammy-worker-bot
+    description: Reference Worker with secretToken, botInfo, an error boundary and a testable handle().
+  - path: skills/grammy-worker-bot/references/wrangler.jsonc
+    role: reference
+    skill: grammy-worker-bot
+    description: Wrangler config with BOT_INFO in vars and nothing secret.
+  - path: skills/grammy-worker-bot/scripts/bot_check.mjs
+    role: reference
+    skill: grammy-worker-bot
+    description: Node standard-library check for leaked tokens, open webhooks, polling and error handling.
+  - path: skills/grammy-worker-bot/scripts/set_webhook.mjs
+    role: reference
+    skill: grammy-worker-bot
+    description: Human-run setWebhook with secret_token and allowed_updates, then getWebhookInfo.
+requires:
+  tools:
+    - node
+    - npm
+  env:
+    - BOT_TOKEN
+    - WEBHOOK_SECRET
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - bot_check.mjs
+    - set_webhook.mjs
+  notes: set_webhook.mjs calls the Telegram Bot API (setWebhook, getWebhookInfo) with the human's token from the environment and never prints it. bot_check.mjs only reads the project.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

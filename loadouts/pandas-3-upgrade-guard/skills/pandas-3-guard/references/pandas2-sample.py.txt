@@ -1,0 +1,16 @@
+# A pandas 2 cleaning script, used to check the guard. Every marked line fails or silently changes in pandas 3.
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv("readings.txt", delim_whitespace=True)                       # delim-whitespace
+df = pd.read_csv("readings.csv", parse_dates=["day"], date_parser=pd.to_datetime)  # date-parser
+df = df.applymap(lambda v: v.strip() if isinstance(v, str) else v)            # applymap
+df = df.fillna(method="ffill")                                                # fillna-method
+df["reading"][0] = 0.0                                                        # chained-assignment
+df["site"].fillna("unknown", inplace=True)                                    # inplace-on-column
+hourly = df.set_index("day").resample("H").mean()                             # resample-alias
+months = pd.date_range("2026-01-01", periods=12, freq="M")                    # freq-alias
+codes = pd.to_numeric(df["code"], errors="ignore")                            # errors-ignore
+more = df.append(df.tail(1))                                                  # append
+text_cols = [c for c in df.columns if df[c].dtype == object]                  # object-dtype-check
+totals = df.groupby("site").agg(np.sum)                                       # np-reduction-in-agg

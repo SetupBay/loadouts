@@ -1,0 +1,81 @@
+id: polars-2-upgrade-guard
+type: loadout
+title: Polars 2 guard against Polars 1 code
+summary: Stop agents writing melt, with_row_count, how="outer" and other names Polars 2 removed, and flag the calls whose results changed silently in 2.0.
+description: |
+  Polars 2.0 came out on 6 October 2026 and removed most of what was deprecated during 0.20 and 1.x: melt, with_row_count, group_by().count(), how="outer", join_nulls, str.concat, collect(streaming=True), min_periods and more. Agents learnt Polars from years of 1.x answers, so they still write those names. The removed ones fail loudly. The worse problem is the changed defaults that don't fail: lazy queries now run on the streaming engine, which doesn't keep row order for joins and group_by, explode() drops empty lists, and horizontal concat stops padding.
+
+  This loadout pairs a short Cursor rule and AGENTS.md (a never/always table) with a skill that checks the work. A standard-library Python scanner reports every removed name as an error and every silently changed call as a warning, using the official upgrade guide. A person can accept a warning on a line with a guard: ok comment, but never an error. The verifier runs the scanner against a Polars 2 pipeline and a Polars 1 sample, then runs both with the pinned polars 2.1.0 to show which lines Polars itself refuses.
+highlights:
+  - Never/always table for Polars 2 in a .py-scoped Cursor rule
+  - Scanner flags 28 removed Polars 1 names as errors, read-only
+  - "Warns on silent 2.0 changes: join row order, explode counts, horizontal concat"
+  - A guard ok comment accepts a warning on one line, never an error
+  - Rename table built from the official Polars 2 upgrade guide
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Polars docs: upgrading to version 2"
+    url: https://docs.pola.rs/releases/upgrade/2/
+  - title: "polars 2.1.0 on PyPI (released 25 Oct 2026)"
+    url: https://pypi.org/project/polars/2.1.0/
+  - title: "Polars docs: Python API reference"
+    url: https://docs.pola.rs/api/python/stable/reference/
+  - title: "@le_woudar: weekly Python roundup covering the Polars 2.0 release"
+    url: https://x.com/le_woudar/status/2109612420633440724
+categories:
+  - data
+stacks:
+  - polars
+  - python
+  - uv
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Polars 2 version facts, rules and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/polars-2-only.mdc
+    role: rules
+    description: Never/always table for Python files.
+  - path: skills/polars-2-guard/SKILL.md
+    role: skill
+    skill: polars-2-guard
+    description: Scan for Polars 1 code and silent 2.0 changes, then run the code on the pinned Polars.
+  - path: skills/polars-2-guard/scripts/polars2_guard.py
+    role: reference
+    skill: polars-2-guard
+    description: Read-only scanner for removed Polars 1 names and changed defaults.
+  - path: skills/polars-2-guard/references/rename-table.md
+    role: reference
+    skill: polars-2-guard
+    description: Polars 1 to 2 table of removed names and silent changes.
+  - path: skills/polars-2-guard/references/polars1-sample.py.txt
+    role: reference
+    skill: polars-2-guard
+    description: A Polars 1 report script for checking the guard.
+requires:
+  tools:
+    - python3
+    - uv
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - polars2_guard.py
+  notes: The scanner only reads .py and .ipynb files and prints findings; it never edits files and makes no network calls. Running the project with uv may download the pinned packages.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

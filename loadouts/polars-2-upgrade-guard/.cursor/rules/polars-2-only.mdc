@@ -1,0 +1,25 @@
+---
+description: Polars 2 only; never Polars 1 names removed in 2.0
+globs: "**/*.py,**/*.ipynb"
+alwaysApply: false
+---
+
+This project pins Polars 2. Lazy queries run on the streaming engine by default.
+
+| Never (Polars 1 and older) | Always (Polars 2) |
+|---|---|
+| `df.melt(id_vars=, value_vars=)` | `df.unpivot(index=, on=)` |
+| `with_row_count()` | `with_row_index()` (column `index`) |
+| `group_by(k).count()`, `groupby(k)` | `group_by(k).len()` |
+| `join(how="outer")`, `join_nulls=True` | `join(how="full")`, `nulls_equal=True` |
+| `str.concat(",")` | `str.join(",")` |
+| `collect(streaming=True)` | `collect(engine="streaming")` |
+| `rolling_mean(w, min_periods=1)` | `rolling_mean(w, min_samples=1)` |
+| `read_csv(dtypes=...)` | `read_csv(schema_overrides=...)` |
+| `pl.col("d").cast(pl.Date)` on strings | `pl.col("d").str.to_date()` |
+| `.apply(f)`, `.map_dict(d)` | native expressions, `.replace_strict(d)` |
+| `concat(how="horizontal")` to pad | `concat(how="horizontal_extend")` |
+
+- Row order: add `.sort(...)` or `maintain_order="left"` when the result order matters.
+- `explode()` drops empty lists now; pass `empty_as_null=True` if you need a null row.
+- After editing, run the `polars-2-guard` skill's scanner and the tests.

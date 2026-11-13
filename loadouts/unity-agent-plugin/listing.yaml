@@ -1,0 +1,63 @@
+id: unity-agent-plugin
+type: loadout
+title: Unity 6 with the official agent plugin
+summary: "Project rules for using Unity's official agent plugin safely in Claude Code or Codex: commit first, Editor-driven scene edits, .meta discipline, compile and test checks."
+description: |
+  Unity released an official agent plugin for Claude Code, Codex and Grok this autumn. Its skills edit scripts, scenes and
+  assets directly and can run C# in the open Editor through the Unity CLI, and Unity's own README warns that not every change
+  can be undone from the Editor. This loadout adds the project rules around it: a clean git tree before changes, Editor-driven
+  edits instead of hand-edited scene YAML, .meta file discipline, generated folders left alone, and compile and test checks,
+  plus a setup skill with the documented install commands.
+highlights:
+  - Documented install commands for Claude Code and Codex, with checks
+  - Commit before larger changes; clean tree required
+  - Scenes and prefabs changed through the Editor, not hand-edited YAML
+  - .meta and generated-folder rules that prevent broken references
+  - Batch-mode EditMode and PlayMode test commands
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: Unity-Technologies/unity-agent-plugin
+    url: https://github.com/Unity-Technologies/unity-agent-plugin
+  - title: "Unity docs: about Unity's plugin"
+    url: https://docs.unity.com/en-us/ai/unity-plugin/about-unity-plugin
+categories:
+  - gamedev
+stacks:
+  - unity
+  - csharp
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Unity 6 project rules for agent work with the official plugin.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/unity-csharp.mdc
+    role: rules
+    description: C# conventions for Unity scripts.
+  - path: skills/unity-plugin-setup/SKILL.md
+    role: skill
+    skill: unity-plugin-setup
+    description: Install and check the plugin and prepare the project.
+requires:
+  tools:
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts: []
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,24 @@
+---
+description: Django 6.1 only; no APIs removed in Django 4.0 to 6.1
+globs: "**/*.py,**/templates/**/*.html"
+alwaysApply: false
+---
+
+This project runs Django 6.1 (Python 3.12+). Never write removed Django APIs.
+
+| Never | Always (Django 6.1) |
+|---|---|
+| `from django.conf.urls import url`; `url(r"^x/$", v)` | `path("x/", v)` or `re_path(r"^x/$", v)` |
+| `ugettext`, `ugettext_lazy` | `gettext`, `gettext_lazy` |
+| `force_text`, `smart_text` | `force_str`, `smart_str` |
+| `request.is_ajax()` | check the `Accept` or `X-Requested-With` header yourself |
+| `Meta.index_together` | `Meta.indexes = [models.Index(fields=[...])]` |
+| `models.NullBooleanField()` | `models.BooleanField(null=True)` |
+| `CheckConstraint(check=Q(...))` | `CheckConstraint(condition=Q(...))` |
+| `obj.save(False, False)` | `obj.save(update_fields=[...])` (keywords only) |
+| `format_html("<b>fixed</b>")` | `mark_safe(...)`, or `format_html("<b>{}</b>", value)` |
+| `finders.find(p, all=True)` | `finders.find(p, find_all=True)` |
+| `timezone.utc`, `pytz` | `datetime.UTC`, `zoneinfo.ZoneInfo` |
+| `{% load staticfiles %}` | `{% load static %}` |
+
+- After editing, run the `django-6-guard` skill's scanner, `django-upgrade --check --target-version 6.1`, `manage.py check` and the tests.

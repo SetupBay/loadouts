@@ -1,0 +1,84 @@
+id: expo-eas-update
+type: loadout
+title: Expo EAS Update without shipping native changes over the air
+summary: Checks whether an Expo change can ship as an EAS Update or needs a new build, using the native fingerprint; preview by CI, production rollouts by a person.
+description: |
+  An EAS Update swaps the JavaScript inside a build, but it cannot add native code. An agent that installs expo-camera and then runs eas update ships a crash to every user on that build. This loadout gives your agent a check it runs before any update. It records the native fingerprint when a store build is cut, then compares the current project against it with expo-updates' own fingerprint tool. JavaScript and version bumps pass. A new native module, config plugin or permission fails, and the output names what changed. A config check makes sure runtimeVersion uses the fingerprint policy, updates.url matches the project and every build profile has its own channel. It validates eas.json with Expo's own parser. CI publishes to preview only. Production goes out as a staged rollout run by a person. The verifier runs it on Expo SDK 58 with expo-updates 58.0.17.
+highlights:
+  - OTA-safe or needs a new build, from the expo-updates native fingerprint
+  - "Names what changed: added native modules, config, autolinking"
+  - Fingerprint runtime policy, matching updates.url, one channel per build profile
+  - CI publishes to preview only; production is a person's staged rollout
+  - Verified on Expo SDK 58, expo-updates 58.0.17 and @expo/eas-json 25.1.1
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Expo docs: runtime versions and updates"
+    url: https://docs.expo.dev/eas-update/runtime-versions/
+  - title: "Expo docs: EAS Update rollouts"
+    url: https://docs.expo.dev/eas-update/rollouts/
+  - title: "Expo docs: fingerprint"
+    url: https://docs.expo.dev/versions/latest/sdk/fingerprint/
+  - title: "Expo docs: configure EAS Build with eas.json"
+    url: https://docs.expo.dev/build/eas-json/
+  - title: expo/eas-cli
+    url: https://github.com/expo/eas-cli
+categories:
+  - web-app
+  - workflow
+stacks:
+  - expo
+  - react-native
+  - typescript
+  - github-actions
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for an Expo app updated over the air with EAS Update, where native changes always get a new build.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/eas-update-release/SKILL.md
+    role: skill
+    skill: eas-update-release
+    description: Config, the OTA-safe check, and who publishes where.
+  - path: skills/eas-update-release/scripts/ota_check.mjs
+    role: reference
+    skill: eas-update-release
+    description: "config, record and compare: fingerprint and update config checks."
+  - path: skills/eas-update-release/references/app.json
+    role: reference
+    skill: eas-update-release
+    description: App config with the fingerprint policy and updates.url.
+  - path: skills/eas-update-release/references/eas.json
+    role: reference
+    skill: eas-update-release
+    description: Build profiles with one channel each.
+  - path: skills/eas-update-release/references/eas-update-preview.yml
+    role: reference
+    skill: eas-update-release
+    description: "GitHub workflow: publish to preview only when OTA-safe."
+requires:
+  tools:
+    - node
+    - npm
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - ota_check.mjs
+  notes: The check runs the project's own expo and expo-updates CLIs and makes no network calls. The example workflow publishes to the preview channel with an EXPO_TOKEN from GitHub secrets; agents never publish to production.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,76 @@
+id: godot-blender-mcp
+type: loadout
+title: Godot and Blender through MCP
+summary: "Drive Godot 4 and Blender from one agent: Godot MCP to run the game and read errors, MCP for Blender in safe mode to model assets, and a glTF pipeline between them."
+description: |
+  Solo game developers were posting the same setup all autumn: one agent with a Godot MCP server and a Blender MCP server,
+  a folder of reference images for the art style, and models flowing from Blender into the game. This loadout pins both
+  servers (@coding-solo/godot-mcp and mcp-for-blender with safe mode on and telemetry off) and adds the rules that keep it
+  safe and shippable: save before Blender changes, look at the viewport after every step, typed GDScript, run the game and
+  read the debug output, and a glTF export checklist so assets arrive game-ready.
+highlights:
+  - Pinned Godot MCP and MCP for Blender servers in one config
+  - "Blender safe mode on: no file, network or process access from scripts"
+  - Style matched to reference images in art/reference/
+  - Blender to Godot glTF pipeline skill with a game-ready checklist
+  - Run the game and treat new debug errors as failures
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "@seftsaint: Godot MCP plus Blender MCP with a reference image folder"
+    url: https://x.com/seftsaint/status/2099527048515788847
+  - title: Coding-Solo/godot-mcp
+    url: https://github.com/Coding-Solo/godot-mcp
+  - title: ahujasid/blender-mcp (MCP for Blender)
+    url: https://github.com/ahujasid/blender-mcp
+categories:
+  - gamedev
+stacks:
+  - godot
+  - gdscript
+  - blender
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for driving Godot and Blender through MCP.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: mcp.json
+    role: mcp
+    description: Godot MCP and MCP for Blender, pinned, safe mode on.
+  - path: skills/blender-to-godot/SKILL.md
+    role: skill
+    skill: blender-to-godot
+    description: Model in Blender, export glTF, place and test in Godot.
+  - path: skills/blender-to-godot/references/asset-checklist.md
+    role: reference
+    skill: blender-to-godot
+    description: Game-ready asset checklist.
+requires:
+  tools:
+    - node
+    - uv
+    - godot
+    - blender
+  env: []
+  mcp:
+    - godot
+    - blender
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: Runs two local MCP servers from npm and PyPI. The Blender server runs Python inside Blender; safe mode is enabled to block file, network and process access from those scripts.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,83 @@
+id: electron-playwright-e2e
+type: loadout
+title: Electron end-to-end tests with Playwright
+summary: "Playwright tests that drive the real Electron app: secure webPreferences, no Node in the renderer, IPC round trips, input validation and blocked navigation."
+description: |
+  Renderer unit tests miss the Electron bugs that matter. A preload leaks ipcRenderer, a handler trusts its input, or someone sets sandbox: false to make a feature work. This loadout gives your agent Playwright's Electron support, set up properly. A fixture gives every test its own app instance and an empty userData folder, with a relaunch for persistence tests. An example suite asserts the secure webPreferences from the main process and checks that the renderer sees only the preload API. It drives an IPC feature through the UI and onto disk and back after a restart, checks the handler rejects bad input, and confirms that window.open and navigation are denied. A CI workflow runs it under xvfb on Ubuntu. The verifier runs the suite against a sandboxed Electron 44.9.0 app with @playwright/test 1.64.1. It also checks that turning the sandbox off or exposing ipcRenderer fails a test.
+highlights:
+  - Fresh app and userData per test, with relaunch for persistence
+  - "Security assertions: sandbox, contextIsolation, no Node in the renderer"
+  - IPC covered by end-to-end tests, including handler validation
+  - Runs headless on Linux CI under xvfb-run
+  - Verified on Electron 44.9.0 and @playwright/test 1.64.1
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Playwright docs: Electron"
+    url: https://playwright.dev/docs/api/class-electron
+  - title: "Playwright docs: test fixtures"
+    url: https://playwright.dev/docs/test-fixtures
+  - title: "Electron docs: automated testing"
+    url: https://www.electronjs.org/docs/latest/tutorial/automated-testing
+  - title: "Electron docs: security checklist"
+    url: https://www.electronjs.org/docs/latest/tutorial/security
+categories:
+  - web-app
+  - security
+stacks:
+  - electron
+  - playwright
+  - javascript
+  - desktop
+  - github-actions
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Rules for an Electron app whose security settings and IPC are covered by Playwright end-to-end tests.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/electron-e2e-test/SKILL.md
+    role: skill
+    skill: electron-e2e-test
+    description: Setup, what every suite covers, rules and CI.
+  - path: skills/electron-e2e-test/references/playwright.config.js
+    role: reference
+    skill: electron-e2e-test
+    description: One worker, traces on failure, a CI-only retry.
+  - path: skills/electron-e2e-test/references/electron-fixture.js
+    role: reference
+    skill: electron-e2e-test
+    description: Per-test app, page and userData fixtures with relaunch.
+  - path: skills/electron-e2e-test/references/app.spec.js
+    role: reference
+    skill: electron-e2e-test
+    description: Five end-to-end tests, including security assertions.
+  - path: skills/electron-e2e-test/references/electron-e2e.yml
+    role: reference
+    skill: electron-e2e-test
+    description: GitHub workflow running the suite under xvfb.
+requires:
+  tools:
+    - node
+    - npm
+    - xvfb-run
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: npm ci installs Electron and Playwright from npm; the Electron binary is downloaded from GitHub and checked against Electron's published checksums. The tests open no network connections.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

@@ -1,0 +1,86 @@
+id: godot-4-headless-tests
+type: loadout
+title: Godot 4 headless GDScript tests
+summary: A SceneTree test runner the agent runs with godot --headless after every change, failing on script errors with a non-zero exit, plus a linter for tests that can't fail.
+description: |
+  godot --headless --check-only tells an agent its script parses. It doesn't tell it that the enemy never dies, that a signal fires twice, or that a node was null halfway through a test. This loadout gives the agent real tests that run in Godot's headless mode, with no editor and no window, in a second or two.
+
+  The runner is one GDScript file that extends SceneTree. It finds tests/test_*.gd, runs every test_*() method with optional before_each and after_each, prints PASS or FAIL per test and quits with exit code 1 on any failure. It hooks Godot's Logger class (4.5 and later), so a script error inside a test, such as calling a method on null, fails that test. Without the hook Godot only prints the error and the test counts as a pass. The rules cover scene tests with real frames, queue_free timing, autoload state that leaks between tests, seeded randomness and the --import step a fresh clone needs before class_name types resolve. A standard-library Python linter flags tests with no check, get_tree() in a suite, OS.delay_msec, an un-awaited frame wait and quit() inside a test.
+highlights:
+  - One-file SceneTree runner, exit code 1 on any failure, for CI and agents
+  - Script errors inside a test fail it, via Godot's Logger hook
+  - Scene tests with awaited frames, queue_free timing and autoload resets
+  - Linter flags tests that can only pass, blocking delays and un-awaited waits
+  - Catches the fresh-clone trap where class_name types are unknown until --import
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Godot docs: command line tutorial (--headless, --script, --import)"
+    url: https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html
+  - title: "Godot docs: Logger class and OS.add_logger()"
+    url: https://docs.godotengine.org/en/stable/classes/class_logger.html
+  - title: "Godot docs: SceneTree (process_frame, quit)"
+    url: https://docs.godotengine.org/en/stable/classes/class_scenetree.html
+  - title: "@Spidermanzdev: 65 test suites run headless from the Godot CLI after every change"
+    url: https://x.com/Spidermanzdev/status/2115589607161004357
+  - title: "@jvan253: signal timing bugs parse fine, so make the agent run the project headless"
+    url: https://x.com/jvan253/status/2114034185627406820
+  - title: "@GrizzlyKiwidev: if anything throws an error headless, the agent knows its change broke it"
+    url: https://x.com/GrizzlyKiwidev/status/2114440921836322827
+categories:
+  - gamedev
+  - workflow
+stacks:
+  - godot
+  - gdscript
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Commands, test layout, rules for writing headless tests, and the done checklist.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: .cursor/rules/godot-headless-tests.mdc
+    role: rules
+    description: Never/instead table for GDScript test suites under tests/.
+  - path: skills/godot-headless-tests/SKILL.md
+    role: skill
+    skill: godot-headless-tests
+    description: Set up the runner, write a suite, lint it, run it headless and report.
+  - path: skills/godot-headless-tests/references/run_tests.gd
+    role: reference
+    skill: godot-headless-tests
+    description: The SceneTree test runner to copy to tests/run_tests.gd.
+  - path: skills/godot-headless-tests/scripts/gd_test_lint.py
+    role: reference
+    skill: godot-headless-tests
+    description: Read-only linter for test suites that can't fail or that block the run.
+  - path: skills/godot-headless-tests/references/bad-test-sample.gd.txt
+    role: reference
+    skill: godot-headless-tests
+    description: A suite with the usual mistakes, for checking the linter.
+requires:
+  tools:
+    - godot-4
+    - python3
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: false
+  scripts:
+    - gd_test_lint.py
+    - run_tests.gd
+  notes: The linter only reads .gd files and prints findings. The runner only loads the project's own tests/test_*.gd files inside Godot; neither edits files or makes network calls.
+last_checked: 2026-10-29
+published: 2026-10-29
+updated: 2026-10-29

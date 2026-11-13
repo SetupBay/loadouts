@@ -1,0 +1,77 @@
+id: discord-bot-python
+type: loadout
+title: Discord bot in Python (discord.py 2)
+summary: "discord.py 2 rules for agents: slash commands in cogs, range-limited options, 3-second responses, manual syncing, default intents and offline tests of the payload."
+description: |
+  Agents writing Discord bots in Python reach for prefix commands and the message content intent, sync the command tree on every start until Discord rate-limits them, and test nothing because everything seems to need a live gateway. This loadout sets the discord.py 2 conventions: slash commands in cogs, options described and limited in the schema, deferral for slow work, ephemeral error replies, syncing by hand to a dev guild, and the token only from the environment. A skill adds commands with logic in plain functions and offline tests of the exact payload Discord will receive. The verifier runs those tests on discord.py 2.7.1 and loads the cog without logging in.
+highlights:
+  - Slash commands in cogs; no message content intent
+  - Options described and limited with app_commands.Range
+  - Offline tests of logic and the command payload, no gateway needed
+  - Sync by hand to a dev guild, never on every start
+  - Token from the environment; default intents only
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "discord.py docs: interactions API reference"
+    url: https://discordpy.readthedocs.io/en/stable/interactions/api.html
+  - title: "discord.py docs: extensions and cogs"
+    url: https://discordpy.readthedocs.io/en/stable/ext/commands/cogs.html
+  - title: "Discord developer docs: receiving and responding to interactions"
+    url: https://discord.com/developers/docs/interactions/receiving-and-responding
+  - title: "Discord developer docs: privileged gateway intents"
+    url: https://discord.com/developers/docs/events/gateway#privileged-intents
+categories:
+  - bots
+stacks:
+  - python
+  - discord
+  - uv
+  - pytest
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: "Rules for a discord.py 2 bot: layout, commands, interactions, syncing and secrets."
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/discord-py-command/SKILL.md
+    role: skill
+    skill: discord-py-command
+    description: Add a slash command as a cog with tests.
+  - path: skills/discord-py-command/references/dice.py
+    role: reference
+    skill: discord-py-command
+    description: Cog with a validated, rate-limited command.
+  - path: skills/discord-py-command/references/bot.py
+    role: reference
+    skill: discord-py-command
+    description: Entry point with default intents and manual sync.
+  - path: skills/discord-py-command/references/test_dice.py
+    role: reference
+    skill: discord-py-command
+    description: Offline tests of logic and payload.
+requires:
+  tools:
+    - uv
+    - python3
+  env:
+    - DISCORD_TOKEN
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: uv downloads discord.py from PyPI. The bot connects to Discord's gateway with the token from the environment; the rules forbid logging or committing it.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

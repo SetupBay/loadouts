@@ -1,0 +1,78 @@
+id: ralph-loop-guarded
+type: loadout
+title: Guarded Ralph loop
+summary: "Run an agent in a Ralph-style loop with guard rails: a fresh process per pass, state in files, iteration and no-progress limits, and a check it cannot fake."
+description: |
+  The Ralph loop (one prompt, re-run in a fresh agent process until the work is done) went mainstream this autumn: Claude Code and Codex both shipped /goal, and practitioners noticed that plugin versions often keep one long context instead of clearing it. This loadout keeps the original idea and adds the limits people learnt the hard way: a branch-only runner, a check command run outside the agent every pass, a false DONE removed, an edited prompt ending the loop, iteration, timeout and no-progress caps, and a STOP file. A self-test drives the runner with fake agents through every exit path.
+highlights:
+  - Fresh agent process per pass; plan, progress and prompt live in .ralph/
+  - DONE only counts when the check passes outside the agent
+  - Iteration, per-pass timeout and no-progress limits, plus a STOP file
+  - Refuses to run on main or master; never pushes or merges
+  - Works with claude -p, codex exec and agy -p; /goal compared honestly
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Geoffrey Huntley: Ralph Wiggum as a software engineer"
+    url: https://ghuntley.com/ralph/
+  - title: "@DRMacIver: the Claude Ralph plugin didn't clear context between iterations"
+    url: https://x.com/DRMacIver/status/2102456718915469473
+  - title: "Claude Code docs: keep Claude working toward a goal (/goal)"
+    url: https://code.claude.com/docs/en/goal
+  - title: "OpenAI cookbook: using Goals in Codex"
+    url: https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex
+categories:
+  - workflow
+  - ai-agents
+stacks:
+  - any
+  - bash
+  - git
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Per-pass rules for an agent running in a loop.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/ralph-loop/SKILL.md
+    role: skill
+    skill: ralph-loop
+    description: Set up, run and review a guarded loop.
+  - path: skills/ralph-loop/references/PROMPT.md
+    role: reference
+    skill: ralph-loop
+    description: Loop prompt template for .ralph/prompt.md.
+  - path: skills/ralph-loop/scripts/ralph.sh
+    role: reference
+    skill: ralph-loop
+    description: The guarded runner with limits and exit codes.
+  - path: skills/ralph-loop/scripts/selftest.sh
+    role: reference
+    skill: ralph-loop
+    description: Drives the runner with fake agents through every exit path.
+requires:
+  tools:
+    - bash
+    - git
+  env: []
+  mcp: []
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts:
+    - ralph.sh
+    - selftest.sh
+  notes: ralph.sh runs the agent command you give it, unattended, so that agent calls its model provider's API. The runner itself makes no network calls, refuses to run on main or master and never pushes.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

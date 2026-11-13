@@ -1,0 +1,23 @@
+---
+description: Writing Godot 4 GDScript tests that run headless with tests/run_tests.gd
+globs: "tests/**/*.gd"
+alwaysApply: false
+---
+
+# Godot 4 headless tests
+
+Run: `godot --headless --path . --script res://tests/run_tests.gd` (after `--import` on a fresh clone).
+
+| Never | Instead |
+| --- | --- |
+| A `test_*()` with no check, or `print()` as the check | `t.equal(actual, expected, "label")`, `t.check(cond, "msg")` |
+| `get_tree()` in a suite | `t.root.add_child(node)`; free it in `after_each()` |
+| `OS.delay_msec()` | `await t.frames(n)` |
+| `t.frames(n)` without `await` | `await t.frames(n)` |
+| `await t.create_timer(2.0).timeout` | Call the timeout handler, or set `wait_time` tiny |
+| `randi()` / `randf_range()` in the code under test | A seeded `RandomNumberGenerator` passed in |
+| `t.quit()` or `get_tree().quit()` in a test | Let the runner exit with the right code |
+| Assuming an autoload starts fresh for each test | Reset its state in `before_each()`; it lives for the whole run |
+| Guarding a null so a red test goes green | Find why it was null; script errors fail the test on purpose |
+
+Each suite: `extends RefCounted`, `var t: SceneTree`, methods named `test_*`.

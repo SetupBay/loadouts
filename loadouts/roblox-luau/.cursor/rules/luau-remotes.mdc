@@ -1,0 +1,32 @@
+---
+description: Server-side remote handler rules for Roblox
+globs: "src/server/**/*.luau"
+alwaysApply: false
+---
+
+Every `OnServerEvent` / `OnServerInvoke` handler must:
+
+1. Treat its arguments as untrusted. Check `typeof` for each one and bounds for numbers (reject NaN: `x ~= x`).
+2. Check permission and game state on the server (ownership, cost, distance, cooldown).
+3. Rate-limit per player.
+4. Compute outcomes on the server. Never accept amounts, damage, prices or positions as facts.
+
+```luau
+--!strict
+local Remotes = game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
+local Shop = require(script.Parent.Shop)
+
+local lastCall: { [Player]: number } = {}
+
+Remotes.BuyItem.OnServerEvent:Connect(function(player: Player, itemId: unknown)
+	if typeof(itemId) ~= "string" or #itemId > 64 then return end
+	local now = os.clock()
+	if (lastCall[player] or 0) + 0.5 > now then return end
+	lastCall[player] = now
+	Shop.tryPurchase(player, itemId) -- looks up the price server-side and checks the balance
+end)
+
+game:GetService("Players").PlayerRemoving:Connect(function(player) lastCall[player] = nil end)
+```
+
+Never use `InvokeClient`. Never `loadstring` anything.

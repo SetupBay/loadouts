@@ -1,0 +1,33 @@
+# A Godot 3 player script, the kind agents still write into Godot 4 projects.
+# Kept as .txt so Godot never tries to load it. The guard's own check copies it to a .gd file.
+tool
+extends KinematicBody2D
+
+signal died
+
+export(float) var speed = 200.0
+export var jump_force = 400.0
+onready var sprite = $Sprite
+var hp = 3 setget set_hp
+var motion = Vector2()
+
+func _ready():
+	$HurtBox.connect("body_entered", self, "_on_hurt")
+	yield(get_tree().create_timer(0.5), "timeout")
+
+func _physics_process(delta):
+	motion.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	motion.x *= speed
+	motion.y += 980 * delta
+	motion = move_and_slide(motion, Vector2.UP)
+
+func set_hp(value):
+	hp = value
+	if hp <= 0:
+		emit_signal("died")
+		get_tree().change_scene("res://scenes/ui/game_over.tscn")
+
+func _on_hurt(body):
+	var puff = preload("res://scenes/fx/puff.tscn").instance()
+	puff.rotation = deg2rad(rand_range(0, 360))
+	add_child(puff)

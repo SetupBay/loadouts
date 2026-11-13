@@ -1,0 +1,12 @@
+{
+  "daily_usd": 5.0,
+  "monthly_usd": 60.0,
+  "per_run_usd": 1.0,
+  "min_run_usd": 0.05,
+  "max_runs_per_day": 40,
+  "prices": {
+    "codex": { "input_per_mtok": 0.0, "cached_input_per_mtok": 0.0, "output_per_mtok": 0.0 },
+    "agy": { "input_per_mtok": 0.0, "cached_input_per_mtok": 0.0, "output_per_mtok": 0.0 }
+  },
+  "_note": "Fill prices from your provider's current price page for the model you run (USD per million tokens). Zero prices mean those agents count towards max_runs_per_day but not money."
+}

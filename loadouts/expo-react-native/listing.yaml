@@ -1,0 +1,68 @@
+id: expo-react-native
+type: loadout
+title: Expo and React Native with Expo MCP
+summary: "Expo rules for agents plus Expo's official MCP server: npx expo install, Expo Router, no secrets in EXPO_PUBLIC_, no production EAS releases, check on a simulator."
+description: |
+  Expo now ships its own agent tooling: new projects include an AGENTS.md, Claude Code and Codex have an official Expo plugin, and the hosted Expo MCP server (free plan included) gives agents current docs, EAS build logs and simulator screenshots. This loadout adds the project rules agents still get wrong: SDK-matched installs with npx expo install, never editing generated native folders, EXPO_PUBLIC_ variables treated as public, development builds for native packages, and no production builds, submits or updates unless asked.
+highlights:
+  - Expo MCP server (remote, OAuth) for docs, EAS logs and screenshots
+  - npx expo install and expo-doctor after every dependency change
+  - Generated ios/ and android/ folders left alone under CNG
+  - EXPO_PUBLIC_ variables treated as public; no secrets in the app
+  - No production eas build, submit or update without being asked
+version: 1.0.0
+license: MIT
+author:
+  name: SetupBay
+credits:
+  - title: "Expo docs: AI agents and Expo"
+    url: https://docs.expo.dev/agents/
+  - title: "Expo docs: Expo MCP server"
+    url: https://docs.expo.dev/mcp/
+  - title: "Expo changelog: Expo MCP server on the Free plan"
+    url: https://expo.dev/changelog/the-expo-mcp-server-is-now-available-on-the-free-plan
+  - title: "@KhalidDevLog: daily mobile MCPs (XcodeBuildMCP, Expo MCP, Figma MCP)"
+    url: https://x.com/KhalidDevLog/status/2096183096697586039
+categories:
+  - web-app
+stacks:
+  - react-native
+  - expo
+  - typescript
+  - ios
+  - android
+files:
+  - path: AGENTS.md
+    role: instructions
+    description: Expo, Expo Router and EAS rules, with Expo MCP usage.
+  - path: CLAUDE.md
+    role: adapter
+    agent: claude-code
+    description: Imports AGENTS.md for Claude Code.
+  - path: GEMINI.md
+    role: adapter
+    agent: gemini-cli
+    description: Imports AGENTS.md for Gemini CLI.
+  - path: skills/expo-change/SKILL.md
+    role: skill
+    skill: expo-change
+    description: Feature or fix with docs lookup, checks and a simulator check.
+  - path: mcp.json
+    role: mcp
+    description: Expo MCP server (remote, OAuth).
+requires:
+  tools:
+    - node
+  env: []
+  mcp:
+    - expo
+security:
+  scanned: true
+  scanner: intake-precheck/2
+  verdict: clean
+  network: true
+  scripts: []
+  notes: The Expo MCP server is hosted by Expo and signs in with your Expo account via OAuth; it can read EAS build history and project metadata. npx expo install downloads packages from npm.
+last_checked: 2026-10-17
+published: 2026-10-17
+updated: 2026-10-17

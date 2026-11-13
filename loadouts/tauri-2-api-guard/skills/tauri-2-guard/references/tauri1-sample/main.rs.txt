@@ -1,0 +1,26 @@
+// Tauri 1 src-tauri/src/main.rs, used to check the guard.
+use tauri::{CustomMenuItem, Manager, Menu, SystemTray, SystemTrayMenu, WindowBuilder, WindowUrl};
+
+#[tauri::command]
+fn save_note(window: tauri::Window, note_title: String, body: String) -> Result<(), String> {
+    let dir = window.app_handle().path_resolver().app_data_dir().ok_or("no app data dir")?;
+    std::fs::write(dir.join(format!("{note_title}.md")), body).map_err(|e| e.to_string())?;
+    window.emit_all("note-saved", note_title).map_err(|e| e.to_string())
+}
+
+fn main() {
+    let tray = SystemTray::new().with_menu(SystemTrayMenu::new());
+    let menu = Menu::new().add_item(CustomMenuItem::new("quit", "Quit"));
+    tauri::Builder::default()
+        .menu(menu)
+        .system_tray(tray)
+        .setup(|app| {
+            let main = app.get_window("main").unwrap();
+            WindowBuilder::new(app, "help", WindowUrl::App("help.html".into())).build()?;
+            tauri::api::shell::open(&main.shell_scope(), "https://tauri.app", None)?;
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![save_note])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
